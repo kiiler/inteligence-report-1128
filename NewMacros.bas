@@ -31,12 +31,52 @@ Public Const AuthBaseUrl As String = "https://hub.hqts.cn"
 Public Const AppId As String = "fuzhihao@hqts.cn"
 Public Const EncryptedUserId = "V7NR8ZWF534oOVQFKgDQ+HIg1R4JYHM5KKV4E2ERhBaaQuCZfPsZDV7v30TKwMdwQgDr+efdHUP2P9y596AoKiRSt/iXnY8N8X10qEMDRYfwIg8Hd75C+RDj638MNY93vM6bNT+QMZrUDBDqj6ZvsO3Z61ieCMxeGIHz1tGADvLO5BtO9wUtCrkwbiB1M4L01HoCHk62tMU7WvPfvq+eoAsZUcb8qf4GIuVTvXHsVb0qP+wT+S1LetZ3fg1RHXsWFijtLevPYDqIi69yU3Mec9hlPjEMeIMvqMoimESVO4s7aqV328kZGVAh4apc0vCPmzOfG/5MTaogmpWgT5DOTw=="
 
+
+Private Function UText(ParamArray codePoints() As Variant) As String
+    Dim i As Long
+    Dim result As String
+
+    For i = LBound(codePoints) To UBound(codePoints)
+        result = result & ChrW(CLng(codePoints(i)))
+    Next i
+
+    UText = result
+End Function
+
+Private Function HubKeyClientId() As String
+    HubKeyClientId = UText(23458, 25143) & "id"
+End Function
+
+Private Function HubKeyClientFullName() As String
+    HubKeyClientFullName = UText(23458, 25143, 20840, 31216)
+End Function
+
+Private Function HubKeySupplierId() As String
+    HubKeySupplierId = UText(20379, 24212, 21830) & "id"
+End Function
+
+Private Function HubKeySupplierFullName() As String
+    HubKeySupplierFullName = UText(20379, 24212, 21830, 20840, 31216)
+End Function
+
+Private Function HubKeyFactoryId() As String
+    HubKeyFactoryId = UText(24037, 21378) & "id"
+End Function
+
+Private Function HubKeyFactoryFullName() As String
+    HubKeyFactoryFullName = UText(24037, 21378, 20840, 31216)
+End Function
+
+Private Function HubKeyUnit() As String
+    HubKeyUnit = UText(21333, 20301)
+End Function
+
 Sub Remark()
-' Update to V1.1 图片加item号 20240125
-'加入导入HUB基本信息和quatityBreakdown，20240524,
+'Update to V1.1 item 20240125
+'HUBquatityBreakdown，20240524,
 End Sub
 Sub InitializeParameter()
-'初始化公共常量
+' translated comment
   tb_tt(0) = "INSPECTION INFORMATION":                 BK(0) = "INSPECTION INFORMATION"
   tb_tt(1) = "1. Quantity":                            BK(1) = "Quantity"
   tb_tt(2) = "2. Workmanship":                         BK(2) = "Workmanship"
@@ -209,9 +249,9 @@ Sub CNAS()
   Dim yourarray, renming As String
   
    yourarray = Array("cjh", "pys", "ft", "hm", "hzh", "ljl", "lsw", "lzc", "lzw", "wjf", "wyn", "xh", "zjs", "zyr", "zh", "cln", "csj")
-                    '陈隽晖，庞元松，冯涛，黄明，黄兆辉，林剑龙，李翩伟，李正超，李智文，吴吉福，吴岩南，许航，张金水，朱欲然，郑辉，崔丽娜,陈森警
+                    '，，，，，，，，，，，，，，，,
                     
-    renming = InputBox("请输入技术经理的拼音缩写，如： 黄明 则输入 MH 或 hm,不区分大小写 ", , "hm")
+    renming = InputBox(UText(35831, 36755, 20837, 25216, 26415, 32463, 29702, 30340, 25340, 38899, 32553, 20889) & "，" & UText(22914) & "： " & UText(40644, 26126) & " " & UText(21017, 36755, 20837) & " MH " & UText(25110) & " hm," & UText(19981, 21306, 20998, 22823, 23567, 20889) & " ", , "hm")
     renming = LCase(renming)
     wenjian = "d:\hqtscnas\" & renming & ".png"
     If renming = "" Then Exit Sub
@@ -221,7 +261,7 @@ Sub CNAS()
     If KKK = "" Then Exit Sub
   
   
-' 判定文档是否是HQTS的验货报告
+'HQTS
 
    fpage = ThisDocument.PageSetup.DifferentFirstPageHeaderFooter
 
@@ -239,10 +279,10 @@ Sub CNAS()
     'If judge <> "HELMSMAN" Then Exit Sub
     Set myrange = ThisDocument.Sections(1).Footers(wdHeaderFooterFirstPage).Range
     Set bkRange = myrange.Paragraphs(5).Range
-    If InStr(bkRange, 本草稿报告基于时间所限) < 0 Then MsgBox "报告格式有问题不能进行签名": Exit Sub
+    If InStr(bkRange, UText(26412, 33609, 31295, 25253, 21578, 22522, 20110, 26102, 38388, 25152, 38480)) < 0 Then MsgBox UText(25253, 21578, 26684, 24335, 26377, 38382, 39064, 19981, 33021, 36827, 34892, 31614, 21517): Exit Sub
    
     
-' 如果首页设置不是首页不同则自动更改为首页不同
+' translated comment
  
     If ThisDocument.PageSetup.DifferentFirstPageHeaderFooter = 0 Then
        With Selection.PageSetup
@@ -251,7 +291,7 @@ Sub CNAS()
     End If
 
 
- '自动加CNAS书签
+ 'CNAS
 
     If ThisDocument.Bookmarks.Exists("CNAS") = False Then
     Set myrange = ThisDocument.Sections(1).Headers(wdHeaderFooterFirstPage).Range
@@ -259,21 +299,21 @@ Sub CNAS()
     bkRange.Bookmarks.add Name:="CNAS", Range:=bkRange
     End If
   
-   '自动加hqtssuper书签
+   'hqtssuper
     If ThisDocument.Bookmarks.Exists("hqtssuper") = False Then
     Set myrange = ThisDocument.Sections(1).Footers(wdHeaderFooterFirstPage).Range
     Set bkRange = myrange.Paragraphs(1).Range
     bkRange.Bookmarks.add Name:="hqtssuper", Range:=bkRange
     End If
   
-   '自动加Signnamer书签
+   'Signnamer
     If ThisDocument.Bookmarks.Exists("signname") = False Then
     Set myrange = ThisDocument.Sections(1).Footers(wdHeaderFooterFirstPage).Range
     Set bkRange = myrange.Paragraphs(2).Range
     bkRange.Bookmarks.add Name:="signname", Range:=bkRange
     End If
 
-    '自动加xuanchuan书签
+    'xuanchuan
     If ThisDocument.Bookmarks.Exists("xuanchuan") = False Then
     Set myrange = ThisDocument.Sections(1).Footers(wdHeaderFooterFirstPage).Range
     Set bkRange = myrange.Paragraphs(5).Range
@@ -291,7 +331,7 @@ Sub CNAS()
        End If
     ActiveWindow.ActivePane.View.SeekView = wdSeekCurrentPageHeader
     
-    '插入签名
+    ' translated comment
     ThisDocument.Bookmarks("signname").Select
     Selection.Font.Name = "Times New Roman"
     Selection.Font.Size = 12
@@ -327,7 +367,7 @@ Sub CNAS()
         Selection.TypeText Text:="Approved by HQTS Supervisor:"
     End If
   
-    ' 17020宣传语
+    '17020
     If ThisDocument.Bookmarks.Exists("xuanchuan") = True Then
         ThisDocument.Bookmarks("xuanchuan").Select
         Selection.SelectCell
@@ -342,7 +382,7 @@ Sub CNAS()
     Selection.TypeText Text:="This report reflects the facts as recorded by HQTS at the time and place of inspection. It does not relieve the manufacturers from their contractual obligations nor prejudice client's right for compensation for any apparent and/or hidden defects not detected during our random inspection or occuring thereafter."
     End If
 
-   'CNAS标志
+   'CNAS
     If ThisDocument.Bookmarks.Exists("CNAS") = True Then
         ThisDocument.Bookmarks("CNAS").Select
         Selection.MoveLeft Unit:=wdCharacter, count:=1, Extend:=wdExtend
@@ -423,11 +463,11 @@ Sub FillInformation()
      rpn = Mid(rpn, 1, Len(rpn) - 2)
      rpn = Trim(Replace(rpn, "Report No: ", ""))
      If Len(rpn) < 13 Then
-        rpn = InputBox("Please input the report number on HUB such as H2401045257HF-A1 & chr(10) & 请输入HUB上的报告号象H2401045257HF-A1", _
+        rpn = InputBox("Please input the report number on HUB such as H2401045257HF-A1 & chr(10) & " & UText(35831, 36755, 20837) & "HUB" & UText(19978, 30340, 25253, 21578, 21495, 35937) & "H2401045257HF-A1", _
         "Input report Number")
          If Len(rpn) < 13 Then
            MsgBox "You have not input correct report number,the program exit" & CHR(10) & _
-           "你未输入正确的报告号，程序退出！", vbCritical
+           UText(20320, 26410, 36755, 20837, 27491, 30830, 30340, 25253, 21578, 21495) & "，" & UText(31243, 24207, 36864, 20986) & "！", vbCritical
             Exit Sub
          End If
            myrange.Cells(Pcn).Range.Text = "Report No: " & rpn
@@ -463,7 +503,7 @@ Sub FillInformation()
    'json_str = JsonConverter.ConvertToJson(jsonResponse)
    ' Debug.Print json_str
          
-             ' 检查返回数据是否为空，并根据dataIsEmpty的值来处理结果
+             '，dataIsEmpty
           Dim dataIsEmpty As Boolean
          If Not IsEmpty(jsonResponse("data")) Then
              dataIsEmpty = (TypeName(jsonResponse("data")) = "Collection") And (jsonResponse("data").count = 0)
@@ -474,34 +514,34 @@ Sub FillInformation()
               MsgBox "Ｎo data is obtained from the HUB, the program will exit, please check 1. whether the HUB can be accessed via the Internet," & _
               "2. Whether the order is in the correct process stage on the HUB, such as the inspection notice has been issued and the report number has been generated. " & _
               "Whether the report number you input is correct!" & CHR(10) & CHR(10) & _
-              "从HUB未获取到数据，程序将退出，请检查1.通过互联网是否可以访问HUB,2.这个订单在HUB上是否处于正确的流程阶段，比如验货通知单已发出，报告号已生成," & _
-              "3.你输入的报告号是否正确", vbCritical
+              UText(20174) & "HUB" & UText(26410, 33719, 21462, 21040, 25968, 25454) & "，" & UText(31243, 24207, 23558, 36864, 20986) & "，" & UText(35831, 26816, 26597) & "1." & UText(36890, 36807, 20114, 32852, 32593, 26159, 21542, 21487, 20197, 35775, 38382) & "HUB,2." & UText(36825, 20010, 35746, 21333, 22312) & "HUB" & UText(19978, 26159, 21542, 22788, 20110, 27491, 30830, 30340, 27969, 31243, 38454, 27573) & "，" & UText(27604, 22914, 39564, 36135, 36890, 30693, 21333, 24050, 21457, 20986) & "，" & UText(25253, 21578, 21495, 24050, 29983, 25104) & "," & _
+              "3." & UText(20320, 36755, 20837, 30340, 25253, 21578, 21495, 26159, 21542, 27491, 30830), vbCritical
               Exit Sub
           End If
         
-        '-----用于客户特殊首页第一张表格
+        '-----
         Set WD = ThisDocument
         WD.Activate
            ReportID = jsonResponse("data")(1)("bghid")
            StoretoProperty "ReportID", "ReportID" & "_" & ReportID
-           ClientID = jsonResponse("data")(1)("客户id")
+           ClientID = jsonResponse("data")(1)(HubKeyClientId())
            StoretoProperty "ClientID", ClientID
-           ClientName = jsonResponse("data")(1)("客户全称")
+           ClientName = jsonResponse("data")(1)(HubKeyClientFullName())
            StoretoProperty Client, ClientName
-           SupplierID = jsonResponse("data")(1)("供应商id")
+           SupplierID = jsonResponse("data")(1)(HubKeySupplierId())
            StoretoProperty "SupplierID", SupplierID
-           SupplierName = jsonResponse("data")(1)("供应商全称")
+           SupplierName = jsonResponse("data")(1)(HubKeySupplierFullName())
            StoretoProperty Supplier, SupplierName
-           FactoryID = jsonResponse("data")(1)("工厂id")
+           FactoryID = jsonResponse("data")(1)(HubKeyFactoryId())
            StoretoProperty "FactoryID", FactoryID
             FactoryID = Replace(FactoryID, ",", "_")
-           FactoryName = jsonResponse("data")(1)("工厂全称")
+           FactoryName = jsonResponse("data")(1)(HubKeyFactoryFullName())
            StoretoProperty Factory, FactoryName
           
 2        Set tbl = WD.Tables(1)
          With tbl
             Select Case ClientID
-            Case "27153", "52368"   '   'Starlight Textil-Handels GmbH,SL-Hunter,加工厂，加sample size
+            Case "27153", "52368"   ''Starlight Textil-Handels GmbH,SL-Hunter,，sample size
             If .Cell(4, 1).Range.Text Like "*Factory*" = False Then
              .Rows(3).Select
               Selection.InsertRowsBelow 1
@@ -512,7 +552,7 @@ Sub FillInformation()
             .Cell(6, 1).Range.Text = "Item No."
             .Cell(6, 3).Range.Text = "Sample Size"
             .Rows(7).Delete
-          Case "28245", "28249", "28361"     'Tommy Teleshopping,JML Benelux,Valia Trading Corp加工厂
+          Case "28245", "28249", "28361"     'Tommy Teleshopping,JML Benelux,Valia Trading Corp
             If .Cell(4, 1).Range.Text Like "*Factory*" = False Then
              .Rows(3).Select
               Selection.InsertRowsBelow 1
@@ -522,7 +562,7 @@ Sub FillInformation()
              WD.Range(.Cell(9, 2).Range.Start, .Cell(9, 4).Range.End).Cells.Merge
               .Cell(9, 2).Range.Text = ""
               .Rows(4).Delete
-          Case "33439"     'IBA Hartmann GmbH & Co. KG，不需要体现工厂和供应商信息   '
+          Case "33439"     'IBA Hartmann GmbH & Co. KG， '
               Rn = .Rows.count
               For i = Rn To 1 Step -1
                 If .Cell(i, 1).Range.Text Like "*Factory*" = True Then
@@ -546,44 +586,44 @@ Sub FillInformation()
            Set Descel = .Range.Cells(i + 1)
               Kw = Mid(Cel.Range.Text, 1, Len(Cel.Range.Text) - 2)
            If Kw = Client Then
-              Descel.Range.Text = jsonResponse("data")(1)("客户全称")
+              Descel.Range.Text = jsonResponse("data")(1)(HubKeyClientFullName())
               Call DeleteBookMark(Descel)
               Descel.Range.Bookmarks.add Name:="ClientID" & "_" & ClientID, Range:=Descel.Range
               GoTo 20
            ElseIf Kw = Supplier Then
-               Descel.Range.Text = jsonResponse("data")(1)("供应商全称")
+               Descel.Range.Text = jsonResponse("data")(1)(HubKeySupplierFullName())
                 Call DeleteBookMark(Descel)
                Descel.Range.Bookmarks.add Name:="SupplierID" & "_" & SupplierID, Range:=Descel.Range
               GoTo 20
            ElseIf Kw = Factory Then
-              Descel.Range.Text = jsonResponse("data")(1)("工厂全称")
+              Descel.Range.Text = jsonResponse("data")(1)(HubKeyFactoryFullName())
                Call DeleteBookMark(Descel)
               Descel.Range.Bookmarks.add Name:="FactoryID" & "_" & FactoryID, Range:=Descel.Range
               GoTo 20
            ElseIf Kw = Quantity Then
-             Descel.Range.Text = jsonResponse("data")(1)("产品总数量") & " " & jsonResponse("data")(1)("单位")
-              If jsonResponse("data")(1)("单位") = "" Then Descel.Range.Text = jsonResponse("data")(1)("产品总数量") & " " & "Pieces"
+             Descel.Range.Text = jsonResponse("data")(1)(UText(20135, 21697, 24635, 25968, 37327)) & " " & jsonResponse("data")(1)(HubKeyUnit())
+              If jsonResponse("data")(1)(HubKeyUnit()) = "" Then Descel.Range.Text = jsonResponse("data")(1)(UText(20135, 21697, 24635, 25968, 37327)) & " " & "Pieces"
               GoTo 20
            ElseIf Kw = PO Then
-              Descel.Range.Text = Replace(jsonResponse("data")(1)("订单号"), ",", ", ")
+              Descel.Range.Text = Replace(jsonResponse("data")(1)(UText(35746, 21333, 21495)), ",", ", ")
              
               GoTo 20
            ElseIf Kw = Item Then
-              Descel.Range.Text = Replace(jsonResponse("data")(1)("款号"), ",", ", ")
+              Descel.Range.Text = Replace(jsonResponse("data")(1)(UText(27454, 21495)), ",", ", ")
               GoTo 20
            ElseIf Kw = Product_Description Then
-              Descel.Range.Text = jsonResponse("data")(1)("订单品名")
+              Descel.Range.Text = jsonResponse("data")(1)(UText(35746, 21333, 21697, 21517))
               GoTo 20
            ElseIf Kw = Inspection_Type Then
-              Descel.Range.Text = jsonResponse("data")(1)("服务小类")
+              Descel.Range.Text = jsonResponse("data")(1)(UText(26381, 21153, 23567, 31867))
               GoTo 20
           ElseIf Kw = Sequence Then
-              Descel.Range.Text = jsonResponse("data")(1)("检验次数")
-              If jsonResponse("data")(1)("检验次数") = "" Then Descel.Range.Text = "Original Inspection"
+              Descel.Range.Text = jsonResponse("data")(1)(UText(26816, 39564, 27425, 25968))
+              If jsonResponse("data")(1)(UText(26816, 39564, 27425, 25968)) = "" Then Descel.Range.Text = "Original Inspection"
               GoTo 20
            ElseIf Kw = Inspection_Date Then
-               StartDate = jsonResponse("data")(1)("实际安排开始日期")
-               EndDate = jsonResponse("data")(1)("实际安排结束日期")
+               StartDate = jsonResponse("data")(1)(UText(23454, 38469, 23433, 25490, 24320, 22987, 26085, 26399))
+               EndDate = jsonResponse("data")(1)(UText(23454, 38469, 23433, 25490, 32467, 26463, 26085, 26399))
                If StartDate = EndDate Then
                  Descel.Range.Text = StartDate
                Else
@@ -591,24 +631,24 @@ Sub FillInformation()
                End If
                GoTo 20
              ElseIf Kw = Location Then
-              Descel.Range.Text = jsonResponse("data")(1)("服务城市") & ", " & jsonResponse("data")(1)("服务国家地区")
+              Descel.Range.Text = jsonResponse("data")(1)(UText(26381, 21153, 22478, 24066)) & ", " & jsonResponse("data")(1)(UText(26381, 21153, 22269, 23478, 22320, 21306))
               GoTo 20
             ElseIf Kw = Inspection_Basis Then
-                Kw = jsonResponse("data")(1)("通用作业指导书MIS")
+                Kw = jsonResponse("data")(1)(UText(36890, 29992, 20316, 19994, 25351, 23548, 20070) & "MIS")
                 If Kw = "" Then
-                     Kw = jsonResponse("data")(1)("通用作业指导书")
+                     Kw = jsonResponse("data")(1)(UText(36890, 29992, 20316, 19994, 25351, 23548, 20070))
                 End If
-                If jsonResponse("data")(1)("专用作业指导书") <> "" Then
-                  Kw = Kw & ", " & jsonResponse("data")(1)("专用作业指导书")
+                If jsonResponse("data")(1)(UText(19987, 29992, 20316, 19994, 25351, 23548, 20070)) <> "" Then
+                  Kw = Kw & ", " & jsonResponse("data")(1)(UText(19987, 29992, 20316, 19994, 25351, 23548, 20070))
                End If
-                If jsonResponse("data")(1)("客户通用检验资料") <> "" Then
-                  Kw = Kw & ", " & jsonResponse("data")(1)("客户通用检验资料")
+                If jsonResponse("data")(1)(UText(23458, 25143, 36890, 29992, 26816, 39564, 36164, 26009)) <> "" Then
+                  Kw = Kw & ", " & jsonResponse("data")(1)(UText(23458, 25143, 36890, 29992, 26816, 39564, 36164, 26009))
                End If
               Descel.Range.Text = Kw
               GoTo 20
             ElseIf Kw = Sample_Size Then
-             Descel.Range.Text = jsonResponse("data")(1)("总抽样数") & " " & jsonResponse("data")(1)("单位")
-             If jsonResponse("data")(1)("单位") = "" Then Descel.Range.Text = jsonResponse("data")(1)("总抽样数") & " " & "Pieces"
+             Descel.Range.Text = jsonResponse("data")(1)(UText(24635, 25277, 26679, 25968)) & " " & jsonResponse("data")(1)(HubKeyUnit())
+             If jsonResponse("data")(1)(HubKeyUnit()) = "" Then Descel.Range.Text = jsonResponse("data")(1)(UText(24635, 25277, 26679, 25968)) & " " & "Pieces"
               GoTo 20
            End If
 20     Next i
@@ -618,23 +658,23 @@ Sub FillInformation()
          
       End With
     '------------------
-     Cat_Large(1) = jsonResponse("data")(1)("主产品大类")
-     Cat_Large_ID(1) = jsonResponse("data")(1)("主产品大类id")
-     Cat_Large_Code(1) = jsonResponse("data")(1)("主产品大类编码")
-     Cat_Middle(1) = jsonResponse("data")(1)("主产品中类")
-     Cat_Middle_ID(1) = jsonResponse("data")(1)("主产品中类id")
-     Cat_Middle_Code(1) = jsonResponse("data")(1)("主产品中类编码")
-     Cat_Small(1) = jsonResponse("data")(1)("主产品小类")
-     Cat_Small_ID(1) = jsonResponse("data")(1)("主产品小类id")
-     Cat_Small_Code(1) = jsonResponse("data")(1)("主产品小类编码")
-     Product(1) = jsonResponse("data")(1)("产品名称")
-     Product_ID(1) = jsonResponse("data")(1)("产品名称id")
-     Product_Code(1) = jsonResponse("data")(1)("产品名称编码")
+     Cat_Large(1) = jsonResponse("data")(1)(UText(20027, 20135, 21697, 22823, 31867))
+     Cat_Large_ID(1) = jsonResponse("data")(1)(UText(20027, 20135, 21697, 22823, 31867) & "id")
+     Cat_Large_Code(1) = jsonResponse("data")(1)(UText(20027, 20135, 21697, 22823, 31867, 32534, 30721))
+     Cat_Middle(1) = jsonResponse("data")(1)(UText(20027, 20135, 21697, 20013, 31867))
+     Cat_Middle_ID(1) = jsonResponse("data")(1)(UText(20027, 20135, 21697, 20013, 31867) & "id")
+     Cat_Middle_Code(1) = jsonResponse("data")(1)(UText(20027, 20135, 21697, 20013, 31867, 32534, 30721))
+     Cat_Small(1) = jsonResponse("data")(1)(UText(20027, 20135, 21697, 23567, 31867))
+     Cat_Small_ID(1) = jsonResponse("data")(1)(UText(20027, 20135, 21697, 23567, 31867) & "id")
+     Cat_Small_Code(1) = jsonResponse("data")(1)(UText(20027, 20135, 21697, 23567, 31867, 32534, 30721))
+     Product(1) = jsonResponse("data")(1)(UText(20135, 21697, 21517, 31216))
+     Product_ID(1) = jsonResponse("data")(1)(UText(20135, 21697, 21517, 31216) & "id")
+     Product_Code(1) = jsonResponse("data")(1)(UText(20135, 21697, 21517, 31216, 32534, 30721))
      
-     Srv_Large = jsonResponse("data")(1)("服务大类")
-     Srv_Middle = jsonResponse("data")(1)("服务中类")
-     Srv_Small = jsonResponse("data")(1)("服务小类")
-     Factory_Name = jsonResponse("data")(1)("工厂全称")
+     Srv_Large = jsonResponse("data")(1)(UText(26381, 21153, 22823, 31867))
+     Srv_Middle = jsonResponse("data")(1)(UText(26381, 21153, 20013, 31867))
+     Srv_Small = jsonResponse("data")(1)(UText(26381, 21153, 23567, 31867))
+     Factory_Name = jsonResponse("data")(1)(HubKeyFactoryFullName())
     '----------------------
    
     Dim Occ As contentControl
@@ -645,13 +685,13 @@ Sub FillInformation()
     tbn = getTableNumber(2)
 
     With ThisDocument.Tables(tbn)
-                             '获得的选项数
+                             ' translated comment
     Dim SamplingStd_Name(), SamplingStd_Value() As String
     CCN = 9
     ReDim SamplingStd_Name(1 To CCN), SamplingStd_Value(1 To CCN)
    
   
-  '--------替换数值
+  '--------
     SamplingStd_Name(1) = "ISO2859.1":        SamplingStd_Value(1) = "ISO2859.1"
     SamplingStd_Name(2) = "N/A":              SamplingStd_Value(2) = "N/A"
     SamplingStd_Name(3) = "Other":            SamplingStd_Value(3) = "Other"
@@ -663,7 +703,7 @@ Sub FillInformation()
     SamplingStd_Name(9) = "STD-S-BLL-020":    SamplingStd_Value(9) = "STD-S-BLL-020"
     
     
-    Option_Selected = jsonResponse("data")(1)("抽样标准")
+    Option_Selected = jsonResponse("data")(1)(UText(25277, 26679, 26631, 20934))
     '-----------------------
         Set Cel = .Cell(3, 2)
         Cel.Range.Delete
@@ -695,7 +735,7 @@ Sub FillInformation()
     
    
    
-    '--------替换数值
+    '--------
     SamplingPlan_Name(1) = "Single, Normal":                                 SamplingPlan_Value(1) = "Single sampling plans for normal inspection"
     SamplingPlan_Name(2) = "Fixed Sample Size":                              SamplingPlan_Value(2) = "Fixed Sample"
     SamplingPlan_Name(3) = "N/A":                                            SamplingPlan_Value(3) = "N/A"
@@ -703,7 +743,7 @@ Sub FillInformation()
    ' SamplingPlan_Name(5) = "Single, Tightened":                              SamplingPlan_Value(5) = "Single sampling plans for tightened inspection"
     'SamplingPlan_Name(6) = "Single, Reduced":                                SamplingPlan_Value(6) = "Single sampling plans for reduced inspection"
         
-        Option_Selected = jsonResponse("data")(1)("抽样方案")
+        Option_Selected = jsonResponse("data")(1)(UText(25277, 26679, 26041, 26696))
         Set Cel = .Cell(4, 2)
         Cel.Range.Delete
         Set Occ = Cel.Range.ContentControls.add(wdContentControlComboBox)
@@ -727,14 +767,14 @@ Sub FillInformation()
    Dim InspectionLevel_Name(), InspectionLevel_Value() As String
     CCN = 12
     ReDim InspectionLevel_Name(1 To CCN), InspectionLevel_Value(1 To CCN)
-    If jsonResponse("data")(1)("抽样方案") = "Fixed Sample" Then
+    If jsonResponse("data")(1)(UText(25277, 26679, 26041, 26696)) = "Fixed Sample" Then
       Option_Selected = "Fixed Sample Size"
      End If
-    If jsonResponse("data")(1)("抽样方式") = "分开抽样" Then
+    If jsonResponse("data")(1)(UText(25277, 26679, 26041, 24335)) = UText(20998, 24320, 25277, 26679) Then
      Option_Selected = Option_Selected & " " & "per Item"
     End If
     
-    '--------替换数值
+    '--------
     InspectionLevel_Name(1) = "G-II":               InspectionLevel_Value(1) = "G-II"
     InspectionLevel_Name(2) = "G-II per Item":      InspectionLevel_Value(2) = "G-II per Item"
     InspectionLevel_Name(3) = "G-I":                InspectionLevel_Value(3) = "G-I"
@@ -748,7 +788,7 @@ Sub FillInformation()
     InspectionLevel_Name(11) = "S1":                InspectionLevel_Value(11) = "S1"
     InspectionLevel_Name(12) = "Fixed Sample Size per item":  InspectionLevel_Value(12) = "Fixed Sample Size per item"
         
-        Option_Selected = jsonResponse("data")(1)("检验水平")
+        Option_Selected = jsonResponse("data")(1)(UText(26816, 39564, 27700, 24179))
         Set Cel = .Cell(5, 2)
         Cel.Range.Delete
         Set Occ = Cel.Range.ContentControls.add(wdContentControlComboBox)
@@ -773,7 +813,7 @@ Sub FillInformation()
     CCN = 12
     ReDim CriticalAql_Name(1 To CCN), CriticalAql_Value(1 To CCN)
     
-       '--------替换数值
+       '--------
     CriticalAql_Name(1) = "0":                  CriticalAql_Value(1) = "0"
     CriticalAql_Name(2) = "0.01":               CriticalAql_Value(2) = "0.01"
     CriticalAql_Name(3) = "0.015":              CriticalAql_Value(3) = "0.015"
@@ -814,7 +854,7 @@ Sub FillInformation()
     CCN = 13
     ReDim MajorAql_Name(1 To CCN), MajorAql_Value(1 To CCN)
     
-       '--------替换数值
+       '--------
     MajorAql_Name(1) = "2.5":                MajorAql_Value(1) = "2.5"
     MajorAql_Name(2) = "1.5":                MajorAql_Value(2) = "1.5"
     MajorAql_Name(3) = "1":                  MajorAql_Value(3) = "1"
@@ -853,7 +893,7 @@ Sub FillInformation()
     CCN = 13
     ReDim MinorAql_Name(1 To CCN), MinorAql_Value(1 To CCN)
     
-       '--------替换数值
+       '--------
     MinorAql_Name(1) = "4.0":                MinorAql_Value(1) = "4.0"
     MinorAql_Name(2) = "2.5":                MinorAql_Value(2) = "2.5"
     MinorAql_Name(3) = "1.5":                MinorAql_Value(3) = "1.5"
@@ -899,15 +939,15 @@ Sub FillInformation()
   
       Itms = jsonResponse("data").count
       If Itms = 0 Then
-        msg = "No Quantity Breakdown data is available on Hub, Please input yourself!" & CHR(10) & "HUB没有Quanlity明细数据，请自行录入" & CHR(10)
+        msg = "No Quantity Breakdown data is available on Hub, Please input yourself!" & CHR(10) & "HUB" & UText(27809, 26377) & "Quanlity" & UText(26126, 32454, 25968, 25454) & "，" & UText(35831, 33258, 34892, 24405, 20837) & CHR(10)
         GoTo 50
       End If
       Dim PO_No(), Item_No(), Qty_No() As String
       ReDim PO_No(1 To Itms), Item_No(1 To Itms), Qty_No(1 To Itms)
     For i = 1 To Itms
-        PO_No(i) = jsonResponse("data")(i)("订单号")
-        Item_No(i) = jsonResponse("data")(i)("款号")
-        Qty_No(i) = jsonResponse("data")(i)("订单数量")
+        PO_No(i) = jsonResponse("data")(i)(UText(35746, 21333, 21495))
+        Item_No(i) = jsonResponse("data")(i)(UText(27454, 21495))
+        Qty_No(i) = jsonResponse("data")(i)(UText(35746, 21333, 25968, 37327))
     Next i
    
     tbn = getTableNumber(1)
@@ -927,7 +967,7 @@ Sub FillInformation()
        
     
     End With
-      '========加照片
+      '========
    
     
          Dim AccountManagerID, AccountManagerNameC, AccountManagerNameE, AccountManagerEmail, AccountManagerMobile, AccountManagerPic, AccountManagerPicID, DeptID As String ', AccountManagerSkype
@@ -978,8 +1018,8 @@ Sub FillInformation()
                             .WrapFormat.Type = wdWrapInline
                             .AutoShapeType = msoShapeOval
                             .Line.Visible = msoFalse
-                            .LockAspectRatio = msoTrue ' 锁定纵横比
-                            .Height = 92.15  ' 设置高度
+                            .LockAspectRatio = msoTrue ' translated comment
+                            .Height = 92.15  ' translated comment
                         End With
                     
                      Else
@@ -993,8 +1033,8 @@ Sub FillInformation()
                             .WrapFormat.Type = wdWrapInline
                             .AutoShapeType = msoShapeOval
                             .Line.Visible = msoFalse
-                            .LockAspectRatio = msoTrue ' 锁定纵横比
-                            .Height = 92.15  ' 设置高度
+                            .LockAspectRatio = msoTrue ' translated comment
+                            .Height = 92.15  ' translated comment
                         End With
                       
                     End If
@@ -1029,8 +1069,8 @@ Sub FillInformation()
                             .WrapFormat.Type = wdWrapInline
                             .AutoShapeType = msoShapeOval
                             .Line.Visible = msoFalse
-                            .LockAspectRatio = msoTrue ' 锁定纵横比
-                            .Height = 92.15  ' 设置高度
+                            .LockAspectRatio = msoTrue ' translated comment
+                            .Height = 92.15  ' translated comment
                         End With
                         
                      Else
@@ -1046,8 +1086,8 @@ Sub FillInformation()
                             .WrapFormat.Type = wdWrapInline
                             .AutoShapeType = msoShapeOval
                             .Line.Visible = msoFalse
-                            .LockAspectRatio = msoTrue ' 锁定纵横比
-                            .Height = 92.15  ' 设置高度
+                            .LockAspectRatio = msoTrue ' translated comment
+                            .Height = 92.15  ' translated comment
                         End With
                          ' End If
                   
@@ -1061,7 +1101,7 @@ Sub FillInformation()
             
                  End With
              Else
-                msg = msg + "在报告文件尾部未找到用于填充客服经理和客服部总经理的4列5行的表格" & CHR(10) & _
+                msg = msg + UText(22312, 25253, 21578, 25991, 20214, 23614, 37096, 26410, 25214, 21040, 29992, 20110, 22635, 20805, 23458, 26381, 32463, 29702, 21644, 23458, 26381, 37096, 24635, 32463, 29702, 30340) & "4" & UText(21015) & "5" & UText(34892, 30340, 34920, 26684) & CHR(10) & _
                  "The table with 4 columns and 5 rows intended for filling in the customer service manager and  customer service department manager was not found at the end of the report file"
          
              End If
@@ -1077,7 +1117,7 @@ Sub FillInformation()
 
       ' ActiveWindow.ActivePane.View.Type = wdPrintView
       ThisDocument.Range(Start:=0, End:=0).Select
-       MsgBox msg & "Import of Inspection Info Completed" & CHR(10) & "检验信息导入完成！"
+       MsgBox msg & "Import of Inspection Info Completed" & CHR(10) & UText(26816, 39564, 20449, 24687, 23548, 20837, 23436, 25104) & "！"
      
      
 End Sub
@@ -1097,10 +1137,10 @@ Sub HandleContentControlSelection()
        
         selectedValue = Occ.Range.Text
        
-        MsgBox "选中的值是：" & selectedValue
+        MsgBox UText(36873, 20013, 30340, 20540, 26159) & "：" & selectedValue
     End If
 End Sub
-Function GetSelectedContentControl() As contentControl   '获取内容控件
+Function GetSelectedContentControl() As contentControl   ' translated comment
     Dim Occ As contentControl
     On Error Resume Next
     Set Occ = Selection.ContentControls(1)
@@ -1154,11 +1194,11 @@ End Function
 
 Sub conclusion()
 '
-' by wyn conclusion 宏
+'by wyn conclusion
 '
 '
       
-      '以下判定最终结论
+      ' translated comment
       
        Dim alr, msg, prompt As String
        Dim i, j, msgn As Integer
@@ -1183,42 +1223,42 @@ Sub conclusion()
    DCF = "Conform"
    DNC = "Not Conform"
    DPD = "Pending"
-   NA = "NA"       '设定NA是为什么将来在有NA项时使用，目前暂未用上
+   NA = "NA"       'NANA，
    ch = "*Choose*"
    che = "*Choose*"
    msg = ""
    alt = ""
    tb = ThisDocument.Tables.count - 1
-   '判定各分项表格结论是否已选
+   ' translated comment
     
     
       
        prompt = "Ensure all inspection details has been input and  relusts of sub-items been  chosen correctly. If all are OK, click YES (left key)," _
       & "click NO (right key) will exit the program so you can revise the inspection details." & CHR(13) & _
-      "请首先确认各分项的报告内容是已填好并选择了结论，如果已填好请按确定，否则按取消退出结论计算去填写分项内容。"
+      UText(35831, 39318, 20808, 30830, 35748, 21508, 20998, 39033, 30340, 25253, 21578, 20869, 23481, 26159, 24050, 22635, 22909, 24182, 36873, 25321, 20102, 32467, 35770) & "，" & UText(22914, 26524, 24050, 22635, 22909, 35831, 25353, 30830, 23450) & "，" & UText(21542, 21017, 25353, 21462, 28040, 36864, 20986, 32467, 35770, 35745, 31639, 21435, 22635, 20889, 20998, 39033, 20869, 23481) & "。"
     
       
       
-      Key = MsgBox(prompt, vbOKCancel, "提示")
+      Key = MsgBox(prompt, vbOKCancel, UText(25552, 31034))
       If Key = vbCancel Then Exit Sub
     
   
    
-    '全部进行一次检查
+    ' translated comment
     
      Call Dealingsap
-     '记录有没有SAP项
+     'SAP
      
      Selection.GoTo What:=wdGoToBookmark, Name:="sapcontent"
 
       With ThisDocument.Bookmarks("sapcontent").Range
-      tNo = .Tables.count '计算表格总数
+      tNo = .Tables.count ' translated comment
        i = 0
        For T = 1 To tNo
          With ThisDocument.Bookmarks("sapcontent").Range.Tables(T)
          cc = .Columns.count
     
-       If cc > 2 Then '不是图片格子
+       If cc > 2 Then ' translated comment
         i = i + 1
          SAP(i) = .Rows.count
         End If
@@ -1231,7 +1271,7 @@ Sub conclusion()
 
 
   
-   '检查Quantity 表格
+   'Quantity
    tb = ThisDocument.Tables.count - 1
    For X = 1 To tb
      With ThisDocument.Range.Tables(X)
@@ -1245,11 +1285,11 @@ Sub conclusion()
 
      qtyCol = .Columns.count
    
-        '判定有没有合并单元格
+        ' translated comment
      CRow = qtyRow - 4
      CeC = ThisDocument.Tables(tbn).Range.Cells.count
      If (CeC - 23) / qtyCol <> CRow Then
-        MsgBox "There is merge cells in Quantity table, the program can not deal with it, please split it to default frame and run program again." & CHR(13) & "Quantity表格有合并单元格，程序不能进行累加计算！！！,请拆分单元格恢复到初始状态。"
+        MsgBox "There is merge cells in Quantity table, the program can not deal with it, please split it to default frame and run program again." & CHR(13) & "Quantity" & UText(34920, 26684, 26377, 21512, 24182, 21333, 20803, 26684) & "，" & UText(31243, 24207, 19981, 33021, 36827, 34892, 32047, 21152, 35745, 31639) & "！！！," & UText(35831, 25286, 20998, 21333, 20803, 26684, 24674, 22797, 21040, 21021, 22987, 29366, 24577) & "。"
         For Q = 3 To 9
         scol(Q) = Val(.Cell(qtyRow, (Q - 1)).Range.Text)
         Next Q
@@ -1270,17 +1310,17 @@ Sub conclusion()
         
           For Q = 3 To 9
           If Left(txt(p, Q), 1) = CHR(13) Then msg = msg + "Table of" & TBName(1) & "， row " & p & " without data, please check!" & CHR(13) & _
-          TBName(1) & "表格第" & p & "行有表格没有输入数据，请检查输入!" & CHR(13)
+          TBName(1) & UText(34920, 26684, 31532) & p & UText(34892, 26377, 34920, 26684, 27809, 26377, 36755, 20837, 25968, 25454) & "，" & UText(35831, 26816, 26597, 36755, 20837) & "!" & CHR(13)
           Next Q
         End If
           
         If Left(txt(p, 1), 1) = CHR(13) And Left(txt(p, 2), 1) = CHR(13) Then
           For Q = 3 To 9
           If Left(txt(p, Q), 1) <> CHR(13) Then msg = msg + "Table of" & TBName(1) & "row" & p & " without P.O. No. or Item No.please check!" & CHR(13) & _
-          TBName(1) & "表格第" & p & "行有数据，但却没有输入P.O. No. 或Item No.请检查输入!" & CHR(13)
+          TBName(1) & UText(34920, 26684, 31532) & p & UText(34892, 26377, 25968, 25454) & "，" & UText(20294, 21364, 27809, 26377, 36755, 20837) & "P.O. No. " & UText(25110) & "Item No." & UText(35831, 26816, 26597, 36755, 20837) & "!" & CHR(13)
           Next Q
         End If
-        If msg <> "" Then MsgBox msg & "Please revice it and run program again！！！" & CHR(13) & "请修改后再运行程序！！！": Exit Sub
+        If msg <> "" Then MsgBox msg & "Please revice it and run program again！！！" & CHR(13) & UText(35831, 20462, 25913, 21518, 20877, 36816, 34892, 31243, 24207) & "！！！": Exit Sub
       
         For Q = 3 To 9
         
@@ -1297,13 +1337,13 @@ Sub conclusion()
      For R = 3 To 9
       If Val(.Cell(qtyRow, R - 1).Range.Text) <> scol(R) Then msg = msg + "Table:" & TBName(1) & " , Sum of column " & R & " was " & scol(R) & _
       " , however, the recent input data was " & Val(.Cell(qtyRow, R - 1).Range.Text) & CHR(13) & CHR(13) & _
-      TBName(1) & "表格total数据第" & R & "列，累计数据是：" & scol(R) & "但目前填写的数据是：" & Val(.Cell(qtyRow, R - 1).Range.Text) & "二者不相等" & CHR(13)
+      TBName(1) & UText(34920, 26684) & "total" & UText(25968, 25454, 31532) & R & UText(21015) & "，" & UText(32047, 35745, 25968, 25454, 26159) & "：" & scol(R) & UText(20294, 30446, 21069, 22635, 20889, 30340, 25968, 25454, 26159) & "：" & Val(.Cell(qtyRow, R - 1).Range.Text) & UText(20108, 32773, 19981, 30456, 31561) & CHR(13)
      Next R
-     If msg <> "" Then MsgBox msg & "Please check and revise it" & CHR(13) & "请检查修改!", vbCritical: Exit Sub
+     If msg <> "" Then MsgBox msg & "Please check and revise it" & CHR(13) & UText(35831, 26816, 26597, 20462, 25913) & "!", vbCritical: Exit Sub
      
      
     
-12   '检查选择的单位
+12   ' translated comment
 
    .Cell(3, 3).Range.Text = .Cell(3, 4).Range.Text
    .Cell(3, 6).Range.Text = .Cell(3, 4).Range.Text
@@ -1312,63 +1352,63 @@ Sub conclusion()
    .Cell(3, 9).Range.Text = .Cell(3, 5).Range.Text
      
    
-     '检查产品单位是否一致
+     ' translated comment
      Ufw = ThisDocument.Tables(1).Cell(6, 4).Range.words(2)
      Ufw = Mid(Ufw, 1, Len(Ufw) - 1)
      Uaw = .Cell(3, 3).Range.words(2)
      If Uaw <> Ufw Then MsgBox "Unit of P.O. Quantity in table of first page was " & Ufw & ", however Unit in 1. Quantity table was" & Uaw _
      & ", they are not the same,please revise them and than run program again." & CHR(13) & _
-     "报告首页表格P.O. Quantity的产品单位是" & Ufw & ", 而1. Quantity表格的产品单位是" & Uaw _
-     & "两者不一样，请修改后再次运行本程序！！！" & CHR(13) & _
-     "注意1. Quantity表格的产品单位的修改是点表格第4列的Shipment Qty下方进行选择，运行程序后表格其他处的单位将自行同步修改，而报告首页表格P.O. Quantity处的单位不会同步，需要手工去修改!": Exit Sub
+     UText(25253, 21578, 39318, 39029, 34920, 26684) & "P.O. Quantity" & UText(30340, 20135, 21697, 21333, 20301, 26159) & Ufw & ", " & UText(32780) & "1. Quantity" & UText(34920, 26684, 30340, 20135, 21697, 21333, 20301, 26159) & Uaw _
+     & UText(20004, 32773, 19981, 19968, 26679) & "，" & UText(35831, 20462, 25913, 21518, 20877, 27425, 36816, 34892, 26412, 31243, 24207) & "！！！" & CHR(13) & _
+     UText(27880, 24847) & "1. Quantity" & UText(34920, 26684, 30340, 20135, 21697, 21333, 20301, 30340, 20462, 25913, 26159, 28857, 34920, 26684, 31532) & "4" & UText(21015, 30340) & "Shipment Qty" & UText(19979, 26041, 36827, 34892, 36873, 25321) & "，" & UText(36816, 34892, 31243, 24207, 21518, 34920, 26684, 20854, 20182, 22788, 30340, 21333, 20301, 23558, 33258, 34892, 21516, 27493, 20462, 25913) & "，" & UText(32780, 25253, 21578, 39318, 39029, 34920, 26684) & "P.O. Quantity" & UText(22788, 30340, 21333, 20301, 19981, 20250, 21516, 27493) & "，" & UText(38656, 35201, 25163, 24037, 21435, 20462, 25913) & "!": Exit Sub
       
      If ThisDocument.Tables(1).Cell(6, 4).Range.words(2) <> ThisDocument.Tables(1).Cell(9, 4).Range.words(2) Then MsgBox "In information table of first page, Unit of P.O. Quantity was " & _
      ThisDocument.Tables(1).Cell(6, 4).Range.words(2) & ", however Unit of sample size of product was" & ThisDocument.Tables(1).Cell(9, 4).Range.words(2) _
      & ", they are not the same,please revise them and than run program again." & CHR(13) & _
-     "报告首页表格P.O. Quantity的产品单位是" & ThisDocument.Tables(1).Cell(6, 4).Range.words(2) & ", sample size中的产品单位是" & ThisDocument.Tables(1).Cell(9, 4).Range.words(2) _
-     & "两者不一样，请修改后再次运行本程序！！！" & CHR(13): Exit Sub
+     UText(25253, 21578, 39318, 39029, 34920, 26684) & "P.O. Quantity" & UText(30340, 20135, 21697, 21333, 20301, 26159) & ThisDocument.Tables(1).Cell(6, 4).Range.words(2) & ", sample size" & UText(20013, 30340, 20135, 21697, 21333, 20301, 26159) & ThisDocument.Tables(1).Cell(9, 4).Range.words(2) _
+     & UText(20004, 32773, 19981, 19968, 26679) & "，" & UText(35831, 20462, 25913, 21518, 20877, 27425, 36816, 34892, 26412, 31243, 24207) & "！！！" & CHR(13): Exit Sub
        
       
-      '检查PO数量是否一致
+      'PO
     
      Nfw = Val(ThisDocument.Tables(1).Cell(6, 4).Range.words(1))
 
      Naw = Val(.Cell(qtyRow, 2).Range.Text)
      If Nfw <> Naw Then MsgBox "P.O. Quantity in table of first page was " & Nfw & " However P.O. Quantity in 1. Quantity table was " & Naw & _
-     "they are not the same,please revise them and than run program again." & CHR(13) & "报告首页表格P.O. Quantity的产品数量是" & Nfw & ", 而1. Quantity表格的PO Qty数量是" & Naw & _
-     "两者不一样，请修改后再次运行本程序！！！": Exit Sub
+     "they are not the same,please revise them and than run program again." & CHR(13) & UText(25253, 21578, 39318, 39029, 34920, 26684) & "P.O. Quantity" & UText(30340, 20135, 21697, 25968, 37327, 26159) & Nfw & ", " & UText(32780) & "1. Quantity" & UText(34920, 26684, 30340) & "PO Qty" & UText(25968, 37327, 26159) & Naw & _
+     UText(20004, 32773, 19981, 19968, 26679) & "，" & UText(35831, 20462, 25913, 21518, 20877, 27425, 36816, 34892, 26412, 31243, 24207) & "！！！": Exit Sub
      
      
      If Val(.Cell(qtyRow, 5).Range.Text) > Val(.Cell(qtyRow, 3).Range.Text) Then MsgBox " Quantity table: the Packed Qty was larger than Shipment Qty，Please revise them and run program again." & CHR(13) & _
-     " Quantity表格,Packed Qty产品数大于Shipment Qty产品数，请修改后再运行程序！！！": Exit Sub
+     " Quantity" & UText(34920, 26684) & ",Packed Qty" & UText(20135, 21697, 25968, 22823, 20110) & "Shipment Qty" & UText(20135, 21697, 25968) & "，" & UText(35831, 20462, 25913, 21518, 20877, 36816, 34892, 31243, 24207) & "！！！": Exit Sub
      
      If Val(.Cell(qtyRow, 6).Range.Text) > Val(.Cell(qtyRow, 4).Range.Text) Then MsgBox " Quantity table: the Packed Qty was larger than Shipment Qty，Please revise them and run program again." & CHR(13) & _
-     " Quantity表格,Packed Qty包装数大于Shipment Qty包装数，请修改后再运行程序！！！": Exit Sub
+     " Quantity" & UText(34920, 26684) & ",Packed Qty" & UText(21253, 35013, 25968, 22823, 20110) & "Shipment Qty" & UText(21253, 35013, 25968) & "，" & UText(35831, 20462, 25913, 21518, 20877, 36816, 34892, 31243, 24207) & "！！！": Exit Sub
      
-     '判定抽箱数是否太少
+     ' translated comment
      If LCase(ThisDocument.Tables(1).Cell(9, 2).Range.Text) Like "*original inspection*" = True Or LCase(ThisDocument.Tables(1).Cell(9, 2).Range.Text) Like "*first inspection*" = True Then
          If Val(.Cell(qtyRow, 8).Range.Text) < Int(Sqr(Val(.Cell(qtyRow, 4).Range.Text))) Then MsgBox "table:" & TBName(1) & ",the selected carton number is less than sqrt of shipment carton number" & _
-         Int(Sqr(scol(5))) & "please check and if you revise the data, run this program again！！！." & CHR(13) & TBName(1) & "表格" & "产品数量为" & scol(5) & "开方数取整后为" & Int(Sqr(scol(5))) & "现在抽箱数为" & scol(9) & "是否太少，请确认是否修改，若有修改请改后再运行程序", vbCritical, "警告"
+         Int(Sqr(scol(5))) & "please check and if you revise the data, run this program again！！！." & CHR(13) & TBName(1) & UText(34920, 26684, 20135, 21697, 25968, 37327, 20026) & scol(5) & UText(24320, 26041, 25968, 21462, 25972, 21518, 20026) & Int(Sqr(scol(5))) & UText(29616, 22312, 25277, 31665, 25968, 20026) & scol(9) & UText(26159, 21542, 22826, 23569) & "，" & UText(35831, 30830, 35748, 26159, 21542, 20462, 25913) & "，" & UText(33509, 26377, 20462, 25913, 35831, 25913, 21518, 20877, 36816, 34892, 31243, 24207), vbCritical, UText(35686, 21578)
      End If
      If ThisDocument.Tables(1).Cell(9, 2).Range.Text Like "*Re-inspection*" = True Or LCase(ThisDocument.Tables(1).Cell(9, 2).Range.Text) Like "*re-inspection*" = True Then
       If Val(.Cell(qtyRow, 8).Range.Text) < Int(Sqr(Val(.Cell(qtyRow, 4).Range.Text)) * 1.5) Then MsgBox "table:" & TBName(1) & "the selected carton number:" & scol(9) & " is less than sqrt of shipment carton number times 1.5= " & _
-         Int(Sqr(scol(5)) * 1.5) & ",please check, and if you revise the data, run this program again！！！." & CHR(13) & TBName(1) & "table:" & "产品数量为" & scol(5) & "开方数乘以1.5倍取整后为" & Int(Sqr(scol(5)) * 1.5) & "现在抽箱数为" & scol(9) & "是否太少，请确认是否修改，若有修改请改后再运行程序", vbCritical, "警告"
+         Int(Sqr(scol(5)) * 1.5) & ",please check, and if you revise the data, run this program again！！！." & CHR(13) & TBName(1) & "table:" & UText(20135, 21697, 25968, 37327, 20026) & scol(5) & UText(24320, 26041, 25968, 20056, 20197) & "1.5" & UText(20493, 21462, 25972, 21518, 20026) & Int(Sqr(scol(5)) * 1.5) & UText(29616, 22312, 25277, 31665, 25968, 20026) & scol(9) & UText(26159, 21542, 22826, 23569) & "，" & UText(35831, 30830, 35748, 26159, 21542, 20462, 25913) & "，" & UText(33509, 26377, 20462, 25913, 35831, 25913, 21518, 20877, 36816, 34892, 31243, 24207), vbCritical, UText(35686, 21578)
      End If
      
-     '判定数量不符时，是否有SAP
-     If scol(4) <> scol(3) And SAP(1) = 1 Then msg = msg + TBName(1) & ": Qrder Quantity not eqaual to Shipment Quantity and without SAP，please check." & CHR(13) & TBName(1) & "表格，Qrder Quantity和Shipment Quantity不相等，却没有写SAP，请检查！" & CHR(13)
-     If scol(6) < scol(4) * 0.8 And SAP(1) = 1 Then msg = msg + TBName(1) & ": Packed Quantity was smaller than 80% of Shipment Quantity and without SAP，Please check" & CHR(13) & TBName(1) & "表格，Packed Quantity小于Shipment Quantity的80%，却没有写SAP，请检查！" & CHR(13)
+     '，SAP
+     If scol(4) <> scol(3) And SAP(1) = 1 Then msg = msg + TBName(1) & ": Qrder Quantity not eqaual to Shipment Quantity and without SAP，please check." & CHR(13) & TBName(1) & UText(34920, 26684) & "，Qrder Quantity" & UText(21644) & "Shipment Quantity" & UText(19981, 30456, 31561) & "，" & UText(21364, 27809, 26377, 20889) & "SAP，" & UText(35831, 26816, 26597) & "！" & CHR(13)
+     If scol(6) < scol(4) * 0.8 And SAP(1) = 1 Then msg = msg + TBName(1) & ": Packed Quantity was smaller than 80% of Shipment Quantity and without SAP，Please check" & CHR(13) & TBName(1) & UText(34920, 26684) & "，Packed Quantity" & UText(23567, 20110) & "Shipment Quantity" & UText(30340) & "80%，" & UText(21364, 27809, 26377, 20889) & "SAP，" & UText(35831, 26816, 26597) & "！" & CHR(13)
      If Mid(.Cell(1, 2).Range.Text, 1, Len(.Cell(1, 2).Range.Text) - 1) = "Choose" Or Mid(.Cell(1, 2).Range.Text, 1, 4) = "Choose" Then msg = msg + TBName(1) & "You have not choose the result" & CHR(13) & _
-     TBName(1) & "表格没有选择结论!" & CHR(13): GoTo 13
+     TBName(1) & UText(34920, 26684, 27809, 26377, 36873, 25321, 32467, 35770) & "!" & CHR(13): GoTo 13
      
      If SAP(1) > 1 And Mid(.Cell(1, 2).Range.Text, 1, Len(.Cell(1, 2).Range.Text) - 1) = "Conform" Then msg = msg + TBName(1) & ": There is SAP while the reslut was Conform,." & CHR(13) & _
-     TBName(1) & "表格结论为 Conform,但却有SAP" & CHR(13)
+     TBName(1) & UText(34920, 26684, 32467, 35770, 20026) & " Conform," & UText(20294, 21364, 26377) & "SAP" & CHR(13)
      If SAP(1) = 1 And Mid(.Cell(1, 2).Range.Text, 1, Len(.Cell(1, 2).Range.Text) - 1) <> "Conform" Then msg = msg + TBName(1) & ": There is not SAP while the resulit was not Conform." & CHR(13) & _
-     TBName(1) & "表格结论不是Conform,但没有SAP" & CHR(13)
-13   If msg <> "" Then MsgBox msg & "Please revise them" & CHR(13) & "请检查修改！！！", vbCritical: Exit Sub
+     TBName(1) & UText(34920, 26684, 32467, 35770, 19981, 26159) & "Conform," & UText(20294, 27809, 26377) & "SAP" & CHR(13)
+13   If msg <> "" Then MsgBox msg & "Please revise them" & CHR(13) & UText(35831, 26816, 26597, 20462, 25913) & "！！！", vbCritical: Exit Sub
  End With
  
-     '查sample size和AQL
+     'sample sizeAQL
  
        Dim Cn, Typ, Styp, lvl As Integer
        Dim itype, Aqlt, Smst, tmp As String
@@ -1379,7 +1419,7 @@ Sub conclusion()
        Dim CD(20), LG(20, 10) As Integer
        Dim AC(20, 10), MV(20, 10) As Integer
 
-       'Lots()批量数，起始值，到下一批量数-1 是其范围
+       'Lots()，，-1
        Lots(1) = 2
        Lots(2) = 9
        Lots(3) = 16
@@ -1397,7 +1437,7 @@ Sub conclusion()
        Lots(15) = 500001
     
        
-       'CD()样本代码，对应A,B,C,....R"
+       'CD()，A,B,C,....R"
         CD(0) = 0
         CD(1) = 2
         CD(2) = 3
@@ -1416,7 +1456,7 @@ Sub conclusion()
         CD(15) = 1250
         CD(16) = 2000
         
-       'AQL() AQL 值,只取常用的 1.0到 6.5
+       'AQL() AQL " & UText(20540) & "," & UText(21482, 21462, 24120, 29992, 30340) & " 1.0" & UText(21040) & " 6.5
         AQ(0) = 0
         AQ(1) = 1#
         AQ(2) = 1.5
@@ -1426,7 +1466,7 @@ Sub conclusion()
         
         
         
-        ' LG() 批量对应的样本代码对应的样本代码，第一维数字代表批量数编号，第二维数字表示 S-1,S-2，S-3，S-4，G-I，G-II,G-III
+        ' LG() " & UText(25209, 37327, 23545, 24212, 30340, 26679, 26412, 20195, 30721, 23545, 24212, 30340, 26679, 26412, 20195, 30721) & "，" & UText(31532, 19968, 32500, 25968, 23383, 20195, 34920, 25209, 37327, 25968, 32534, 21495) & "，" & UText(31532, 20108, 32500, 25968, 23383, 34920, 31034) & " S-1,S-2，S-3，S-4，G-I，G-II,G-III
       
        LG(0, 1) = CD(0):      LG(0, 2) = CD(0):       LG(0, 3) = CD(0)
    
@@ -1451,16 +1491,16 @@ Sub conclusion()
       
        SamP = .Cell(7, 4).Range.Text
 
-       '检查正常检查，重检抽样方案是否分别是NORMAL和TIGHTENED，并提醒。
+       '" & UText(26816, 26597, 27491, 24120, 26816, 26597) & "，" & UText(37325, 26816, 25277, 26679, 26041, 26696, 26159, 21542, 20998, 21035, 26159) & "NORMAL" & UText(21644) & "TIGHTENED，" & UText(24182, 25552, 37266) & "。
        
             If SamP Like "*Double*" = True Then MsgBox "the sample plan in Information table of first page was double sample plan instead of single plan the progran can not work out the Sample Size and AQL, please deal with it by yourself." & CHR(13) & _
-            "Information 表所填写的抽样方案是二次抽样方案，不是一次抽样方案，Sample Size和AQL请手工查询!!!": GoTo 100
-            If SamP Like "*Normal*" = True Then Styp = 1                            '正常检验
-            If SamP Like "*Tightened*" = True Then Styp = 2                           '加严检验
+            "Information " & UText(34920, 25152, 22635, 20889, 30340, 25277, 26679, 26041, 26696, 26159, 20108, 27425, 25277, 26679, 26041, 26696) & "，" & UText(19981, 26159, 19968, 27425, 25277, 26679, 26041, 26696) & "，Sample Size" & UText(21644) & "AQL" & UText(35831, 25163, 24037, 26597, 35810) & "!!!": GoTo 100
+            If SamP Like "*Normal*" = True Then Styp = 1                            '" & UText(27491, 24120, 26816, 39564) & "
+            If SamP Like "*Tightened*" = True Then Styp = 2                           '" & UText(21152, 20005, 26816, 39564) & "
             If SamP Like "*Fixed*" = True Then
                 cnt = 0
                 For i = 1 To 16
-                    If CD(i) = Val(.Cell(9, 4).Range.words(1)) Then Styp = 1: GoTo 15                   '固定抽样且Sample Size刚好是抽样表中有对应
+                    If CD(i) = Val(.Cell(9, 4).Range.words(1)) Then Styp = 1: GoTo 15                   '" & UText(22266, 23450, 25277, 26679, 19988) & "Sample Size" & UText(21018, 22909, 26159, 25277, 26679, 34920, 20013, 26377, 23545, 24212) & "
                     If CD(i) <> Val(.Cell(9, 4).Range.words(1)) Then cnt = cnt + 1
                 Next i
                  If cnt = 16 Then Styp = 3   '==============
@@ -1468,18 +1508,18 @@ Sub conclusion()
             
             If SamP Like "*Normal*" = False And SamP Like "*Tightened*" = False And SamP Like "*Fixed*" = False Then MsgBox _
             "The inspection sample plan if Information table of first page was neither Normal, nor Tightened, nor Fixed sample plan, the program can not work out the Sample Size and Ac value, please deal with it yourself." & CHR(13) & _
-            "Information 表所填写的检验方案，不是正常（Normal）检验，加严（Tightened）检验 或固定（Fixed)抽样检验,程序无法自动算出Sample Size和Ac值,请手工处理，或检查是否有输入错误", vbCritical: GoTo 100
+            "Information " & UText(34920, 25152, 22635, 20889, 30340, 26816, 39564, 26041, 26696) & "，" & UText(19981, 26159, 27491, 24120) & "（Normal）" & UText(26816, 39564) & "，" & UText(21152, 20005) & "（Tightened）" & UText(26816, 39564) & " " & UText(25110, 22266, 23450) & "（Fixed)" & UText(25277, 26679, 26816, 39564) & "," & UText(31243, 24207, 26080, 27861, 33258, 21160, 31639, 20986) & "Sample Size" & UText(21644) & "Ac" & UText(20540) & "," & UText(35831, 25163, 24037, 22788, 29702) & "，" & UText(25110, 26816, 26597, 26159, 21542, 26377, 36755, 20837, 38169, 35823), vbCritical: GoTo 100
        
            
           
     Select Case Styp
           
-    Case 1   '正常检验
+    Case 1   '" & UText(27491, 24120, 26816, 39564) & "
        
        
-       'AQL AC代码查询
-       'AC(),AQL 充收值，第一维表示 样本代码顺序，第二维表示AQL 值1.0,1.5,...
-       ' MV(),转移的上下箭头，代表改变后的 Sample Size
+       'AQL AC" & UText(20195, 30721, 26597, 35810) & "
+       'AC(),AQL " & UText(20805, 25910, 20540) & "，" & UText(31532, 19968, 32500, 34920, 31034) & " " & UText(26679, 26412, 20195, 30721, 39034, 24207) & "，" & UText(31532, 20108, 32500, 34920, 31034) & "AQL " & UText(20540) & "1.0,1.5,...
+       ' MV()," & UText(36716, 31227, 30340, 19978, 19979, 31661, 22836) & "，" & UText(20195, 34920, 25913, 21464, 21518, 30340) & " Sample Size
        AC(0, 0) = CD(0)
        AC(0, 1) = CD(0):       AC(0, 2) = CD(0):   AC(0, 3) = CD(0):   AC(0, 4) = CD(0):   AC(0, 5) = CD(0):
        
@@ -1516,12 +1556,12 @@ Sub conclusion()
        AC(16, 1) = 21:         AC(16, 2) = 21:     AC(16, 3) = 21:     AC(16, 4) = 21:     AC(16, 5) = 21:
        MV(16, 1) = CD(15):     MV(16, 2) = CD(14): MV(16, 3) = CD(13): MV(16, 4) = CD(12): MV(16, 5) = CD(11):
                             
-   Case 2  '加严检验
+   Case 2  '" & UText(21152, 20005, 26816, 39564) & "
    
      
-       'AQL AC代码查询
-       'AC(),AQL 充收值，第一维表示 样本代码顺序，第二维表示AQL 值1.0,1.5,...
-       ' MV(),转移的上下箭头，代表改变后的 Sample Size
+       'AQL AC" & UText(20195, 30721, 26597, 35810) & "
+       'AC(),AQL " & UText(20805, 25910, 20540) & "，" & UText(31532, 19968, 32500, 34920, 31034) & " " & UText(26679, 26412, 20195, 30721, 39034, 24207) & "，" & UText(31532, 20108, 32500, 34920, 31034) & "AQL " & UText(20540) & "1.0,1.5,...
+       ' MV()," & UText(36716, 31227, 30340, 19978, 19979, 31661, 22836) & "，" & UText(20195, 34920, 25913, 21464, 21518, 30340) & " Sample Size
        AC(0, 0) = CD(0)
        AC(0, 1) = CD(0):       AC(0, 2) = CD(0):   AC(0, 3) = CD(0):   AC(0, 4) = CD(0):   AC(0, 5) = CD(0):
        
@@ -1558,7 +1598,7 @@ Sub conclusion()
        AC(16, 1) = 18:         AC(16, 2) = 18:     AC(16, 3) = 18:     AC(16, 4) = 18:     AC(16, 5) = 18:
        MV(16, 1) = CD(15):     MV(16, 2) = CD(14): MV(16, 3) = CD(13): MV(16, 4) = CD(12): MV(16, 5) = CD(11):
    
-    '-----------FIXED SAMPLE 且没有可对应的AQL
+    '-----------FIXED SAMPLE " & UText(19988, 27809, 26377, 21487, 23545, 24212, 30340) & "AQL
     Case 3
  
     SmpS(0) = Val(.Cell(9, 4).Range.words(1))
@@ -1574,7 +1614,7 @@ Sub conclusion()
                             
        
        
-         '核对检查水平的输入
+         '" & UText(26680, 23545, 26816, 26597, 27700, 24179, 30340, 36755, 20837) & "
        If .Cell(8, 4).Range.Text Like "*G-III*" = True Or .Cell(8, 4).Range.Text Like "*G-111*" = True Then
        lvl = 7
        ElseIf .Cell(8, 4).Range.Text Like "*G-II*" = True Or .Cell(8, 4).Range.Text Like "*G-11*" = True Then
@@ -1591,21 +1631,21 @@ Sub conclusion()
        lvl = 1
         ElseIf SamP Like "*Fixed*" = False Then '===
         MsgBox " The inspection level was neither  S-1 to S-4，nor G-I to G-III，the program can not deal with it, please deal with it by yourself." & CHR(13) & _
-       "检查水平，不是S-1到S-4，也不是G-I，G-II或G-III，无法计算，请检查输入是否符合要求或手工计算": Exit Sub
+       UText(26816, 26597, 27700, 24179) & "，" & UText(19981, 26159) & "S-1" & UText(21040) & "S-4，" & UText(20063, 19981, 26159) & "G-I，G-II" & UText(25110) & "G-III，" & UText(26080, 27861, 35745, 31639) & "，" & UText(35831, 26816, 26597, 36755, 20837, 26159, 21542, 31526, 21512, 35201, 27714, 25110, 25163, 24037, 35745, 31639): Exit Sub
        Else
        Styp = 3
        GoTo 60
        End If
    
        
-       '初始化
+       '" & UText(21021, 22987, 21270) & "
        Acr = 0
    
        AMa = 0
   
        Ami = 0
        
-     '消除AQL格中的空格
+     '" & UText(28040, 38500) & "AQL" & UText(26684, 20013, 30340, 31354, 26684) & "
      Cn = .Cell(10, 4).Range.Characters.count
      For i = Cn To 1 Step -1
      If .Cell(10, 4).Range.Characters(i) = " " Then .Cell(10, 4).Range.Characters(i) = ""
@@ -1618,7 +1658,7 @@ Sub conclusion()
        WL = Len(Aqlt)
 
      
-       '判定AQL输入方式是否符合要求
+       '" & UText(21028, 23450) & "AQL" & UText(36755, 20837, 26041, 24335, 26159, 21542, 31526, 21512, 35201, 27714) & "
        
         If Wn = 18 Then
            ' If Aqlt Like "*Critical*" = True And Aqlt Like "*Major*" = True And Aqlt Like "*Minor*" = True Then
@@ -1626,7 +1666,7 @@ Sub conclusion()
             If rg.words(1) = "Critical" And rg.words(7) = "Major" = True And rg.words(13) = "Minor" Then
 
             Acr = Val(Mid(Aqlt, 10, 3))
-            AMa = Val(Mid(Aqlt, 20, 3))      '取Ma
+            AMa = Val(Mid(Aqlt, 20, 3))      '" & UText(21462) & "Ma
             Ami = Val(Mid(Aqlt, 30, 3))
         
             ElseIf rg.words(1) = "Cr" And rg.words(7) = "Ma" = True And rg.words(13) = "Mi" Then
@@ -1634,16 +1674,16 @@ Sub conclusion()
             'ElseIf Aqlt Like "*Cr*" = True And Aqlt Like "*Ma*" = True And Aqlt Like "*Mi*" = True Then
             
 
-                    'aql 类型，1， Cr,ma,mi
+                    'aql " & UText(31867, 22411) & "，1， Cr,ma,mi
             Acr = Val(Mid(Aqlt, 4, 3))
-            AMa = Val(Mid(Aqlt, 11, 3))      '取Ma
+            AMa = Val(Mid(Aqlt, 11, 3))      '" & UText(21462) & "Ma
             Ami = Val(Mid(Aqlt, 18, 3))
     
             Else
                
             MsgBox "You should input AQL into Information table on first page in the format of such as Critical:0,Major:1.0,Minor:2.5 or Cr:0,Ma:1.0,Mi:4.0" & CHR(13) & _
-            "Information 表格，AQL未完全输入或输入格式不符要求，不能计算出Sample Size和Ac！" & _
-            "正确格式类似于Critical:0,Major:1.0,Minor:2.5或Cr:0,Ma:1.0,Mi:4.0，注意每个缺陷字母后用一个冒号，缺陷数字后，必须且只有一个逗号，请修改后再运行，或手工计算", vbCritical: GoTo 100
+            "Information " & UText(34920, 26684) & "，AQL" & UText(26410, 23436, 20840, 36755, 20837, 25110, 36755, 20837, 26684, 24335, 19981, 31526, 35201, 27714) & "，" & UText(19981, 33021, 35745, 31639, 20986) & "Sample Size" & UText(21644) & "Ac！" & _
+            UText(27491, 30830, 26684, 24335, 31867, 20284, 20110) & "Critical:0,Major:1.0,Minor:2.5" & UText(25110) & "Cr:0,Ma:1.0,Mi:4.0，" & UText(27880, 24847, 27599, 20010, 32570, 38519, 23383, 27597, 21518, 29992, 19968, 20010, 20882, 21495) & "，" & UText(32570, 38519, 25968, 23383, 21518) & "，" & UText(24517, 39035, 19988, 21482, 26377, 19968, 20010, 36887, 21495) & "，" & UText(35831, 20462, 25913, 21518, 20877, 36816, 34892) & "，" & UText(25110, 25163, 24037, 35745, 31639), vbCritical: GoTo 100
            End If
          End If
       
@@ -1654,21 +1694,21 @@ Sub conclusion()
             
             If rg.words(1) = "Critical" And rg.words(5) = "Major" = True And rg.words(11) = "Minor" Then
             Acr = Val(Mid(Aqlt, 10, 1))
-            AMa = Val(Mid(Aqlt, 18, 3))      '取Ma
+            AMa = Val(Mid(Aqlt, 18, 3))      '" & UText(21462) & "Ma
             Ami = Val(Mid(Aqlt, 28, 3))
             
              ElseIf rg.words(1) = "Cr" And rg.words(5) = "Ma" = True And rg.words(11) = "Mi" Then
            ' ElseIf Aqlt Like "*Cr*" = True And Aqlt Like "*Ma*" = True And Aqlt Like "*Mi*" = True Then
-                    'aql 类型，1， Cr,ma,mi
+                    'aql " & UText(31867, 22411) & "，1， Cr,ma,mi
             Acr = Val(Mid(Aqlt, 4, 1))
-            AMa = Val(Mid(Aqlt, 9, 3))      '取Ma
+            AMa = Val(Mid(Aqlt, 9, 3))      '" & UText(21462) & "Ma
             Ami = Val(Mid(Aqlt, 16, 3))
 
           Else
                
             MsgBox "You should input AQL into Information table on first page in the format of such as Critical:0,Major:1.0,Minor:2.5 or Cr:0,Ma:1.0,Mi:4.0" & CHR(13) & _
-            "Information 表格，AQL未完全输入或输入格式不符要求，不能计算出Sample Size和Ac！" & _
-            "正确格式类似于Critical:0,Major:1.0,Minor:2.5或Cr:0,Ma:1.0,Mi:4.0，注意每个缺陷字母后用一个冒号，缺陷数字后，必须且只有一个逗号，请修改后再运行，或手工计算", vbCritical: GoTo 100
+            "Information " & UText(34920, 26684) & "，AQL" & UText(26410, 23436, 20840, 36755, 20837, 25110, 36755, 20837, 26684, 24335, 19981, 31526, 35201, 27714) & "，" & UText(19981, 33021, 35745, 31639, 20986) & "Sample Size" & UText(21644) & "Ac！" & _
+            UText(27491, 30830, 26684, 24335, 31867, 20284, 20110) & "Critical:0,Major:1.0,Minor:2.5" & UText(25110) & "Cr:0,Ma:1.0,Mi:4.0，" & UText(27880, 24847, 27599, 20010, 32570, 38519, 23383, 27597, 21518, 29992, 19968, 20010, 20882, 21495) & "，" & UText(32570, 38519, 25968, 23383, 21518) & "，" & UText(24517, 39035, 19988, 21482, 26377, 19968, 20010, 36887, 21495) & "，" & UText(35831, 20462, 25913, 21518, 20877, 36816, 34892) & "，" & UText(25110, 25163, 24037, 35745, 31639), vbCritical: GoTo 100
           End If
         End If
      
@@ -1676,11 +1716,11 @@ Sub conclusion()
        
        
        If Wn <> 16 And Wn <> 18 Then MsgBox "You should input AQL into Information table on first page in the format of such as Critical:0,Major:1.0,Minor:2.5 or Cr:0,Ma:1.0,Mi:4.0" & CHR(13) & _
-            "Information 表格，AQL未完全输入或输入格式不符要求，不能计算出Sample Size和Ac！" & _
-            "正确格式类似于Critical:0,Major:1.0,Minor:2.5或Cr:0,Ma:1.0,Mi:4.0，注意每个缺陷字母后用一个冒号，缺陷数字后，必须且只有一个逗号，请修改后再运行，或手工计算", vbCritical: GoTo 100
+            "Information " & UText(34920, 26684) & "，AQL" & UText(26410, 23436, 20840, 36755, 20837, 25110, 36755, 20837, 26684, 24335, 19981, 31526, 35201, 27714) & "，" & UText(19981, 33021, 35745, 31639, 20986) & "Sample Size" & UText(21644) & "Ac！" & _
+            UText(27491, 30830, 26684, 24335, 31867, 20284, 20110) & "Critical:0,Major:1.0,Minor:2.5" & UText(25110) & "Cr:0,Ma:1.0,Mi:4.0，" & UText(27880, 24847, 27599, 20010, 32570, 38519, 23383, 27597, 21518, 29992, 19968, 20010, 20882, 21495) & "，" & UText(32570, 38519, 25968, 23383, 21518) & "，" & UText(24517, 39035, 19988, 21482, 26377, 19968, 20010, 36887, 21495) & "，" & UText(35831, 20462, 25913, 21518, 20877, 36816, 34892) & "，" & UText(25110, 25163, 24037, 35745, 31639), vbCritical: GoTo 100
       
-          '把AQL分组
-       If Acr = 0 Then Y = 1 'Cr=0 时，只算MA，MI，不等于0时全算
+          '" & UText(25226) & "AQL" & UText(20998, 32452) & "
+       If Acr = 0 Then Y = 1 'Cr=0 " & UText(26102) & "，" & UText(21482, 31639) & "MA，MI，" & UText(19981, 31561, 20110) & "0" & UText(26102, 20840, 31639) & "
        If Acr <> 0 Then Y = 0
   
        
@@ -1690,19 +1730,19 @@ Sub conclusion()
    
        AQL(2) = Ami
        
-       '检验批量数是否正确
+       '" & UText(26816, 39564, 25209, 37327, 25968, 26159, 21542, 27491, 30830) & "
 
-      'Sqty = InputBox("请输入Shipment Quanty")
+      'Sqty = InputBox("Shipment Quanty")
       
-       SQty = scol(4)                'qty表格中的shipment Qty累加值
+       SQty = scol(4)                'qty" & UText(34920, 26684, 20013, 30340) & "shipment Qty" & UText(32047, 21152, 20540) & "
 
                            
 
-       If SQty < Lots(1) Then MsgBox "The batch size was too small." & CHR(13) & "批量数太小，本程序不能计算，请手工计算": GoTo 100
+       If SQty < Lots(1) Then MsgBox "The batch size was too small." & CHR(13) & UText(25209, 37327, 25968, 22826, 23567) & "，" & UText(26412, 31243, 24207, 19981, 33021, 35745, 31639) & "，" & UText(35831, 25163, 24037, 35745, 31639): GoTo 100
        If SamP Like "*Fixed*" = False And SQty > Lots(15) Then MsgBox "The batch size was too large and the program can not deal with it please deal with it yourself." & CHR(13) & _
-       "批量数太大，本程序不能计算，请手工计算": GoTo 100
+       UText(25209, 37327, 25968, 22826, 22823) & "，" & UText(26412, 31243, 24207, 19981, 33021, 35745, 31639) & "，" & UText(35831, 25163, 24037, 35745, 31639): GoTo 100
     
-       '＊＊＊处理fixed sample 又刚好是AQL表中的情况
+       '＊＊＊" & UText(22788, 29702) & "fixed sample " & UText(21448, 21018, 22909, 26159) & "AQL" & UText(34920, 20013, 30340, 24773, 20917) & "
        If Styp = 1 And SamP Like "*Fixed*" = True Then
            For i = 1 To 15
              If Val(.Cell(9, 4).Range.words(1)) = CD(i) Then grp = i: GoTo 20
@@ -1711,65 +1751,65 @@ Sub conclusion()
 
   
         
-        '算批量数在每一张表LotSiZE的第几组
+        '" & UText(31639, 25209, 37327, 25968, 22312, 27599, 19968, 24352, 34920) & "LotSiZE" & UText(30340, 31532, 20960, 32452) & "
        For i = 1 To 15
        
        If SQty >= Lots(i) And SQty < Lots(i + 1) Then grp = i: GoTo 20
        
        Next i
        
-    '算AQLSampleSiz在第二张表的纵向第几组
+    '" & UText(31639) & "AQLSampleSiz" & UText(22312, 31532, 20108, 24352, 34920, 30340, 32437, 21521, 31532, 20960, 32452) & "
       
 20     Scode = LG(grp, lvl)
        For i = 1 To 16
        If Scode = CD(i) Then Hgrp = i: GoTo 25
        Next i
 
-25    For k = Y To 2  'k 对应实际AQL的Ma,Mi
+25    For k = Y To 2  'k " & UText(23545, 24212, 23454, 38469) & "AQL" & UText(30340) & "Ma,Mi
        
         
-        '算实际验货AQL在第二张表横向的组数
+        '" & UText(31639, 23454, 38469, 39564, 36135) & "AQL" & UText(22312, 31532, 20108, 24352, 34920, 27178, 21521, 30340, 32452, 25968) & "
          Cn = 0
          For i = 1 To 5
            If AQL(k) = AQ(i) Then Agrp = i: GoTo 30
-           If AQL(k) <> AQ(i) And AQL(k) <> 0 Then Cn = Cn + 1 '判定AQL 是否列入表格范围
+           If AQL(k) <> AQ(i) And AQL(k) <> 0 Then Cn = Cn + 1 '" & UText(21028, 23450) & "AQL " & UText(26159, 21542, 21015, 20837, 34920, 26684, 33539, 22260) & "
          Next i
    
         If Cn = 5 Then MsgBox "The program can only deal with the AQL  of 1.0，1.5，2.5，4.0，6.5, your AQL beyond this scope please deal with it yourself." & CHR(13) & _
-        "Information 表格,AQL输入数字中有数字超过本程序处理范围，本程序只处理AQL：1.0，1.5，2.5，4.0，6.5的数值！！！，请修改或手工处理 ", vbCritical: GoTo 100
+        "Information " & UText(34920, 26684) & ",AQL" & UText(36755, 20837, 25968, 23383, 20013, 26377, 25968, 23383, 36229, 36807, 26412, 31243, 24207, 22788, 29702, 33539, 22260) & "，" & UText(26412, 31243, 24207, 21482, 22788, 29702) & "AQL：1.0，1.5，2.5，4.0，6.5" & UText(30340, 25968, 20540) & "！！！，" & UText(35831, 20462, 25913, 25110, 25163, 24037, 22788, 29702) & " ", vbCritical: GoTo 100
 30     If MV(Hgrp, Agrp) > 0 Then
-         If MV(Hgrp, Agrp) >= SQty Then SmpS(k) = SQty              '算sample size值
+         If MV(Hgrp, Agrp) >= SQty Then SmpS(k) = SQty              '" & UText(31639) & "sample size" & UText(20540) & "
          If MV(Hgrp, Agrp) < SQty Then SmpS(k) = MV(Hgrp, Agrp)
        End If
        If MV(Hgrp, Agrp) = 0 Then SmpS(k) = CD(Hgrp)
     
-       AAc(k) = AC(Hgrp, Agrp)                      '算AQL值
+       AAc(k) = AC(Hgrp, Agrp)                      '" & UText(31639) & "AQL" & UText(20540) & "
        
-40    If SmpS(k) > Ass Then Ass = SmpS(k)            '取Sample Sise 取大值
+40    If SmpS(k) > Ass Then Ass = SmpS(k)            '" & UText(21462) & "Sample Sise " & UText(21462, 22823, 20540) & "
       
-      If AQL(0) = 0 Then AAc(0) = 0           'AQL=0 最AC设为0
+      If AQL(0) = 0 Then AAc(0) = 0           'AQL=0 " & UText(26368) & "AC" & UText(35774, 20026) & "0
         
      Next k
      
      If Acr = 0 Then SmpS(0) = Ass
 
-       '取填入的Sample size进行检查
+       '" & UText(21462, 22635, 20837, 30340) & "Sample size" & UText(36827, 34892, 26816, 26597) & "
         If Ass <> scol(8) And SamP Like "*Fixed*" = False Then MsgBox "The total sample size input in 1. Quantity table was " & scol(8) & " However in according to ISO2859 it should be " & Ass & _
        " Please check and revise it." & CHR(13) & _
-       "表格1. Quantity累统计出的Sample Size是：" & scol(8) & " 但是按ISO2859标准查出的Sample Size应该是:" & Ass & _
-       " 请进行修改，如果按ISO2859标准，请修改表格1. Quantity中的数值，后再次运行程序，如果不是按ISO2859，请手工修改表单！！！"
+       UText(34920, 26684) & "1. Quantity" & UText(32047, 32479, 35745, 20986, 30340) & "Sample Size" & UText(26159) & "：" & scol(8) & " " & UText(20294, 26159, 25353) & "ISO2859" & UText(26631, 20934, 26597, 20986, 30340) & "Sample Size" & UText(24212, 35813, 26159) & ":" & Ass & _
+       " " & UText(35831, 36827, 34892, 20462, 25913) & "，" & UText(22914, 26524, 25353) & "ISO2859" & UText(26631, 20934) & "，" & UText(35831, 20462, 25913, 34920, 26684) & "1. Quantity" & UText(20013, 30340, 25968, 20540) & "，" & UText(21518, 20877, 27425, 36816, 34892, 31243, 24207) & "，" & UText(22914, 26524, 19981, 26159, 25353) & "ISO2859，" & UText(35831, 25163, 24037, 20462, 25913, 34920, 21333) & "！！！"
        
        
        Set rg = .Cell(9, 4).Range
        ss = Val(rg.words(1))
        If Ass <> ss And SamP Like "*Fixed*" = False Then
            cnt = MsgBox("Sample Size in information table on first page was" & ss & " , however in according to ISO2859, it should be " & Ass & " , click YES to replace sample size data in Information table, click NO to deal with it yourself." & CHR(13) & _
-           "Information 表格填入的Sample Size是" & ss & " 但按ISO2859查到的Sample Size是" & Ass & "是否替换Information 表格数据！", vbYesNo)
+           "Information " & UText(34920, 26684, 22635, 20837, 30340) & "Sample Size" & UText(26159) & ss & " " & UText(20294, 25353) & "ISO2859" & UText(26597, 21040, 30340) & "Sample Size" & UText(26159) & Ass & UText(26159, 21542, 26367, 25442) & "Information " & UText(34920, 26684, 25968, 25454) & "！", vbYesNo)
            If cnt = vbYes Then rg.words(1) = Replace(ss, ss, Ass & " ")
            If cnt = vbNo Then MsgBox "Your choise was NO, please revise the sample size data yourself" & CHR(13) & _
-           "你选择不替换首页表格，说明不符合ISO2859抽样要求，请修改表格1. Quantity的Sample Size值！！！"
+           UText(20320, 36873, 25321, 19981, 26367, 25442, 39318, 39029, 34920, 26684) & "，" & UText(35828, 26126, 19981, 31526, 21512) & "ISO2859" & UText(25277, 26679, 35201, 27714) & "，" & UText(35831, 20462, 25913, 34920, 26684) & "1. Quantity" & UText(30340) & "Sample Size" & UText(20540) & "！！！"
        End If
-     '--------- 固定抽样时，把sample SIZE 从查表强制改为首页输入值
+     '--------- " & UText(22266, 23450, 25277, 26679, 26102) & "，" & UText(25226) & "sample SIZE " & UText(20174, 26597, 34920, 24378, 21046, 25913, 20026, 39318, 39029, 36755, 20837, 20540) & "
 60   If Styp = 3 Then
        SmpS(0) = Val(.Cell(9, 4).Range.words(1))
        SmpS(1) = SmpS(0)
@@ -1786,12 +1826,12 @@ Sub conclusion()
     
 
  
-100    '取得实际 defect allowed
+100    '" & UText(21462, 24471, 23454, 38469) & " defect allowed
     ADef(1) = AAc(0)      'cr
     ADef(2) = AAc(1)      'Ma
     ADef(3) = AAc(2)     'Mi
     
-110 '检查workmanship 表
+110 '" & UText(26816, 26597) & "workmanship " & UText(34920) & "
 Dim myrow, M, sCr, sMa, sMi As Integer
 Dim dCr(100), dMa(100), dMi(100), N As Integer
 Dim tem1, temw, mbx, Fw As String
@@ -1809,10 +1849,10 @@ Dim rg3 As Range
 
     myrow = .Rows.count
   
-    myrow = myrow - 2  '获得total foud 表格所在行数
+    myrow = myrow - 2  '" & UText(33719, 24471) & "total foud " & UText(34920, 26684, 25152, 22312, 34892, 25968) & "
      
 
-     For k = myrow - 1 To 3 Step -1 '删除全空行
+     For k = myrow - 1 To 3 Step -1 '" & UText(21024, 38500, 20840, 31354, 34892) & "
         tem = .Cell(k, 1).Range.Text
         If LCase(Left(Trim(tem), 4)) <> "item" Then
           If Left(Trim(tem), 1) = CHR(13) And _
@@ -1822,7 +1862,7 @@ Dim rg3 As Range
         End If
      Next k
      
-     '删除下表没内容的多余ITEM行
+     '" & UText(21024, 38500, 19979, 34920, 27809, 20869, 23481, 30340, 22810, 20313) & "ITEM" & UText(34892) & "
      myrow = .Rows.count
   
       myrow = myrow - 2
@@ -1837,7 +1877,7 @@ Dim rg3 As Range
      msg = ""
      mbx = ""
      
-     For k = 3 To (myrow - 1) '从第三行开始，判断是否item行,获得每行单元格的defect 数
+     For k = 3 To (myrow - 1) '" & UText(20174, 31532, 19977, 34892, 24320, 22987) & "，" & UText(21028, 26029, 26159, 21542) & "item" & UText(34892) & "," & UText(33719, 24471, 27599, 34892, 21333, 20803, 26684, 30340) & "defect " & UText(25968) & "
        
      
       tem = .Cell(k, 1).Range.Text
@@ -1855,27 +1895,27 @@ Dim rg3 As Range
             dMi(k) = Val(.Cell(k, 4).Range.Text)
            
             If dCr(k) < 0 Or dMa(k) < 0 Or dMi(k) < 0 Then msg = msg + " row " & k & ", the defect of " & temw & ", the defect number was minus!" & CHR(13) & _
-            "第" & k & "行缺陷" & temw & "缺陷数为负数!" & CHR(10)
+            UText(31532) & k & UText(34892, 32570, 38519) & temw & UText(32570, 38519, 25968, 20026, 36127, 25968) & "!" & CHR(10)
             
             If Left(Trim(tem), 1) <> CHR(13) And UCase((Mid(Trim(tem), 1, 9))) <> "NO DEFECT" Then
               
                   If dCr(k) = 0 And dMa(k) = 0 And dMi(k) = 0 Then msg = msg + "the row " & k & ", the defect of " & temw & ", the defect number was not input" & CHR(10) & _
-                  "第" & k & "行缺陷" & temw & "缺陷数量没有判定" & CHR(10)
+                  UText(31532) & k & UText(34892, 32570, 38519) & temw & UText(32570, 38519, 25968, 37327, 27809, 26377, 21028, 23450) & CHR(10)
                       
                   If (dCr(k) > 0 And dMa(k) > 0) Or (dCr(k) > 0 And dMi(k) > 0) Then msg = msg + " row " & k & ", the defect of" & temw & " input with  Critical and other defect." & CHR(10) & _
-                  "第" & k & "行" & temw & "有Critical缺陷，又有其他缺陷，重复判定!" & CHR(10)
+                  UText(31532) & k & UText(34892) & temw & UText(26377) & "Critical" & UText(32570, 38519) & "，" & UText(21448, 26377, 20854, 20182, 32570, 38519) & "，" & UText(37325, 22797, 21028, 23450) & "!" & CHR(10)
              End If
              
                  
               If UCase((Mid(Trim(tem), 1, 9))) = "NO DEFECT" Then
                      If dCr(k) > 0 Or dMa(k) > 0 Or dMi(k) > 0 Then msg = msg + "row " & k & " , with statement of No Defect and defect number." & CHR(10) & _
-                     "第" & k & "行No Defect,但又有缺陷数!" & CHR(10)
+                     UText(31532) & k & UText(34892) & "No Defect," & UText(20294, 21448, 26377, 32570, 38519, 25968) & "!" & CHR(10)
               End If
                   
               If Left(Trim(tem), 1) = CHR(13) Then
               
                      If dCr(k) > 0 Or dMa(k) > 0 Or dMi(k) > 0 Then msg = msg + "row " & k & ", without defect statement!" & CHR(10) & _
-                     "第" & k & "行缺陷描述未写,但又有缺陷数!" & CHR(10)
+                     UText(31532) & k & UText(34892, 32570, 38519, 25551, 36848, 26410, 20889) & "," & UText(20294, 21448, 26377, 32570, 38519, 25968) & "!" & CHR(10)
               End If
               
                     
@@ -1890,9 +1930,9 @@ Dim rg3 As Range
      Next k
           
            If msg <> "" Then MsgBox "2. Workmanship Table:" & CHR(10) & msg & "Please revise them and run program again" & CHR(10) & _
-           "2. Workmanship表" & CHR(10) & msg & "请对以上进行修改后再次运行！！！", vbCritical, "警告": Exit Sub
+           "2. Workmanship" & UText(34920) & CHR(10) & msg & UText(35831, 23545, 20197, 19978, 36827, 34892, 20462, 25913, 21518, 20877, 27425, 36816, 34892) & "！！！", vbCritical, UText(35686, 21578): Exit Sub
            
-       sCr = 0 '清零
+       sCr = 0 '" & UText(28165, 38646) & "
        sMa = 0
        sMi = 0
      For M = 3 To (myrow - 1)
@@ -1902,48 +1942,48 @@ Dim rg3 As Range
      Next M
      
     If Val(.Cell(myrow, 2).Range.Text) <> sCr Then msg = msg + TBName(2) & " table: sum of Critical defect was" & sCr & ", However the input date was " & Val(.Cell(myrow, 2).Range.Text) & ". They are not equal." & CHR(13) & _
-    TBName(2) & "表格Critical 缺陷的累加值计算结果为：" & sCr & "目前填入的值却是：" & Val(.Cell(myrow, 2).Range.Text) & "二者不相等" & CHR(13)
+    TBName(2) & UText(34920, 26684) & "Critical " & UText(32570, 38519, 30340, 32047, 21152, 20540, 35745, 31639, 32467, 26524, 20026) & "：" & sCr & UText(30446, 21069, 22635, 20837, 30340, 20540, 21364, 26159) & "：" & Val(.Cell(myrow, 2).Range.Text) & UText(20108, 32773, 19981, 30456, 31561) & CHR(13)
     
     If Val(.Cell(myrow, 3).Range.Text) <> sMa Then msg = msg + TBName(2) & " table: sum of Major defect was" & sMa & ", the input date was " & Val(.Cell(myrow, 3).Range.Text) & "They are not equal." & CHR(13) & _
-    TBName(2) & "表格Major 缺陷的累加值计算结果为：" & sMa & "目前填入的值却是：" & Val(.Cell(myrow, 3).Range.Text) & "二者不相等" & CHR(13)
+    TBName(2) & UText(34920, 26684) & "Major " & UText(32570, 38519, 30340, 32047, 21152, 20540, 35745, 31639, 32467, 26524, 20026) & "：" & sMa & UText(30446, 21069, 22635, 20837, 30340, 20540, 21364, 26159) & "：" & Val(.Cell(myrow, 3).Range.Text) & UText(20108, 32773, 19981, 30456, 31561) & CHR(13)
     If Val(.Cell(myrow, 4).Range.Text) <> sMi Then msg = msg + TBName(2) & "table: sum of Minor defect was " & sMi & ", the input data was " & Val(.Cell(myrow, 4).Range.Text) & "They are not equal." & CHR(13) & _
-    TBName(2) & "表格Minor 缺陷的累加值计算结果为：" & sMi & "目前填入的值却是：" & Val(.Cell(myrow, 4).Range.Text) & "二者不相等" & CHR(13)
+    TBName(2) & UText(34920, 26684) & "Minor " & UText(32570, 38519, 30340, 32047, 21152, 20540, 35745, 31639, 32467, 26524, 20026) & "：" & sMi & UText(30446, 21069, 22635, 20837, 30340, 20540, 21364, 26159) & "：" & Val(.Cell(myrow, 4).Range.Text) & UText(20108, 32773, 19981, 30456, 31561) & CHR(13)
         
         Coln = .Columns.count
         Rown = .Rows.count
      If Styp <> 3 Then
         For i = 2 To Coln
          If Val(.Cell(Rown - 1, i).Range.Text) <> ADef(i - 1) Then msg = msg + TBName(2) & "table: row " & i & " the work out AQL was " & ADef(i - 1) & ", however the input data was " & Val(.Cell(Rown - 1, i).Range.Text) & ". Please check" & CHR(13) & _
-         TBName(2) & "表格，第" & i & "列,计算出的AQL的Ac是：" & ADef(i - 1) & "目前填入的数据却是：" & Val(.Cell(Rown - 1, i).Range.Text) & "请检查修改！！！" & CHR(13)
+         TBName(2) & UText(34920, 26684) & "，" & UText(31532) & i & UText(21015) & "," & UText(35745, 31639, 20986, 30340) & "AQL" & UText(30340) & "Ac" & UText(26159) & "：" & ADef(i - 1) & UText(30446, 21069, 22635, 20837, 30340, 25968, 25454, 21364, 26159) & "：" & Val(.Cell(Rown - 1, i).Range.Text) & UText(35831, 26816, 26597, 20462, 25913) & "！！！" & CHR(13)
          If Val(.Cell(Rown, i).Range.Text) <> SmpS(i - 2) Then msg = msg + TBName(2) & " Table: column " & i & ", the work out Ac was " & SmpS(i - 2) & ", However the input data was " & Val(.Cell(Rown, i).Range.Text) & ",Please check" & CHR(13) & _
-         TBName(2) & "表格，第" & i & "列,计算出的AQL的Ac是：" & SmpS(i - 2) & "目前填入的数据却是：" & Val(.Cell(Rown, i).Range.Text) & "请检查修改！！！" & CHR(13)
+         TBName(2) & UText(34920, 26684) & "，" & UText(31532) & i & UText(21015) & "," & UText(35745, 31639, 20986, 30340) & "AQL" & UText(30340) & "Ac" & UText(26159) & "：" & SmpS(i - 2) & UText(30446, 21069, 22635, 20837, 30340, 25968, 25454, 21364, 26159) & "：" & Val(.Cell(Rown, i).Range.Text) & UText(35831, 26816, 26597, 20462, 25913) & "！！！" & CHR(13)
         Next i
      End If
       myrow = Rown - 2
       If Val(.Cell(myrow, 2).Range.Text) > Val(.Cell(myrow + 1, 2).Range.Text) Then
             If .Cell(myrow, 2).Range.Font.Color <> wdColorRed Then msg = msg + TBName(2) & " table, row " & myrow & "Critical defect exceed allowance, however the total number was not marked with redcolor." & CHR(13) & _
-            TBName(2) & " 表第" & myrow & "行，Critical defect超标，但其累加数没有标红" & CHR(13)
+            TBName(2) & " " & UText(34920, 31532) & myrow & UText(34892) & "，Critical defect" & UText(36229, 26631) & "，" & UText(20294, 20854, 32047, 21152, 25968, 27809, 26377, 26631, 32418) & CHR(13)
       Else
             If .Cell(myrow, 2).Range.Font.Color = wdColorRed Then msg = msg + TBName(2) & " table, row " & myrow & "Critical defect not exceed allowance, however the total number was marked with redcolor." & CHR(13) & _
-            TBName(2) & " 表第" & myrow & "行，Critical defect未超标，但其累加数却标红" & CHR(13)
+            TBName(2) & " " & UText(34920, 31532) & myrow & UText(34892) & "，Critical defect" & UText(26410, 36229, 26631) & "，" & UText(20294, 20854, 32047, 21152, 25968, 21364, 26631, 32418) & CHR(13)
       End If
          
    
      If Val(.Cell(myrow, 3).Range.Text) > Val(.Cell(myrow + 1, 3).Range.Text) Then
          If .Cell(myrow, 3).Range.Font.Color <> wdColorRed Then msg = msg + TBName(2) & " table, row " & myrow & "Major defect exceed allowance, however the total number was not marked with redcolor." & CHR(13) & _
-            TBName(2) & " 表第" & myrow & "行，Major defect超标，但其累加数没有标红" & CHR(13)
+            TBName(2) & " " & UText(34920, 31532) & myrow & UText(34892) & "，Major defect" & UText(36229, 26631) & "，" & UText(20294, 20854, 32047, 21152, 25968, 27809, 26377, 26631, 32418) & CHR(13)
      Else
          If .Cell(myrow, 3).Range.Font.Color = wdColorRed Then msg = msg + TBName(2) & " table, row " & myrow & "Major defect not exceed allowance, however the total number was  marked with redcolor." & CHR(13) & _
-             TBName(2) & " 表第" & myrow & "行，Major defect未超标，但其累加数却标红" & CHR(13)
+             TBName(2) & " " & UText(34920, 31532) & myrow & UText(34892) & "，Major defect" & UText(26410, 36229, 26631) & "，" & UText(20294, 20854, 32047, 21152, 25968, 21364, 26631, 32418) & CHR(13)
      End If
          
   
       If Val(.Cell(myrow, 4).Range.Text) > Val(.Cell(myrow + 1, 4).Range.Text) Then
            If .Cell(myrow, 4).Range.Font.Color <> wdColorRed Then msg = msg + TBName(2) & " table, row " & myrow & "Minor defect exceed allowance, however the total number was not marked with redcolor." & CHR(13) & _
-             TBName(2) & " 表第" & myrow & "行，Minor defect超标，但其累加数没有标红" & CHR(13)
+             TBName(2) & " " & UText(34920, 31532) & myrow & UText(34892) & "，Minor defect" & UText(36229, 26631) & "，" & UText(20294, 20854, 32047, 21152, 25968, 27809, 26377, 26631, 32418) & CHR(13)
       Else
           If .Cell(myrow, 4).Range.Font.Color = wdColorRed Then msg = msg + TBName(2) & " table, row " & myrow & "Minor defect not exceed allowance, however the total number was marked with redcolor." & CHR(13) & _
-             TBName(2) & " 表第" & myrow & "行，Minor defect未超标，但其累加数却标红" & CHR(13)
+             TBName(2) & " " & UText(34920, 31532) & myrow & UText(34892) & "，Minor defect" & UText(26410, 36229, 26631) & "，" & UText(20294, 20854, 32047, 21152, 25968, 21364, 26631, 32418) & CHR(13)
       End If
       
      
@@ -1951,18 +1991,18 @@ Dim rg3 As Range
     If sCr > Val(.Cell(Rown - 1, 2).Range.Text) Or sMa > Val(.Cell(Rown - 1, 3).Range.Text) Or sMi > _
     Val(.Cell(Rown - 1, 4).Range.Text) Then
        If Mid(.Cell(1, 2).Range.Text, 1, Len(.Cell(1, 2).Range.Text) - 1) <> "Not Conform" Then msg = msg + "Defect number in Workmanship table exceed the allowance, however the result was not 'Not Conform'，Please choose Not Conform!!!" & CHR(13) & _
-       "Workmanship表中的缺陷数大于允许值，现在的结论不是Not Conform，请选择Not Conform!!!" & CHR(13)
+       "Workmanship" & UText(34920, 20013, 30340, 32570, 38519, 25968, 22823, 20110, 20801, 35768, 20540) & "，" & UText(29616, 22312, 30340, 32467, 35770, 19981, 26159) & "Not Conform，" & UText(35831, 36873, 25321) & "Not Conform!!!" & CHR(13)
     End If
     
     If sCr <= Val(.Cell(Rown - 1, 2).Range.Text) And sMa <= Val(.Cell(Rown - 1, 3).Range.Text) And sMi <= _
     Val(.Cell(Rown - 1, 4).Range.Text) Then
       If SAP(2) = 1 And Mid(.Cell(1, 2).Range.Text, 1, Len(.Cell(1, 2).Range.Text) - 1) <> "Conform" Then msg = msg + "Defect number in Workmanship table within allowance and without SAP，However the result was not 'Conform'！！！" + CHR(13) & _
-      "Workmanship表中的缺陷数在允许范围内且没有SAP，现在的结论不是Conform！！！" + CHR(13)
+      "Workmanship" & UText(34920, 20013, 30340, 32570, 38519, 25968, 22312, 20801, 35768, 33539, 22260, 20869, 19988, 27809, 26377) & "SAP，" & UText(29616, 22312, 30340, 32467, 35770, 19981, 26159) & "Conform！！！" + CHR(13)
       If SAP(2) > 1 And Mid(.Cell(1, 2).Range.Text, 1, Len(.Cell(1, 2).Range.Text) - 1) = "Conform" Then msg = msg + "Defect number within allowance but there are SAP for workmanship, however the result was not Not Conform！！！" & CHR(13) & _
-       "Workmanship表中的缺陷数在允许范围内但有SAP项，现在的结论却是Not Conform！！！" + CHR(13)
+       "Workmanship" & UText(34920, 20013, 30340, 32570, 38519, 25968, 22312, 20801, 35768, 33539, 22260, 20869, 20294, 26377) & "SAP" & UText(39033) & "，" & UText(29616, 22312, 30340, 32467, 35770, 21364, 26159) & "Not Conform！！！" + CHR(13)
     
     End If
-    If msg <> "" Then MsgBox msg & "Please check and revise！！！" & CHR(13) & "请进行检查修改！！！", vbCritical: Exit Sub
+    If msg <> "" Then MsgBox msg & "Please check and revise！！！" & CHR(13) & UText(35831, 36827, 34892, 26816, 26597, 20462, 25913) & "！！！", vbCritical: Exit Sub
     
    
     
@@ -1983,9 +2023,9 @@ Dim rg3 As Range
   ' With Thisdocument.Range.Tables(tbn)
 
     ' If Mid(.Cell(1, 2).Range.Text, 1, Len(.Cell(1, 2).Range.Text) - 1) = "Conform" And sap(3) > 1 Then MsgBox tbname(3) & "Table: the result was Conform but with SAP，Please note" & Chr(13) & _
-     tbname(3) & "表格结果为Conform 但有SAP，请注意" & Chr(13) & Chr(13)
+     tbname(3) & UText(34920, 26684, 32467, 26524, 20026) & "Conform " & UText(20294, 26377) & "SAP，" & UText(35831, 27880, 24847) & Chr(13) & Chr(13)
    '  If Mid(.Cell(1, 2).Range.Text, 1, Len(.Cell(1, 2).Range.Text) - 1) <> "Conform" And sap(3) = 1 Then MsgBox tbname(3) & "Table: the result was not Conform，but without SAP，Please revise it." & Chr(13) & _
-     tbname(3) & "表格结论不是conform，但却没有写SAP，请进行修改", vbCritical: Exit Sub
+     tbname(3) & UText(34920, 26684, 32467, 35770, 19981, 26159) & "conform，" & UText(20294, 21364, 27809, 26377, 20889) & "SAP，" & UText(35831, 36827, 34892, 20462, 25913), vbCritical: Exit Sub
   ' End With
     
  
@@ -1999,9 +2039,9 @@ Dim rg3 As Range
   
   ' With Thisdocument.Range.Tables(tbn)
    '  If Mid(.Cell(1, 2).Range.Text, 1, Len(.Cell(1, 2).Range.Text) - 1) = "Conform" And sap(4) > 1 Then MsgBox tbname(4) & " Table: the result was Conform, nut with SAP，Please note." & Chr(13) & _
-     tbname(4) & "表格结果为Conform 但有SAP，请注意" & Chr(13)
+     tbname(4) & UText(34920, 26684, 32467, 26524, 20026) & "Conform " & UText(20294, 26377) & "SAP，" & UText(35831, 27880, 24847) & Chr(13)
   '   If Mid(.Cell(1, 2).Range.Text, 1, Len(.Cell(1, 2).Range.Text) - 1) <> "Conform" And sap(4) = 1 Then MsgBox tbname(4) & "Table: the result was not Conform，but without SAP，Please revise it." & Chr(13) & _
-     tbname(4) & "表格结论不是conform，但却没有写SAP，请进行修改", vbCritical: Exit Sub
+     tbname(4) & UText(34920, 26684, 32467, 35770, 19981, 26159) & "conform，" & UText(20294, 21364, 27809, 26377, 20889) & "SAP，" & UText(35831, 36827, 34892, 20462, 25913), vbCritical: Exit Sub
  '  End With
   
   
@@ -2017,42 +2057,42 @@ Dim rg3 As Range
         If Trim(.Cell(1, 1).Range.Text) Like TBName(1) = True Then
         Res = .Cell(1, 2).Range.Text
         dres(1) = Mid(Res, 1, Len(Res) - 1)
-            If dres(1) Like ch = True Or dres(1) Like che = True Or dres(1) = "" Then msg = msg + "1.Quantity Table without result" & CHR(13) & "1.Quantity表格结论未选" & CHR(13)
+            If dres(1) Like ch = True Or dres(1) Like che = True Or dres(1) = "" Then msg = msg + "1.Quantity Table without result" & CHR(13) & "1.Quantity" & UText(34920, 26684, 32467, 35770, 26410, 36873) & CHR(13)
         End If
         If Trim(.Cell(1, 1).Range.Text) Like TBName(2) = True Then
         Res = .Cell(1, 2).Range.Text
         dres(2) = Mid(Res, 1, Len(Res) - 1)
-           If dres(2) Like ch = True Or dres(2) Like che = True Or dres(2) = "" Then msg = msg + "2.Workmanship Table without result" & CHR(13) & "2.Workmanship表格结论未选" & CHR(13)
+           If dres(2) Like ch = True Or dres(2) Like che = True Or dres(2) = "" Then msg = msg + "2.Workmanship Table without result" & CHR(13) & "2.Workmanship" & UText(34920, 26684, 32467, 35770, 26410, 36873) & CHR(13)
         End If
         If Trim(.Cell(1, 1).Range.Text) Like TBName(3) = True Then
         Res = .Cell(1, 2).Range.Text
         dres(3) = Mid(Res, 1, Len(Res) - 1)
-            If dres(3) Like ch = True Or dres(3) Like che = True Or dres(3) = "" Then msg = msg + "3.Style, Color & Documentation table without result" & CHR(13) & "3.Style, Color & Documentation表格结论未选" & CHR(13)
+            If dres(3) Like ch = True Or dres(3) Like che = True Or dres(3) = "" Then msg = msg + "3.Style, Color & Documentation table without result" & CHR(13) & "3.Style, Color & Documentation" & UText(34920, 26684, 32467, 35770, 26410, 36873) & CHR(13)
         End If
         If Trim(.Cell(1, 1).Range.Text) Like TBName(4) = True Then
         Res = .Cell(1, 2).Range.Text
         dres(4) = Mid(Res, 1, Len(Res) - 1)
    
-            If dres(4) Like ch = True Or dres(4) Like che = True Or dres(4) = "" Then msg = msg + "4.Field Test & Measurement table without result" & CHR(13) & "4.Field Test & Measurement表格结论未选" & CHR(13)
+            If dres(4) Like ch = True Or dres(4) Like che = True Or dres(4) = "" Then msg = msg + "4.Field Test & Measurement table without result" & CHR(13) & "4.Field Test & Measurement" & UText(34920, 26684, 32467, 35770, 26410, 36873) & CHR(13)
         End If
         If Trim(.Cell(1, 1).Range.Text) Like TBName(5) = True Then
         Res = .Cell(1, 2).Range.Text
         dres(5) = Mid(Res, 1, Len(Res) - 1)
-             If dres(5) Like ch = True Or dres(5) Like che = True Or dres(5) = "" Then msg = msg + "5.Shipping Mark & Packaging table without result" & CHR(13) & "5.Shipping Mark & Packaging表格结论未选" & CHR(13)
+             If dres(5) Like ch = True Or dres(5) Like che = True Or dres(5) = "" Then msg = msg + "5.Shipping Mark & Packaging table without result" & CHR(13) & "5.Shipping Mark & Packaging" & UText(34920, 26684, 32467, 35770, 26410, 36873) & CHR(13)
         End If
      End With
     Next X
     
     If msg <> "" Then
       With ThisDocument.Tables(3)
-         For i = 3 To 7   '单元格清零
+         For i = 3 To 7   '" & UText(21333, 20803, 26684, 28165, 38646) & "
            For j = 2 To 4
          .Cell(i, j).Range.Text = ""
            Next j
          Next i
      .Cell(8, 2).Range.Text = ""
       End With
-      MsgBox msg & "Please choose the result and run program again." & CHR(13) & "请选择后再运行程序！！！": Exit Sub
+      MsgBox msg & "Please choose the result and run program again." & CHR(13) & UText(35831, 36873, 25321, 21518, 20877, 36816, 34892, 31243, 24207) & "！！！": Exit Sub
        
    End If
  
@@ -2060,14 +2100,14 @@ Dim rg3 As Range
    
   
      
-             '获取SAP表的结论
+             '" & UText(33719, 21462) & "SAP" & UText(34920, 30340, 32467, 35770) & "
              
         Dim sapQty, swms, sscd, stst, ssmp, kwd, rwd As String
         Dim lwd, lrd As Integer
              
         
             With ThisDocument.Bookmarks("sapcontent").Range
-              tNo = .Tables.count '计算表格总数
+              tNo = .Tables.count '" & UText(35745, 31639, 34920, 26684, 24635, 25968) & "
               For T = 1 To tNo
                 With ThisDocument.Bookmarks("sapcontent").Range.Tables(T)
       
@@ -2090,11 +2130,11 @@ Dim rg3 As Range
                    If kwd Like "*Field Test & Measurement*" = True Then stst = rwd
                    If kwd Like "*Shipping Mark & Packaging*" = True Then ssmp = rwd
                    
-                   '检查SAP是否运行过检查
+                   '" & UText(26816, 26597) & "SAP" & UText(26159, 21542, 36816, 34892, 36807, 26816, 26597) & "
                    If Rc > 1 Then
                     
                       If Mid(.Cell(2, 2).Range.Text, 1, Len(.Cell(2, 2).Range.Text) - 2) Like ch = True Then MsgBox "Please run the micro program for SAP first." & CHR(13) & _
-                      "请在SAP表格，先运行SAP检查": Exit Sub
+                      UText(35831, 22312) & "SAP" & UText(34920, 26684) & "，" & UText(20808, 36816, 34892) & "SAP" & UText(26816, 26597): Exit Sub
                    End If
                    
                  End If
@@ -2105,32 +2145,32 @@ Dim rg3 As Range
              
             End With
             
-        '判定有否有SAP的被判为合格
+        '" & UText(21028, 23450, 26377, 21542, 26377) & "SAP" & UText(30340, 34987, 21028, 20026, 21512, 26684) & "
             If dres(1) = DCF And sapQty = "" Then alt = alt + "There are SAP for Quantity while the result of Quantity was Conform" & CHR(13) & _
-            "SAP 1 Quantity 中有备注事项，Quantity的结论却为Conform" & CHR(13)
+            "SAP 1 Quantity " & UText(20013, 26377, 22791, 27880, 20107, 39033) & "，Quantity" & UText(30340, 32467, 35770, 21364, 20026) & "Conform" & CHR(13)
             
             If dres(2) = DCF And swms = "" Then alt = alt + "There are SAP for Workmanship while the result of Workmanship was Conform" & CHR(13) & _
-            "SAP 2 Workmanship中有备注事项，Workmanship的结论却为Conform" & CHR(13)
+            "SAP 2 Workmanship" & UText(20013, 26377, 22791, 27880, 20107, 39033) & "，Workmanship" & UText(30340, 32467, 35770, 21364, 20026) & "Conform" & CHR(13)
             
             If dres(3) = DCF And sscd = "" Then alt = alt + "There are SAP for  Style, Color & Documentation while the result ofStyle, Color & Documentation was Conform" & CHR(13) & _
-            "SAP 3 Style, Color & Documentation中有备注事项，Style, Color & Documentation的结论却为Conform" & CHR(13)
+            "SAP 3 Style, Color & Documentation" & UText(20013, 26377, 22791, 27880, 20107, 39033) & "，Style, Color & Documentation" & UText(30340, 32467, 35770, 21364, 20026) & "Conform" & CHR(13)
             
             If dres(4) = DCF And stst = "" Then alt = alt + "There are SAP for  Field Test & Measurement while the result of Field Test & Measurement was Conform" & CHR(13) & _
-            "SAP 4 Field Test & Measurement中有备注事项，Field Test & Measurement的结论却为Conform" & CHR(13)
+            "SAP 4 Field Test & Measurement" & UText(20013, 26377, 22791, 27880, 20107, 39033) & "，Field Test & Measurement" & UText(30340, 32467, 35770, 21364, 20026) & "Conform" & CHR(13)
             
             If dres(5) = DCF And ssmp = "" Then alt = alt + "There are SAP for Shipping Mark & Packaging while the result of shipping Mark & Packaging was Conform" & CHR(13) & _
-            "SAP 5Shipping Mark & Packaging中有备注事项Shipping Mark & Packaging的结论却为Conform" & CHR(13)
+            "SAP 5Shipping Mark & Packaging" & UText(20013, 26377, 22791, 27880, 20107, 39033) & "Shipping Mark & Packaging" & UText(30340, 32467, 35770, 21364, 20026) & "Conform" & CHR(13)
             
-            If alt <> "" Then MsgBox alt & "Please check, if you revise any please run program again." & CHR(13) & "请检查确认，若有修改请改后再次运行"
+            If alt <> "" Then MsgBox alt & "Please check, if you revise any please run program again." & CHR(13) & UText(35831, 26816, 26597, 30830, 35748) & "，" & UText(33509, 26377, 20462, 25913, 35831, 25913, 21518, 20877, 27425, 36816, 34892)
          
         With ThisDocument.Tables(3)
-         For i = 3 To 7   '单元格清零
+         For i = 3 To 7   '" & UText(21333, 20803, 26684, 28165, 38646) & "
            For j = 2 To 4
          .Cell(i, j).Range.Text = ""
            Next j
          Next i
          
-    '结论单元格赋值
+    '" & UText(32467, 35770, 21333, 20803, 26684, 36171, 20540) & "
           
           For i = 3 To 7
               If dres(i - 2) = NA Then .Cell(i, 2).Range.Text = "-": .Cell(i, 3).Range.Text = "-": .Cell(i, 4).Range.Text = "-"
@@ -2140,7 +2180,7 @@ Dim rg3 As Range
           Next i
          
            
-          '结论判定
+          '" & UText(32467, 35770, 21028, 23450) & "
    
         CF = "CONFORM"
         NC = "NOT CONFORM"
@@ -2236,15 +2276,15 @@ Dim rg3 As Range
     End With
     
 200   MsgBox "Complete calculation." & CHR(13) & "Note: if you revise any data, please run the program again." & CHR(13) & _
-"结论计算完成！" & CHR(13) & "注意，若有提示要求检查修改的，请修改后再次运行！"
+UText(32467, 35770, 35745, 31639, 23436, 25104) & "！" & CHR(13) & UText(27880, 24847) & "，" & UText(33509, 26377, 25552, 31034, 35201, 27714, 26816, 26597, 20462, 25913, 30340) & "，" & UText(35831, 20462, 25913, 21518, 20877, 27425, 36816, 34892) & "！"
     
 End Sub
 Sub sumdefect()
 
 '
-' sumdefect 宏,Revby wyn/20241216
+' sumdefect " & UText(23439) & ",Revby wyn/20241216
 '
-'累加缺陷
+'" & UText(32047, 21152, 32570, 38519) & "
    
 Dim myrow, i, j, k, M, sCr, sMa, sMi As Integer
 Dim dCr(200), dMa(200), dMi(200), N, Dk, Sk As Integer
@@ -2297,14 +2337,14 @@ Dim ComItms  As Integer
      End With
   Next X
   If Itms = 0 Then MsgBox "The program has not got the items quantity,please run the Quantity total program at the Quantity table before run this program" & CHR(10) & _
-  "本程序还未获得款数，请先运行Quantity表格中的Total程序后再运行本程序", vbCritical: Exit Sub
+  UText(26412, 31243, 24207, 36824, 26410, 33719, 24471, 27454, 25968) & "，" & UText(35831, 20808, 36816, 34892) & "Quantity" & UText(34920, 26684, 20013, 30340) & "Total" & UText(31243, 24207, 21518, 20877, 36816, 34892, 26412, 31243, 24207), vbCritical: Exit Sub
  
 10   With ThisDocument.Range.Tables(tbn)
       
 
     myrow = .Rows.count
     Coln = .Columns.count
-    myrow = myrow - 2  '获得total foud 上一行
+    myrow = myrow - 2  '" & UText(33719, 24471) & "total foud " & UText(19978, 19968, 34892) & "
     N = 0
     For k = 2 To myrow
         If .Rows(k).Cells.count = 1 And LCase(.Cell(k, 1).Range.Text) Like "*item*" = True Then
@@ -2322,7 +2362,7 @@ Dim ComItms  As Integer
       Else
          MsgBox "The item quantity for this inspection is " & ComItms & " While ther are only " & N & "rows input with Item Info" & _
          "You may have delete some Item rows, Please add manually then run program again" & CHR(10) & _
-         "本次验货款数为" & ComItms & "款，但仅有" & N & "行输入Item号，你可能删除了某些ITem行，请手工补充后再运行程序！", vbCritical
+         UText(26412, 27425, 39564, 36135, 27454, 25968, 20026) & ComItms & UText(27454) & "，" & UText(20294, 20165, 26377) & N & UText(34892, 36755, 20837) & "Item" & UText(21495) & "，" & UText(20320, 21487, 33021, 21024, 38500, 20102, 26576, 20123) & "ITem" & UText(34892) & "，" & UText(35831, 25163, 24037, 34917, 20805, 21518, 20877, 36816, 34892, 31243, 24207) & "！", vbCritical
           Exit Sub
       End If
     
@@ -2330,7 +2370,7 @@ Dim ComItms  As Integer
     myrow = .Rows.count
     myrow = myrow - 2
         
-     For k = myrow To 2 Step -1  '删除全空行
+     For k = myrow To 2 Step -1  '" & UText(21024, 38500, 20840, 31354, 34892) & "
         tem = .Cell(k, 1).Range.Text
         If LCase(Left(Trim(tem), 4)) <> "item" Then
           If Left(Trim(.Cell(k, Coln - 3).Range.Text), 1) = CHR(13) And _
@@ -2365,9 +2405,9 @@ Dim ComItms  As Integer
     Next k
     If N > ComItms Then MsgBox "In defect table, there are " & N & " item rows, which is larger then inspection items of  " & ComItms & _
      "Please delete extra item's row and run program again" & CHR(10) & _
-    "Defect表有" & N & "个item行，比检验的款数" & ComItms & "多，请删除多余的Item行再运行程序！", vbCritical: Exit Sub
+    "Defect" & UText(34920, 26377) & N & UText(20010) & "item" & UText(34892) & "，" & UText(27604, 26816, 39564, 30340, 27454, 25968) & ComItms & UText(22810) & "，" & UText(35831, 21024, 38500, 22810, 20313, 30340) & "Item" & UText(34892, 20877, 36816, 34892, 31243, 24207) & "！", vbCritical: Exit Sub
  
-     '删除下表没内容的多余ITEM行
+     '" & UText(21024, 38500, 19979, 34920, 27809, 20869, 23481, 30340, 22810, 20313) & "ITEM" & UText(34892) & "
     ' myrow = .Rows.count
     ' myrow = myrow - 2
 
@@ -2383,7 +2423,7 @@ Dim ComItms  As Integer
      msg = ""
      mbx = ""
      
-     For k = 2 To myrow  '从第二行开始，判断是否item行,获得每行单元格的defect 数
+     For k = 2 To myrow  '" & UText(20174, 31532, 20108, 34892, 24320, 22987) & "，" & UText(21028, 26029, 26159, 21542) & "item" & UText(34892) & "," & UText(33719, 24471, 27599, 34892, 21333, 20803, 26684, 30340) & "defect " & UText(25968) & "
         If .Rows(k).Cells.count = Coln Then
            If .Cell(k, Coln - 3).Range.Fields.count = 0 And .Cell(k, Coln - 3).Range.Text Like "*Allowed*" = False Then
      
@@ -2401,27 +2441,27 @@ Dim ComItms  As Integer
            
            
             If dCr(k) < 0 Or dMa(k) < 0 Or dMi(k) < 0 Then msg = msg + " row " & k & ", the defect of " & temw & ", the defect number was minus!" & CHR(13) & _
-            "第" & k & "行缺陷" & temw & "缺陷数为负数!" & CHR(10)
+            UText(31532) & k & UText(34892, 32570, 38519) & temw & UText(32570, 38519, 25968, 20026, 36127, 25968) & "!" & CHR(10)
             
             If Left(Trim(tem), 1) <> CHR(13) And UCase((Mid(Trim(tem), 1, 9))) <> "NO DEFECT" Then
               
                   If dCr(k) = 0 And dMa(k) = 0 And dMi(k) = 0 Then msg = msg + "the row " & k & ", the defect of " & temw & ", the defect number was not input" & CHR(10) & _
-                  "第" & k & "行缺陷" & temw & "缺陷数量没有判定" & CHR(10)
+                  UText(31532) & k & UText(34892, 32570, 38519) & temw & UText(32570, 38519, 25968, 37327, 27809, 26377, 21028, 23450) & CHR(10)
                       
                   If (dCr(k) > 0 And dMa(k) > 0) Or (dCr(k) > 0 And dMi(k) > 0) Then msg = msg + " row " & k & ", the defect of" & temw & " input with  Critical and other defect." & CHR(10) & _
-                  "第" & k & "行" & temw & "有Critical缺陷，又有其他缺陷，重复判定!" & CHR(10)
+                  UText(31532) & k & UText(34892) & temw & UText(26377) & "Critical" & UText(32570, 38519) & "，" & UText(21448, 26377, 20854, 20182, 32570, 38519) & "，" & UText(37325, 22797, 21028, 23450) & "!" & CHR(10)
              End If
              
                  
              If UCase((Mid(Trim(tem), 1, 9))) = "NO DEFECT" Then
                      If dCr(k) > 0 Or dMa(k) > 0 Or dMi(k) > 0 Then msg = msg + "row " & k & " , with statement of No Defect and defect number." & CHR(10) & _
-                     "第" & k & "行No Defect,但又有缺陷数!" & CHR(10)
+                     UText(31532) & k & UText(34892) & "No Defect," & UText(20294, 21448, 26377, 32570, 38519, 25968) & "!" & CHR(10)
               End If
                   
               If Len(tem) = 0 Then
               
                      If dCr(k) > 0 Or dMa(k) > 0 Or dMi(k) > 0 Then msg = msg + "row " & k & ", without defect statement!" & CHR(10) & _
-                     "第" & k & "行缺陷描述未写,但又有缺陷数!" & CHR(10)
+                     UText(31532) & k & UText(34892, 32570, 38519, 25551, 36848, 26410, 20889) & "," & UText(20294, 21448, 26377, 32570, 38519, 25968) & "!" & CHR(10)
               End If
               
                     
@@ -2437,12 +2477,12 @@ Dim ComItms  As Integer
      Next k
           
            If msg <> "" Then MsgBox "Defects Table:" & CHR(10) & msg & "Please revise them and run program again" & CHR(10) & _
-           "Defects表" & CHR(10) & msg & "请对以上进行修改后再次运行！！！", vbCritical, "警告": Exit Sub
+           "Defects" & UText(34920) & CHR(10) & msg & UText(35831, 23545, 20197, 19978, 36827, 34892, 20462, 25913, 21518, 20877, 27425, 36816, 34892) & "！！！", vbCritical, UText(35686, 21578): Exit Sub
          
          
          
  '====================
-       sCr = 0 '清零
+       sCr = 0 '" & UText(28165, 38646) & "
        sMa = 0
        sMi = 0
        Dk = 0
@@ -2496,7 +2536,7 @@ Dim ComItms  As Integer
    Res = Mid(ThisDocument.Range.Tables(tbn - 1).Cell(1, 2).Range.Text, 1, Len(ThisDocument.Range.Tables(tbn - 1).Cell(1, 2).Range.Text) - 1)
  
      
-    'SaP 项
+    'SaP " & UText(39033) & "
 
    TBName = "*special attention point for workmanship*"
    tb = ThisDocument.Tables.count - 1
@@ -2523,20 +2563,20 @@ Dim ComItms  As Integer
 30   If Dk > 0 Then
       If Res <> "Not Conformed" Then msg = msg + "In defects table, there are " & Dk & _
       " items which defect exceed the allowance, however the result of workmanship table was not 'Not Conformed'，Please choose Not Conformed!!!" & CHR(13) & _
-       "Defect表中有" & Dk & "项缺陷数大于允许值，workmanship表中的结论不是Not Conformed，请选择Not Conformed!!!" & CHR(13)
+       "Defect" & UText(34920, 20013, 26377) & Dk & UText(39033, 32570, 38519, 25968, 22823, 20110, 20801, 35768, 20540) & "，workmanship" & UText(34920, 20013, 30340, 32467, 35770, 19981, 26159) & "Not Conformed，" & UText(35831, 36873, 25321) & "Not Conformed!!!" & CHR(13)
     Else
       If Sk = 0 Then
         If Res <> "Conformed" Then msg = msg + "Defect number in defect table within allowance and without SAP，However the result of wokmanship was not 'Conformed'！！！" + CHR(13) & _
-      "Defect表中的缺陷数在允许范围内且没有SAP，现在的Workmanship结论却不是Conformed！！！" + CHR(13)
+      "Defect" & UText(34920, 20013, 30340, 32570, 38519, 25968, 22312, 20801, 35768, 33539, 22260, 20869, 19988, 27809, 26377) & "SAP，" & UText(29616, 22312, 30340) & "Workmanship" & UText(32467, 35770, 21364, 19981, 26159) & "Conformed！！！" + CHR(13)
      Else
          If Res <> "Not Conformeded" Then msg = msg + "Defect number within allowance but there are SAPs for workmanship, however the result was not ‘Not Conformed’！！！" & CHR(13) & _
-       "Degect表中的缺陷数在允许范围内但有SAP项，现在的结论却不是Not Conformed！！！" + CHR(13)
+       "Degect" & UText(34920, 20013, 30340, 32570, 38519, 25968, 22312, 20801, 35768, 33539, 22260, 20869, 20294, 26377) & "SAP" & UText(39033) & "，" & UText(29616, 22312, 30340, 32467, 35770, 21364, 19981, 26159) & "Not Conformed！！！" + CHR(13)
     End If
   End If
  End With
  
     If msg <> "" Then MsgBox msg & CHR(10) & CHR(10) & "Please revise it and run program again!" & CHR(10) & _
-    "请检查更正并重新运行程序！", vbCritical
+    UText(35831, 26816, 26597, 26356, 27491, 24182, 37325, 26032, 36816, 34892, 31243, 24207) & "！", vbCritical
    
   
    
@@ -2642,7 +2682,7 @@ Dim Cn As Integer
     End With
 End Sub
 Sub BubbleSort(ByRef SortArray As Variant, BK, Dn)
-' 冒泡排序算法，同时排序书签
+' " & UText(20882, 27873, 25490, 24207, 31639, 27861) & "，" & UText(21516, 26102, 25490, 24207, 20070, 31614) & "
 
     Dim i As Integer, j As Integer
     Dim tempBookmark  As String
@@ -2654,13 +2694,13 @@ Sub BubbleSort(ByRef SortArray As Variant, BK, Dn)
             If SortArray(i, 3) < SortArray(j, 3) Or _
                (SortArray(i, 3) = SortArray(j, 3) And SortArray(i, 4) < SortArray(j, 4)) Or _
                (SortArray(i, 3) = SortArray(j, 3) And SortArray(i, 4) = SortArray(j, 4) And SortArray(i, 5) < SortArray(j, 5)) Then
-                ' 交换行
+                ' " & UText(20132, 25442, 34892) & "
                 For k = 2 To 5
                     tempArray(k) = SortArray(i, k)
                     SortArray(i, k) = SortArray(j, k)
                     SortArray(j, k) = tempArray(k)
                 Next k
-                ' 交换书签
+                ' " & UText(20132, 25442, 20070, 31614) & "
                 tempBookmark = BK(i)
                 BK(i) = BK(j)
                 BK(j) = tempBookmark
@@ -2672,7 +2712,7 @@ End Sub
 Sub qtytotal()
 '
 '
-' qtytotal 宏  9项模板，by wyn/20241216
+' qtytotal " & UText(23439) & "  9" & UText(39033, 27169, 26495) & "，by wyn/20241216
 '
 '
 Dim qtyRow, qtyCol, k, p, Q, R, cnt, CeC, CRow, Im(200), Sm(200) As Integer ' Itms
@@ -2703,13 +2743,13 @@ Dim TBName, Ufw, Uaw, KwQ As String
           Selection.Range.Font.ColorIndex = wdBlack
       Next i
      
-        '判定有没有合并单元格
+        '" & UText(21028, 23450, 26377, 27809, 26377, 21512, 24182, 21333, 20803, 26684) & "
      CRow = qtyRow - 5
      CeC = ThisDocument.Tables(tbn).Range.Cells.count
 
 
      If (CeC - 25) / qtyCol <> CRow Then MsgBox "Quantity Table has mergecell,program can't deal with it,please split it to default frame." & _
-     CHR(10) & "(Quantity表格有合并单元格，不符合要求，程序不能计算，请重新拆分单元格，恢复原有格式后再运行本程序)！！！": Exit Sub
+     CHR(10) & "(Quantity" & UText(34920, 26684, 26377, 21512, 24182, 21333, 20803, 26684) & "，" & UText(19981, 31526, 21512, 35201, 27714) & "，" & UText(31243, 24207, 19981, 33021, 35745, 31639) & "，" & UText(35831, 37325, 26032, 25286, 20998, 21333, 20803, 26684) & "，" & UText(24674, 22797, 21407, 26377, 26684, 24335, 21518, 20877, 36816, 34892, 26412, 31243, 24207) & ")！！！": Exit Sub
   
      For p = qtyRow - 1 To 5 Step -1
         cnt = 0
@@ -2725,14 +2765,14 @@ Dim TBName, Ufw, Uaw, KwQ As String
         
           For Q = 3 To 9
              If Left(txt(p, Q), 1) = CHR(13) Then msg = msg + TBName & "table: row" & p & ", some cells without inputing data,please note." & CHR(13) _
-             & TBName & "表格第" & p & "行有表格没有输入数据，请注意!" & CHR(10)
+             & TBName & UText(34920, 26684, 31532) & p & UText(34892, 26377, 34920, 26684, 27809, 26377, 36755, 20837, 25968, 25454) & "，" & UText(35831, 27880, 24847) & "!" & CHR(10)
           Next Q
           End If
           
         If Left(txt(p, 1), 1) = CHR(13) And Left(txt(p, 2), 1) = CHR(13) Then
           For Q = 3 To 9
             If Left(txt(p, Q), 1) <> CHR(13) Then msg = msg + TBName & " Table: row" & p & " without inputing P.O. No. or Item No.,please note." & _
-             CHR(10) & TBName & "表格第" & p & "行有数据，但却没有输入P.O. No. 或Item No.请注意!" & CHR(10)
+             CHR(10) & TBName & UText(34920, 26684, 31532) & p & UText(34892, 26377, 25968, 25454) & "，" & UText(20294, 21364, 27809, 26377, 36755, 20837) & "P.O. No. " & UText(25110) & "Item No." & UText(35831, 27880, 24847) & "!" & CHR(10)
           Next Q
         End If
            
@@ -2745,7 +2785,7 @@ Dim TBName, Ufw, Uaw, KwQ As String
 
                If msg <> "" Then
            Click = MsgBox(msg & CHR(10) & "Click (Yes) to Continue running the program or Click (No) to exit program" & CHR(10) & _
-           "点击（是）继续运行程序或点击（否）退出程序", vbYesNo)
+           UText(28857, 20987) & "（" & UText(26159) & "）" & UText(32487, 32493, 36816, 34892, 31243, 24207, 25110, 28857, 20987) & "（" & UText(21542) & "）" & UText(36864, 20986, 31243, 24207), vbYesNo)
             msg = ""
             If Click <> vbYes Then Exit Sub
         End If
@@ -2757,10 +2797,10 @@ Dim TBName, Ufw, Uaw, KwQ As String
     qtyRow = .Rows.count
     
      For R = 3 To 9
-      .Cell(qtyRow, R - 1).Range.Text = scol(R) 'r-1 扣除合并单无格
+      .Cell(qtyRow, R - 1).Range.Text = scol(R) 'r-1 " & UText(25187, 38500, 21512, 24182, 21333, 26080, 26684) & "
      Next R
      
-     Itms = qtyRow - 5 '款数以及款号，后面写入workmanship 表用
+     Itms = qtyRow - 5 '" & UText(27454, 25968, 20197, 21450, 27454, 21495) & "，" & UText(21518, 38754, 20889, 20837) & "workmanship " & UText(34920, 29992) & "
      ReDim Ptx(1 To Itms)
      ReDim Itx(1 To Itms)
      Dim Psm() As Integer
@@ -2769,7 +2809,7 @@ Dim TBName, Ufw, Uaw, KwQ As String
      For i = 5 To qtyRow - 1
        Ptx(i - 4) = Mid(.Cell(i, 1).Range.Text, 1, Len(.Cell(i, 1).Range.Text) - 2)
        Itx(i - 4) = Mid(.Cell(i, 2).Range.Text, 1, Len(.Cell(i, 2).Range.Text) - 2)
-       Sm(i - 4) = Val(.Cell(i, 8).Range.Text)     '每款抽样量
+       Sm(i - 4) = Val(.Cell(i, 8).Range.Text)     '" & UText(27599, 27454, 25277, 26679, 37327) & "
        Psm(i - 4) = Val(.Cell(i, 9).Range.Text)
      Next i
      sms = Val(.Cell(qtyRow, 7).Range.Text)
@@ -2841,7 +2881,7 @@ Dim TBName, Ufw, Uaw, KwQ As String
       
 15    Set dictItem = Nothing
 
-    '同步选择的单位
+    '" & UText(21516, 27493, 36873, 25321, 30340, 21333, 20301) & "
     
    .Cell(4, 3).Range.Text = .Cell(4, 4).Range.Text
    .Cell(4, 6).Range.Text = .Cell(4, 4).Range.Text
@@ -2849,7 +2889,7 @@ Dim TBName, Ufw, Uaw, KwQ As String
    .Cell(4, 7).Range.Text = .Cell(4, 5).Range.Text
    .Cell(4, 9).Range.Text = .Cell(4, 5).Range.Text
    
-     '检查产品单位 是否一致
+     '" & UText(26816, 26597, 20135, 21697, 21333, 20301) & " " & UText(26159, 21542, 19968, 33268) & "
      Celn = ThisDocument.Tables(1).Range.Cells.count
    
      For i = 1 To Celn
@@ -2867,51 +2907,51 @@ Dim TBName, Ufw, Uaw, KwQ As String
        Ufw = ThisDocument.Tables(1).Range.Cells(PSQ + 1).Range.words(2)
      Else
       
-       MsgBox "报告首页表格Quantity数据未输入或格式不符合要求，正确的输入方式是数字+空格+单位，请输入后进行运行程序！" & CHR(13) & _
+       MsgBox UText(25253, 21578, 39318, 39029, 34920, 26684) & "Quantity" & UText(25968, 25454, 26410, 36755, 20837, 25110, 26684, 24335, 19981, 31526, 21512, 35201, 27714) & "，" & UText(27491, 30830, 30340, 36755, 20837, 26041, 24335, 26159, 25968, 23383) & "+" & UText(31354, 26684) & "+" & HubKeyUnit() & "，" & UText(35831, 36755, 20837, 21518, 36827, 34892, 36816, 34892, 31243, 24207) & "！" & CHR(13) & _
        "The quantity in firrst table of first page without data or the inputing is in incorrect format, the format shall be number+space+unit,please revise it and run program again!", vbApplicationModal: Exit Sub
      End If
      If Right(Ufw, 1) = "s" Then Ufw = Mid(Ufw, 1, Len(Ufw) - 1)
      Uaw = .Cell(4, 3).Range.words(2)
      Upw = .Cell(4, 7).Range.words(2)
      
-    ' If Uaw <> Ufw Then MsgBox "报告首页表格P.O. Quantity的产品单位是" & Ufw & ", 而1. Quantity表格的产品单位是" & Uaw _
-     & "两者不一样，请修改后再次运行本程序！！！" & Chr(13) & "注意1. Quantity表格的产品单位的修改是点表格第4列的Shipment Qty下方进行选择，运行程序后表格其他处的单位将自行同步修改，而报告首页表格P.O. Quantity处的单位不会同步，需要手工去修改!": Exit Sub
+    'If Uaw <> Ufw Then MsgBox "P.O. Quantity" & Ufw & ", 1. Quantity" & Uaw _
+     & UText(20004, 32773, 19981, 19968, 26679) & "，" & UText(35831, 20462, 25913, 21518, 20877, 27425, 36816, 34892, 26412, 31243, 24207) & "！！！" & Chr(13) & UText(27880, 24847) & "1. Quantity" & UText(34920, 26684, 30340, 20135, 21697, 21333, 20301, 30340, 20462, 25913, 26159, 28857, 34920, 26684, 31532) & "4" & UText(21015, 30340) & "Shipment Qty" & UText(19979, 26041, 36827, 34892, 36873, 25321) & "，" & UText(36816, 34892, 31243, 24207, 21518, 34920, 26684, 20854, 20182, 22788, 30340, 21333, 20301, 23558, 33258, 34892, 21516, 27493, 20462, 25913) & "，" & UText(32780, 25253, 21578, 39318, 39029, 34920, 26684) & "P.O. Quantity" & UText(22788, 30340, 21333, 20301, 19981, 20250, 21516, 27493) & "，" & UText(38656, 35201, 25163, 24037, 21435, 20462, 25913) & "!": Exit Sub
       
         
      If LCase(Uaw) <> LCase(Ufw) Then msg = msg & "The unit in fist page is " & Ufw & " while it in Quantity table is " & Uaw _
      & " please check and revise it and than run this program again" & CHR(13) & _
-     "报告首页表格P.O. Quantity的产品单位是" & Ufw & ", 而Quantity表格的产品单位是" & Uaw _
-     & "两者不一样，请修改后再次运行本程序！！！" & CHR(13)
+     UText(25253, 21578, 39318, 39029, 34920, 26684) & "P.O. Quantity" & UText(30340, 20135, 21697, 21333, 20301, 26159) & Ufw & ", " & UText(32780) & "Quantity" & UText(34920, 26684, 30340, 20135, 21697, 21333, 20301, 26159) & Uaw _
+     & UText(20004, 32773, 19981, 19968, 26679) & "，" & UText(35831, 20462, 25913, 21518, 20877, 27425, 36816, 34892, 26412, 31243, 24207) & "！！！" & CHR(13)
       
       
-      '检查PO数量是否一致
+      '" & UText(26816, 26597) & "PO" & UText(25968, 37327, 26159, 21542, 19968, 33268) & "
     
      Nfw = Val(ThisDocument.Tables(1).Range.Cells(PSQ + 1).Range.words(1))
      Naw = Val(.Cell(qtyRow, 2).Range.Text)
      
-    ' If Nfw <> Naw Then MsgBox "报告首页表格P.O. Quantity的产品数量是" & Nfw & ", 而1. Quantity表格的PO Qty数量是" & Naw & _
-     "两者不一样，请修改后再次运行本程序！！！": Exit Sub
+    'If Nfw <> Naw Then MsgBox "P.O. Quantity" & Nfw & ", 1. QuantityPO Qty" & Naw & _
+     UText(20004, 32773, 19981, 19968, 26679) & "，" & UText(35831, 20462, 25913, 21518, 20877, 27425, 36816, 34892, 26412, 31243, 24207) & "！！！": Exit Sub
      
       If Nfw <> Naw Then MsgBox "P.O. Quantity in first page is" & Nfw & "while it in Quantity table is" & Naw & _
-     "Please check and revise it." & CHR(13) & "报告首页表格P.O. Quantity的产品数量是" & Nfw & ", 而1. Quantity表格的PO Qty数量是" & Naw & _
-     "两者不一样，请修改后再次运行本程序！！！", vbCritical: Exit Sub
+     "Please check and revise it." & CHR(13) & UText(25253, 21578, 39318, 39029, 34920, 26684) & "P.O. Quantity" & UText(30340, 20135, 21697, 25968, 37327, 26159) & Nfw & ", " & UText(32780) & "1. Quantity" & UText(34920, 26684, 30340) & "PO Qty" & UText(25968, 37327, 26159) & Naw & _
+     UText(20004, 32773, 19981, 19968, 26679) & "，" & UText(35831, 20462, 25913, 21518, 20877, 27425, 36816, 34892, 26412, 31243, 24207) & "！！！", vbCritical: Exit Sub
      
      If scol(6) > scol(4) Then MsgBox "Packed Qty is found larger than Shipment Qty，Please check and revise it！！！" & CHR(13) & _
-     "Quantity表格,Packed Qty产品数大于Shipment Qty产品数，请修改后再运行程序！！！": Exit Sub
+     "Quantity" & UText(34920, 26684) & ",Packed Qty" & UText(20135, 21697, 25968, 22823, 20110) & "Shipment Qty" & UText(20135, 21697, 25968) & "，" & UText(35831, 20462, 25913, 21518, 20877, 36816, 34892, 31243, 24207) & "！！！": Exit Sub
      If scol(7) > scol(5) Then MsgBox "Packed carton number is found larger than Shipment carton number，Please check and revise it！！！" & CHR(13) & _
-     "Quantity表格,Packed carton数大于Shipment carton数，请修改后再运行程序！！！": Exit Sub
+     "Quantity" & UText(34920, 26684) & ",Packed carton" & UText(25968, 22823, 20110) & "Shipment carton" & UText(25968) & "，" & UText(35831, 20462, 25913, 21518, 20877, 36816, 34892, 31243, 24207) & "！！！": Exit Sub
      
-     '判定抽箱数是否太少
+     '" & UText(21028, 23450, 25277, 31665, 25968, 26159, 21542, 22826, 23569) & "
      If LCase(ThisDocument.Tables(1).Range.Cells(PSE + 1).Range.Text) Like "*original inspection*" = True Or _
      LCase(ThisDocument.Tables(1).Range.Cells(PSE + 1).Range.Text) Like "*first inspection*" = True Then
          If scol(9) < Int(Sqr(scol(5))) Then msg = msg & TBName & "table" & "the selected carton number is less than sqrt of shipment carton number" & _
          Int(Sqr(scol(5))) & "please check and if you revise the data, run this program again！！！." & CHR(13) & _
-         TBName & "表格" & "产品数量为" & scol(5) & "开方数取整后为" & Int(Sqr(scol(5))) & "现在抽箱数为" & scol(9) & "是否太少，请确认是否修改，若有修改请改后再运行程序"
+         TBName & UText(34920, 26684, 20135, 21697, 25968, 37327, 20026) & scol(5) & UText(24320, 26041, 25968, 21462, 25972, 21518, 20026) & Int(Sqr(scol(5))) & UText(29616, 22312, 25277, 31665, 25968, 20026) & scol(9) & UText(26159, 21542, 22826, 23569) & "，" & UText(35831, 30830, 35748, 26159, 21542, 20462, 25913) & "，" & UText(33509, 26377, 20462, 25913, 35831, 25913, 21518, 20877, 36816, 34892, 31243, 24207)
      End If
      If ThisDocument.Tables(1).Range.Cells(PSE + 1).Range.Text Like "*Re-inspection*" = True Or LCase(ThisDocument.Tables(1).Range.Cells(PSE + 1).Range.Text) Like "*re-inspection*" = True Then
       If scol(9) < Int(Sqr(scol(5)) * 1.5) Then msg = msg & TBName & "table" & "the selected carton number:" & scol(9) & " is less than sqrt of shipment carton number times 1.5= " & _
          Int(Sqr(scol(5)) * 1.5) & ",please check, and if you revise the data, run this program again！！！." & CHR(13) & _
-         TBName & "表格" & "产品数量为" & scol(5) & "开方数乘以1.5倍取整后为" & Int(Sqr(scol(5)) * 1.5) & "现在抽箱数为" & scol(9) & "是否太少，请确认是否修改，若有修改请改后再运行程序"
+         TBName & UText(34920, 26684, 20135, 21697, 25968, 37327, 20026) & scol(5) & UText(24320, 26041, 25968, 20056, 20197) & "1.5" & UText(20493, 21462, 25972, 21518, 20026) & Int(Sqr(scol(5)) * 1.5) & UText(29616, 22312, 25277, 31665, 25968, 20026) & scol(9) & UText(26159, 21542, 22826, 23569) & "，" & UText(35831, 30830, 35748, 26159, 21542, 20462, 25913) & "，" & UText(33509, 26377, 20462, 25913, 35831, 25913, 21518, 20877, 36816, 34892, 31243, 24207)
      End If
      
  End With
@@ -2945,16 +2985,16 @@ Dim TBName, Ufw, Uaw, KwQ As String
         ActiveDocument.Tables.add Range:=Selection.Range, NumRows:=2, NumColumns:= _
         2, DefaultTableBehavior:=wdWord9TableBehavior, AutoFitBehavior:=wdAutoFitFixed
               With Selection.Tables(1)
-                  If .Style <> "网格型" Then
-                   .Style = "网格型"
+                  If .Style <> UText(32593, 26684, 22411) Then
+                   .Style = UText(32593, 26684, 22411)
                   End If
                   Call Setborders025
                  .Range.ParagraphFormat.Alignment = wdAlignParagraphLeft
                  .Columns(1).Width = CentimetersToPoints(0.8)
                  .Rows(1).Range.Cells.Merge
                  .Rows(1).Range.ParagraphFormat.Alignment = wdAlignParagraphCenter
-                 .Rows(1).Range.Cells.Shading.BackgroundPatternColor = -603917569 '-603914241 '无色 -603917569  '浅灰
-                 .Rows(2).Range.Cells.Shading.BackgroundPatternColor = -603914241 '-603914241 '无色 -603917569  '浅灰
+                 .Rows(1).Range.Cells.Shading.BackgroundPatternColor = -603917569 '-603914241 '" & UText(26080, 33394) & " -603917569  '" & UText(27973, 28784) & "
+                 .Rows(2).Range.Cells.Shading.BackgroundPatternColor = -603914241 '-603914241 '" & UText(26080, 33394) & " -603917569  '" & UText(27973, 28784) & "
                  .Cell(1, 1).Range.Text = TBName
                 
                   tbn1 = tbn + Dif
@@ -2966,7 +3006,7 @@ Dim TBName, Ufw, Uaw, KwQ As String
       If Rn = 1 Then
          .Cell(1, 1).Select
          Selection.InsertRowsBelow 1
-         Selection.Range.Cells.Shading.BackgroundPatternColor = -603914241 '-603914241 '无色 -603917569  '浅灰
+         Selection.Range.Cells.Shading.BackgroundPatternColor = -603914241 '-603914241 '" & UText(26080, 33394) & " -603917569  '" & UText(27973, 28784) & "
          Selection.Cells.Split NumRows:=1, NumColumns:=2, mergebeforesplit:=False
          .Cell(2, 1).Width = CentimetersToPoints(0.8)
          .Cell(2, 2).Width = CentimetersToPoints(17)
@@ -2979,7 +3019,7 @@ Dim TBName, Ufw, Uaw, KwQ As String
     
       R = 0
        For i = 5 To qtyRow - 1
-          If col(i, 3) <> col(i, 4) Then '单款出货量同订单不同
+          If col(i, 3) <> col(i, 4) Then '" & UText(21333, 27454, 20986, 36135, 37327, 21516, 35746, 21333, 19981, 21516) & "
              ThisDocument.Tables(tbn).Cell(i, 4).Range.Font.ColorIndex = wdRed
              ALW = ALW & "for item " & "((" & Itx(i - 4) & "))" & "," & " shipment quantity was " & "((" & col(i, 4) & "))" & _
              " " & LCase(Uaw) & "s" & " instead of " & "((" & col(i, 3) & "))" & " " & LCase(Uaw) & "s; "
@@ -2987,7 +3027,7 @@ Dim TBName, Ufw, Uaw, KwQ As String
        Next i
        'If R = 1 Then ALW = UCase(Mid(ALW, 1, 1)) & LCase(Mid(ALW, 2, Len(ALW) - 1)) & Chr(10)
  
-     If scol(3) <> scol(4) Then   '总出货量跟订单不符
+     If scol(3) <> scol(4) Then   '" & UText(24635, 20986, 36135, 37327, 36319, 35746, 21333, 19981, 31526) & "
         ThisDocument.Tables(tbn).Cell(qtyRow, 3).Range.Font.ColorIndex = wdRed
         If R = 0 Then R = R + 1
         ALW = ALW & "total shipping quantity was " & "((" & scol(4) & "))" & " " & LCase(Uaw) & "s" & " instead of " & _
@@ -3003,7 +3043,7 @@ Dim TBName, Ufw, Uaw, KwQ As String
         .Cell(R + 1, 2).Range.Text = UCase(Mid(ALW, 1, 1)) & Mid(ALW, 2, Len(ALW) - 1)
       End If
    
-      If scol(6) / scol(4) < 0.8 Then '包装数少于80%
+      If scol(6) / scol(4) < 0.8 Then '" & UText(21253, 35013, 25968, 23569, 20110) & "80%
        R = R + 1
       .Rows(R + 1).Select
        Selection.InsertRowsAbove 1
@@ -3058,18 +3098,18 @@ Dim TBName, Ufw, Uaw, KwQ As String
           ActiveDocument.Tables.add Range:=Selection.Range, NumRows:=3, NumColumns:= _
              2, DefaultTableBehavior:=wdWord9TableBehavior, AutoFitBehavior:=wdAutoFitFixed
               With Selection.Tables(1)
-                If .Style <> "网格型" Then
-                  .Style = "网格型"
+                If .Style <> UText(32593, 26684, 22411) Then
+                  .Style = UText(32593, 26684, 22411)
                 End If
                 Call Setborders025
-                .Range.Cells.Shading.BackgroundPatternColor = -603914241 '-603914241 '无色 -603917569  '浅灰
+                .Range.Cells.Shading.BackgroundPatternColor = -603914241 '-603914241 '" & UText(26080, 33394) & " -603917569  '" & UText(27973, 28784) & "
                 .Range.ParagraphFormat.Alignment = wdAlignParagraphLeft
                 
                 .Columns(1).Width = CentimetersToPoints(0.8)
                 .Rows(1).Range.Cells.Merge
                 .Rows(1).Range.ParagraphFormat.Alignment = wdAlignParagraphCenter
-                .Rows(1).Range.Cells.Shading.BackgroundPatternColor = -603917569 '-603914241 '无色 -603917569  '浅灰
-                '.Rows(2).Range.Cells.Shading.BackgroundPatternColor = -603914241 '-603914241 '无色 -603917569  '浅灰
+                .Rows(1).Range.Cells.Shading.BackgroundPatternColor = -603917569 '-603914241 '" & UText(26080, 33394) & " -603917569  '" & UText(27973, 28784) & "
+                '.Rows(2).Range.Cells.Shading.BackgroundPatternColor = -603914241 '-603914241 '" & UText(26080, 33394) & " -603917569  '" & UText(27973, 28784) & "
                 .Cell(1, 1).Range.Text = "Reference Note for Quantity"
                
              End With
@@ -3080,17 +3120,17 @@ Dim TBName, Ufw, Uaw, KwQ As String
             ActiveDocument.Tables.add Range:=Selection.Range, NumRows:=3, NumColumns:= _
              2, DefaultTableBehavior:=wdWord9TableBehavior, AutoFitBehavior:=wdAutoFitFixed
               With Selection.Tables(1)
-                 If .Style <> "网格型" Then
-                    .Style = "网格型"
+                 If .Style <> UText(32593, 26684, 22411) Then
+                    .Style = UText(32593, 26684, 22411)
                   End If
                   Call Setborders025
-                  .Range.Cells.Shading.BackgroundPatternColor = -603914241 '-603914241 '无色 -603917569  '浅灰
+                  .Range.Cells.Shading.BackgroundPatternColor = -603914241 '-603914241 '" & UText(26080, 33394) & " -603917569  '" & UText(27973, 28784) & "
                   .Range.ParagraphFormat.Alignment = wdAlignParagraphLeft
                   .Columns(1).Width = CentimetersToPoints(0.8)
                   .Rows(1).Range.Cells.Merge
                   .Rows(1).Range.ParagraphFormat.Alignment = wdAlignParagraphCenter
-                  .Rows(1).Range.Cells.Shading.BackgroundPatternColor = -603917569 '-603914241 '无色 -603917569  '浅灰
-                 ' .Rows(2).Range.Cells.Shading.BackgroundPatternColor = -603914241 '-603914241 '无色 -603917569  '浅灰
+                  .Rows(1).Range.Cells.Shading.BackgroundPatternColor = -603917569 '-603914241 '" & UText(26080, 33394) & " -603917569  '" & UText(27973, 28784) & "
+                 ' .Rows(2).Range.Cells.Shading.BackgroundPatternColor = -603914241 '-603914241 '" & UText(26080, 33394) & " -603917569  '" & UText(27973, 28784) & "
                   .Cell(1, 1).Range.Text = "Reference Note for Quantity"
                  
              End With
@@ -3099,13 +3139,13 @@ Dim TBName, Ufw, Uaw, KwQ As String
                ActiveDocument.Tables.add Range:=Selection.Range, NumRows:=2, NumColumns:= _
                2, DefaultTableBehavior:=wdWord9TableBehavior, AutoFitBehavior:=wdAutoFitFixed
                  With Selection.Tables(1)
-                   If .Style <> "网格型" Then
-                      .Style = "网格型"
+                   If .Style <> UText(32593, 26684, 22411) Then
+                      .Style = UText(32593, 26684, 22411)
                    End If
                    Call Setborders025
                   .Range.ParagraphFormat.Alignment = wdAlignParagraphCenter
-                  .Rows(1).Range.Cells.Shading.BackgroundPatternColor = -603914241 '-603914241 '无色 -603917569  '浅灰
-                  .Rows(2).Range.Cells.Shading.BackgroundPatternColor = -603914241 '-603914241 '无色 -603917569  '浅灰
+                  .Rows(1).Range.Cells.Shading.BackgroundPatternColor = -603914241 '-603914241 '" & UText(26080, 33394) & " -603917569  '" & UText(27973, 28784) & "
+                  .Rows(2).Range.Cells.Shading.BackgroundPatternColor = -603914241 '-603914241 '" & UText(26080, 33394) & " -603917569  '" & UText(27973, 28784) & "
                
                 End With
      End If
@@ -3134,13 +3174,13 @@ End If
 
  
 200  If msg <> "" Then MsgBox msg & "Please check and make the necessary corrections" & CHR(10) & _
-"请检查并进行必要的更正！", vbCritical
+UText(35831, 26816, 26597, 24182, 36827, 34892, 24517, 35201, 30340, 26356, 27491) & "！", vbCritical
 
  
 1000 End Sub
 Sub AQL(SQty As Long)
 '
-' by wyn 生成sample size等宏
+' by wyn " & UText(29983, 25104) & "sample size" & UText(31561, 23439) & "
 '
        Dim Typ, Styp, lvl As Integer
        Dim itype, msg, Aqlt, Smst, tmp As String
@@ -3151,7 +3191,7 @@ Sub AQL(SQty As Long)
        Dim CD(20), LG(20, 10) As Integer
        Dim AC(20, 10), MV(20, 10) As Integer
 
-       'Lots()批量数，起始值，到下一批量数-1 是其范围
+       'Lots()" & UText(25209, 37327, 25968) & "，" & UText(36215, 22987, 20540) & "，" & UText(21040, 19979, 19968, 25209, 37327, 25968) & "-1 " & UText(26159, 20854, 33539, 22260) & "
        Lots(1) = 2
        Lots(2) = 9
        Lots(3) = 16
@@ -3169,7 +3209,7 @@ Sub AQL(SQty As Long)
        Lots(15) = 500001
     
        
-       'CD()样本代码，对应A,B,C,....R"
+       'CD()" & UText(26679, 26412, 20195, 30721) & "，" & UText(23545, 24212) & "A,B,C,....R"
         CD(0) = 0
         CD(1) = 2
         CD(2) = 3
@@ -3188,7 +3228,7 @@ Sub AQL(SQty As Long)
         CD(15) = 1250
         CD(16) = 2000
         
-       'AQL() AQL 值,只取常用的 1.0到 6.5
+       'AQL() AQL , 1.0 6.5
         AQ(0) = 0
         AQ(1) = 1#
         AQ(2) = 1.5
@@ -3198,7 +3238,7 @@ Sub AQL(SQty As Long)
         
         
         
-        ' LG() 批量对应的样本代码对应的样本代码，第一维数字代表批量数编号，第二维数字表示 S-1,S-2，S-3，S-4，G-I，G-II,G-III
+        'LG() ，， S-1,S-2，S-3，S-4，G-I，G-II,G-III
       
        LG(0, 1) = CD(0):      LG(0, 2) = CD(0):       LG(0, 3) = CD(0)
    
@@ -3223,31 +3263,31 @@ Sub AQL(SQty As Long)
        itype = .Cell(6, 2).Range.Text
        SamP = .Cell(7, 4).Range.Text
 
-       '检查正常检查，重检抽样方案是否分别是NORMAL和TIGHTENED，并提醒。
+       '，NORMALTIGHTENED，。
        
         If itype Like "*Pre-shipment Inspection*" = False And itype Like "*PSI*" = False And _
           itype Like "*During Production Inspection*" = False And itype Like "*DPI*" = False And _
-          itype Like "*Re-Inspection*" = False And itype Like "*Re-inspection*" = False Then MsgBox "Inspection Type表格输入不符要求，请检查是否正确": Exit Sub
+          itype Like "*Re-Inspection*" = False And itype Like "*Re-inspection*" = False Then MsgBox "Inspection Type" & UText(34920, 26684, 36755, 20837, 19981, 31526, 35201, 27714) & "，" & UText(35831, 26816, 26597, 26159, 21542, 27491, 30830): Exit Sub
           
        If itype Like "*Pre-shipment Inspection*" = True Or itype Like "*PSI*" = True Or _
           itype Like "*During Production Inspection*" = True Or itype Like "*DPI*" = True Then
           
-            If SamP Like "*Normal*" = False And SamP Like "*Tightened*" = False Then MsgBox "Information 表所填写的抽样方案，不是Normal也不是Tightened,本程序无法处理,请检查", vbCritical: Exit Sub
+            If SamP Like "*Normal*" = False And SamP Like "*Tightened*" = False Then MsgBox "Information " & UText(34920, 25152, 22635, 20889, 30340, 25277, 26679, 26041, 26696) & "，" & UText(19981, 26159) & "Normal" & UText(20063, 19981, 26159) & "Tightened," & UText(26412, 31243, 24207, 26080, 27861, 22788, 29702) & "," & UText(35831, 26816, 26597), vbCritical: Exit Sub
        
             If SamP Like "*Tightened*" = True Then
-               AnS = MsgBox("本次验货为正常检验，但Sampling Plan不是输入Normal，请确认是否有错。如果需要退出修改请按是，如果不退出修改而继续运行，请按否", vbYesNo)
+               AnS = MsgBox(UText(26412, 27425, 39564, 36135, 20026, 27491, 24120, 26816, 39564) & "，" & UText(20294) & "Sampling Plan" & UText(19981, 26159, 36755, 20837) & "Normal，" & UText(35831, 30830, 35748, 26159, 21542, 26377, 38169) & "。" & UText(22914, 26524, 38656, 35201, 36864, 20986, 20462, 25913, 35831, 25353, 26159) & "，" & UText(22914, 26524, 19981, 36864, 20986, 20462, 25913, 32780, 32487, 32493, 36816, 34892) & "，" & UText(35831, 25353, 21542), vbYesNo)
                If AnS = vbYes Then Exit Sub
-               Styp = 2                           '加严
+               Styp = 2                           ' translated comment
             End If
           
-            If SamP Like "*Normal*" = True Then Styp = 1 '正常
+            If SamP Like "*Normal*" = True Then Styp = 1 ' translated comment
       End If
           
             
        If itype Like "*Re-Inspection*" = True Or itype Like "*Re-inspection*" = True Then
-          If SamP Like "*Normal*" = False And SamP Like "*Tightened*" = False Then MsgBox "Information 表所填写的抽样方案，不是Normal也不是Tightened,本程序无法处理,请检查", vbCritical: Exit Sub
+          If SamP Like "*Normal*" = False And SamP Like "*Tightened*" = False Then MsgBox "Information " & UText(34920, 25152, 22635, 20889, 30340, 25277, 26679, 26041, 26696) & "，" & UText(19981, 26159) & "Normal" & UText(20063, 19981, 26159) & "Tightened," & UText(26412, 31243, 24207, 26080, 27861, 22788, 29702) & "," & UText(35831, 26816, 26597), vbCritical: Exit Sub
                If SamP Like "*Normal*" = True Then
-               AnS = MsgBox("本次验货为重验，但Sampling Plan不是输入Tightened，请确认是否有错，如果需要退出修改请按是，如果不退出修改而继续运行请按否", vbYesNo)
+               AnS = MsgBox(UText(26412, 27425, 39564, 36135, 20026, 37325, 39564) & "，" & UText(20294) & "Sampling Plan" & UText(19981, 26159, 36755, 20837) & "Tightened，" & UText(35831, 30830, 35748, 26159, 21542, 26377, 38169) & "，" & UText(22914, 26524, 38656, 35201, 36864, 20986, 20462, 25913, 35831, 25353, 26159) & "，" & UText(22914, 26524, 19981, 36864, 20986, 20462, 25913, 32780, 32487, 32493, 36816, 34892, 35831, 25353, 21542), vbYesNo)
                If AnS = vbYes Then Exit Sub
                Styp = 1
             End If
@@ -3258,12 +3298,12 @@ Sub AQL(SQty As Long)
        
     Select Case Styp
           
-    Case 1   '正常检验
+    Case 1   ' translated comment
        
        
-       'AQL AC代码查询
-       'AC(),AQL 充收值，第一维表示 样本代码顺序，第二维表示AQL 值1.0,1.5,...
-       ' MV(),转移的上下箭头，代表改变后的 Sample Size
+       'AQL AC
+       'AC(),AQL ， ，AQL 1.0,1.5,...
+       'MV(),， Sample Size
        AC(0, 0) = CD(0)
        AC(0, 1) = CD(0):       AC(0, 2) = CD(0):   AC(0, 3) = CD(0):   AC(0, 4) = CD(0):   AC(0, 5) = CD(0):
        
@@ -3300,12 +3340,12 @@ Sub AQL(SQty As Long)
        AC(16, 1) = 21:         AC(16, 2) = 21:     AC(16, 3) = 21:     AC(16, 4) = 21:     AC(16, 5) = 21:
        MV(16, 1) = CD(15):     MV(16, 2) = CD(14): MV(16, 3) = CD(13): MV(16, 4) = CD(12): MV(16, 5) = CD(11):
                             
-   Case 2  '加严检验
+   Case 2  ' translated comment
    
      
-       'AQL AC代码查询
-       'AC(),AQL 充收值，第一维表示 样本代码顺序，第二维表示AQL 值1.0,1.5,...
-       ' MV(),转移的上下箭头，代表改变后的 Sample Size
+       'AQL AC
+       'AC(),AQL ， ，AQL 1.0,1.5,...
+       'MV(),， Sample Size
        AC(0, 0) = CD(0)
        AC(0, 1) = CD(0):       AC(0, 2) = CD(0):   AC(0, 3) = CD(0):   AC(0, 4) = CD(0):   AC(0, 5) = CD(0):
        
@@ -3349,7 +3389,7 @@ Sub AQL(SQty As Long)
        
        With ThisDocument.Tables(1)
       
-         '核对检查水平的输入
+         ' translated comment
        If .Cell(8, 4).Range.Text Like "*G-III*" = True Or .Cell(8, 4).Range.Text Like "*G-111*" = True Then
        lvl = 7
        ElseIf .Cell(8, 4).Range.Text Like "*G-II*" = True Or .Cell(8, 4).Range.Text Like "*G-11*" = True Then
@@ -3365,11 +3405,11 @@ Sub AQL(SQty As Long)
        ElseIf .Cell(8, 4).Range.Text Like "*S-1*" = True Or .Cell(8, 4).Range.Text Like "*s-1*" = True Then
        lvl = 1
        Else
-       MsgBox "检查水平，不是S-1到S-4，也不是G-I，G-II或G-III，无法计算，请检查输入是否符合要求或手工计算": Exit Sub
+       MsgBox UText(26816, 26597, 27700, 24179) & "，" & UText(19981, 26159) & "S-1" & UText(21040) & "S-4，" & UText(20063, 19981, 26159) & "G-I，G-II" & UText(25110) & "G-III，" & UText(26080, 27861, 35745, 31639) & "，" & UText(35831, 26816, 26597, 36755, 20837, 26159, 21542, 31526, 21512, 35201, 27714, 25110, 25163, 24037, 35745, 31639): Exit Sub
        End If
 
        
-       '初始化
+       ' translated comment
        Acr = 0
        AFn = 0
        AMa = 0
@@ -3386,21 +3426,21 @@ Sub AQL(SQty As Long)
       
       
      
-       '判定属于客户要求的AQL第几中类型,
+       'AQL,
        
        If Wn < 14 Or Aqlt Like "*Cr*" = False Or Aqlt Like "*Ma*" = False Or _
-       Aqlt Like "*Mi*" = False Then MsgBox "Information 表格，AQL未完全输入，或输入格式不符要求，正确格式类似于Cr:0 Ma:1.0 Mi:4.0，注意每个缺陷字母后用一个冒号，缺陷数字后，必须且只有有一个空格，请修改后再运行！！", vbCritical: Exit Sub
+       Aqlt Like "*Mi*" = False Then MsgBox "Information " & UText(34920, 26684) & "，AQL" & UText(26410, 23436, 20840, 36755, 20837) & "，" & UText(25110, 36755, 20837, 26684, 24335, 19981, 31526, 35201, 27714) & "，" & UText(27491, 30830, 26684, 24335, 31867, 20284, 20110) & "Cr:0 Ma:1.0 Mi:4.0，" & UText(27880, 24847, 27599, 20010, 32570, 38519, 23383, 27597, 21518, 29992, 19968, 20010, 20882, 21495) & "，" & UText(32570, 38519, 25968, 23383, 21518) & "，" & UText(24517, 39035, 19988, 21482, 26377, 26377, 19968, 20010, 31354, 26684) & "，" & UText(35831, 20462, 25913, 21518, 20877, 36816, 34892) & "！！", vbCritical: Exit Sub
            
-       If WL <> 20 And WL <> 30 And WL <> 37 Then MsgBox "Information 表格，AQL输入格式不符要求，正确格式类似于Cr:0 Ma:1.0 Mi:4.0，注意每个缺陷字母后用一个冒号，缺陷数字后，必须且只有有一个空格，请修改后再运行！！", vbCritical: Exit Sub
+       If WL <> 20 And WL <> 30 And WL <> 37 Then MsgBox "Information " & UText(34920, 26684) & "，AQL" & UText(36755, 20837, 26684, 24335, 19981, 31526, 35201, 27714) & "，" & UText(27491, 30830, 26684, 24335, 31867, 20284, 20110) & "Cr:0 Ma:1.0 Mi:4.0，" & UText(27880, 24847, 27599, 20010, 32570, 38519, 23383, 27597, 21518, 29992, 19968, 20010, 20882, 21495) & "，" & UText(32570, 38519, 25968, 23383, 21518) & "，" & UText(24517, 39035, 19988, 21482, 26377, 26377, 19968, 20010, 31354, 26684) & "，" & UText(35831, 20462, 25913, 21518, 20877, 36816, 34892) & "！！", vbCritical: Exit Sub
        
        If Aqlt Like "*Fn*" = False Then
        
          If Wn = 14 Then
-         Typ = 1                      'aql 类型，1， Cr,ma,mi
+         Typ = 1                      'aql ，1， Cr,ma,mi
          Acr = Val(Mid(Aqlt, 4, 1))
-         AMa = Val(Mid(Aqlt, 9, 3))    '取Ma
+         AMa = Val(Mid(Aqlt, 9, 3))    'Ma
          Ami = Val(Mid(Aqlt, 16, 3))
-         ElseIf Wn <> 14 Then MsgBox "Information 表格，AQL输入格式不符要求，正确格式类似于Cr:0 Ma:1.0 Mi:4.0，注意每个缺陷字母后用一个冒号，缺陷数字后，必须且只有有一个空格，不要有多余回车和空格，请修改后再运行！！", vbCritical: Exit Sub
+         ElseIf Wn <> 14 Then MsgBox "Information " & UText(34920, 26684) & "，AQL" & UText(36755, 20837, 26684, 24335, 19981, 31526, 35201, 27714) & "，" & UText(27491, 30830, 26684, 24335, 31867, 20284, 20110) & "Cr:0 Ma:1.0 Mi:4.0，" & UText(27880, 24847, 27599, 20010, 32570, 38519, 23383, 27597, 21518, 29992, 19968, 20010, 20882, 21495) & "，" & UText(32570, 38519, 25968, 23383, 21518) & "，" & UText(24517, 39035, 19988, 21482, 26377, 26377, 19968, 20010, 31354, 26684) & "，" & UText(19981, 35201, 26377, 22810, 20313, 22238, 36710, 21644, 31354, 26684) & "，" & UText(35831, 20462, 25913, 21518, 20877, 36816, 34892) & "！！", vbCritical: Exit Sub
          End If
        End If
        If Aqlt Like "*Fn*" = True Then
@@ -3419,11 +3459,11 @@ Sub AQL(SQty As Long)
           AFnMa = Val(Mid(Aqlt, 26, 3))
           Ami = Val(Mid(Aqlt, 33, 3))
           End If
-          If Wn <> 21 And Wn <> 26 Then MsgBox "Information 表格，AQL输入数据的格式不符合要求，正确格式类似于Cr:0 Fn:1.0 Fn+Ma:1.0 Mi:4.0,注意每个缺陷字母后用一个冒号，缺陷数字后，必须且只有有一个空格,不要有多余回车和空格，请修改后再运行！！", vbCritical: Exit Sub
+          If Wn <> 21 And Wn <> 26 Then MsgBox "Information " & UText(34920, 26684) & "，AQL" & UText(36755, 20837, 25968, 25454, 30340, 26684, 24335, 19981, 31526, 21512, 35201, 27714) & "，" & UText(27491, 30830, 26684, 24335, 31867, 20284, 20110) & "Cr:0 Fn:1.0 Fn+Ma:1.0 Mi:4.0," & UText(27880, 24847, 27599, 20010, 32570, 38519, 23383, 27597, 21518, 29992, 19968, 20010, 20882, 21495) & "，" & UText(32570, 38519, 25968, 23383, 21518) & "，" & UText(24517, 39035, 19988, 21482, 26377, 26377, 19968, 20010, 31354, 26684) & "," & UText(19981, 35201, 26377, 22810, 20313, 22238, 36710, 21644, 31354, 26684) & "，" & UText(35831, 20462, 25913, 21518, 20877, 36816, 34892) & "！！", vbCritical: Exit Sub
        End If
 
-       '把AQL分组
-       If Acr <> 0 Then MsgBox "注意：Information 表格，Critical 的AQL不是0，需要手工查询Cr的AQL表。"
+       'AQL
+       If Acr <> 0 Then MsgBox UText(27880, 24847) & "：Information " & UText(34920, 26684) & "，Critical " & UText(30340) & "AQL" & UText(19981, 26159) & "0，" & UText(38656, 35201, 25163, 24037, 26597, 35810) & "Cr" & UText(30340) & "AQL" & UText(34920) & "。"
        
        AQL(0) = Acr
        AQL(1) = AFn
@@ -3431,69 +3471,69 @@ Sub AQL(SQty As Long)
        AQL(3) = AFnMa
        AQL(4) = Ami
 
-      'Sqty = InputBox("请输入Shipment Quanty")
+      'Sqty = InputBox(UText(35831, 36755, 20837) & "Shipment Quanty")
   
        SQty = Val(SQty)
-       If SQty < Lots(1) Then MsgBox "批量数太小，本程序不能计算，请手工计算": Exit Sub
-       If SQty > Lots(15) Then MsgBox "批量数太大，本程序不能计算，请手工计算": Exit Sub
+       If SQty < Lots(1) Then MsgBox UText(25209, 37327, 25968, 22826, 23567) & "，" & UText(26412, 31243, 24207, 19981, 33021, 35745, 31639) & "，" & UText(35831, 25163, 24037, 35745, 31639): Exit Sub
+       If SQty > Lots(15) Then MsgBox UText(25209, 37327, 25968, 22826, 22823) & "，" & UText(26412, 31243, 24207, 19981, 33021, 35745, 31639) & "，" & UText(35831, 25163, 24037, 35745, 31639): Exit Sub
     
      
   
         
-        '算批量数在每一张表LotSiZE的第几组
+        'LotSiZE
        For i = 1 To 15
        
        If SQty >= Lots(i) And SQty < Lots(i + 1) Then grp = i: GoTo 10
        
        Next i
        
-    '算AQLSampleSiz在第二张表的纵向第几组
+    'AQLSampleSiz
       
 10     Scode = LG(grp, lvl)
        For i = 1 To 16
        If Scode = CD(i) Then Hgrp = i: GoTo 20
        Next i
-20    For k = 1 To 4  'k 对应实际AQL的Ma,Fn,Fnma,Mi
+20    For k = 1 To 4  'k AQLMa,Fn,Fnma,Mi
        
         
-        '算实际验货AQL在第二张表横向的组数
+        'AQL
         Cn = 0
      For i = 1 To 5
         If AQL(k) = AQ(i) Then Agrp = i: GoTo 30
-        If AQL(k) <> AQ(i) And AQL(k) <> 0 Then Cn = Cn + 1 '判定AQL 是否列入表格范围
+        If AQL(k) <> AQ(i) And AQL(k) <> 0 Then Cn = Cn + 1 'AQL
         Next i
-        If Cn = 5 Then MsgBox "Information 表格,AQL输入数字中有数字超过本程序处理范围，本程序只处理AQL：1.0，1.5，2.5，4.0，6.5的数值！！！，请修改或手工处理 ", vbCritical: Exit Sub
+        If Cn = 5 Then MsgBox "Information " & UText(34920, 26684) & ",AQL" & UText(36755, 20837, 25968, 23383, 20013, 26377, 25968, 23383, 36229, 36807, 26412, 31243, 24207, 22788, 29702, 33539, 22260) & "，" & UText(26412, 31243, 24207, 21482, 22788, 29702) & "AQL：1.0，1.5，2.5，4.0，6.5" & UText(30340, 25968, 20540) & "！！！，" & UText(35831, 20462, 25913, 25110, 25163, 24037, 22788, 29702) & " ", vbCritical: Exit Sub
 30     If MV(Hgrp, Agrp) > 0 Then
-         If MV(Hgrp, Agrp) >= SQty Then SmpS(k) = SQty              '算sample size值
+         If MV(Hgrp, Agrp) >= SQty Then SmpS(k) = SQty              'sample size
          If MV(Hgrp, Agrp) < SQty Then SmpS(k) = MV(Hgrp, Agrp)
        End If
        If MV(Hgrp, Agrp) = 0 Then SmpS(k) = CD(Hgrp)
     
-       AAc(k) = AC(Hgrp, Agrp)                      '算AQL值
+       AAc(k) = AC(Hgrp, Agrp)                      'AQL
        
-40    If SmpS(k) > Ass Then Ass = SmpS(k)            '取Sample Sise 取大值
+40    If SmpS(k) > Ass Then Ass = SmpS(k)            'Sample Sise
       
-      If AQL(0) = 0 Then AAc(0) = 0           'AQL=0 最AC设为0
+      If AQL(0) = 0 Then AAc(0) = 0           'AQL=0 AC0
         
      Next k
      
 
-       '取填入的Sample size进行检查
+       'Sample size
        
        Set rg = .Cell(9, 4).Range
        ss = Val(rg.words(1))
-       If Ass <> ss Then MsgBox "Information 表格,计算得到的Sample Size是" & Ass & "但表格中填入的却是" & ss & "将被更改替换！", vbCritical
+       If Ass <> ss Then MsgBox "Information " & UText(34920, 26684) & "," & UText(35745, 31639, 24471, 21040, 30340) & "Sample Size" & UText(26159) & Ass & UText(20294, 34920, 26684, 20013, 22635, 20837, 30340, 21364, 26159) & ss & UText(23558, 34987, 26356, 25913, 26367, 25442) & "！", vbCritical
        rg.words(1) = Replace(ss, ss, Ass & " ")
       
     End With
 
   
-   ' 删除不适用的workmanship表格
+   'workmanship
     
     Select Case Typ
     
     Case 1
-    '取得实际 defect allowed
+    'defect allowed
     ADef(1) = AAc(0)      'cr
     ADef(2) = AAc(2)      'Ma
     ADef(3) = AAc(4)     'Mi
@@ -3609,7 +3649,7 @@ Dim Dw As String
 
  Set fso = CreateObject("Scripting.FileSystemObject")
  
- sx1 = InputBox("Input the path you want to save the photos under it, su as: " & CHR(10) & CHR(10) & "请输入要生成文件夹的父文件夹路径,比如:", "Notice", "D:\InspectionPhotos")
+ sx1 = InputBox("Input the path you want to save the photos under it, su as: " & CHR(10) & CHR(10) & UText(35831, 36755, 20837, 35201, 29983, 25104, 25991, 20214, 22841, 30340, 29238, 25991, 20214, 22841, 36335, 24452) & "," & UText(27604, 22914) & ":", "Notice", "D:\InspectionPhotos")
 
  If sx1 = "" Then Exit Sub
  
@@ -3621,7 +3661,7 @@ Dim Dw As String
      MkDir (Urlx)
  Else
     If MsgBox(Urlx & " folder existed, to create new folder will delete all existing files under the folder. Do you want to continue? " & CHR(10) & CHR(10) & _
-    Urlx & " 的文件夹已经存在，创建新文件夹将删除原有该文件夹下所有文件，是否继续创建新文件夹？", vbYesNoCancel + vbInformation) = vbYes Then
+    Urlx & " " & UText(30340, 25991, 20214, 22841, 24050, 32463, 23384, 22312) & "，" & UText(21019, 24314, 26032, 25991, 20214, 22841, 23558, 21024, 38500, 21407, 26377, 35813, 25991, 20214, 22841, 19979, 25152, 26377, 25991, 20214) & "，" & UText(26159, 21542, 32487, 32493, 21019, 24314, 26032, 25991, 20214, 22841) & "？", vbYesNoCancel + vbInformation) = vbYes Then
       Set fs = CreateObject("Scripting.FileSystemObject")
       fs.DeleteFolder Urlx & "*"
   
@@ -3664,7 +3704,7 @@ Next i
   
    With ThisDocument.Range.Tables(tbn)
       qtyRow = .Rows.count
-       Itms = qtyRow - 5 '款数以及款号，后面写入workmanship 表用
+       Itms = qtyRow - 5 '，workmanship
      ReDim Ptx(1 To Itms)
      ReDim Itx(1 To Itms)
      
@@ -3682,8 +3722,8 @@ Next i
    If j > 0 Then MsgBox "The sub-folder will generate and name by item No., However, there are " & j & "lines in 1.Quantity table without input item number, " & _
   "the sub-folders may be with wrong item number, " & "please input tiem number into 1.Qauntity table and run program again " & _
   " or rename all sub-folders " & CHR(10) & _
-    "文件夹下的子文件夹将以款号命名，但目前发现在1.Quantity表中有" & j & "行没有输入item号，生成的子文件夹款号的名称可能不对" & _
-  "请在报告1.Quantity表格中重新输入款号再运行程序或者对已生成的所有子文件夹加入款号", vbCritical
+    UText(25991, 20214, 22841, 19979, 30340, 23376, 25991, 20214, 22841, 23558, 20197, 27454, 21495, 21629, 21517) & "，" & UText(20294, 30446, 21069, 21457, 29616, 22312) & "1.Quantity" & UText(34920, 20013, 26377) & j & UText(34892, 27809, 26377, 36755, 20837) & "item" & UText(21495) & "，" & UText(29983, 25104, 30340, 23376, 25991, 20214, 22841, 27454, 21495, 30340, 21517, 31216, 21487, 33021, 19981, 23545) & _
+  UText(35831, 22312, 25253, 21578) & "1.Quantity" & UText(34920, 26684, 20013, 37325, 26032, 36755, 20837, 27454, 21495, 20877, 36816, 34892, 31243, 24207, 25110, 32773, 23545, 24050, 29983, 25104, 30340, 25152, 26377, 23376, 25991, 20214, 22841, 21152, 20837, 27454, 21495), vbCritical
    
    
    
@@ -3759,7 +3799,7 @@ Next i
        If i < 10 Then iW = "0" & CStr(i) Else iW = CStr(i)
          Urlx1 = Urlx & p(k) & iW & " Item " & Itx(i)
         If fso.FolderExists(Urlx1) = False Then MkDir (Urlx1)
-       '增加workmanship中每个item的中defect 文件夹
+       'workmanshipitemdefect
        For j = 1 To DefNo(i)
           If j < 10 Then iW = "0" & CStr(j) Else iW = CStr(j)
              If InStr(1, DefName(i, j), "/") > 0 Then DefName(i, j) = Replace(DefName(i, j), "/", "-")
@@ -3978,7 +4018,7 @@ End Sub
 
 Sub Pastephotos()
 'Quick function keys: CTRL-1
-'快捷功能键 CTRL-1,by wyn 20230605
+'CTRL-1,by wyn 20230605
 
 Dim i, N, i2, i2P, i3, I4(1000), i7, i8, tts, ttp, Rown, PicNP(200), TpicNP, NP As Integer
 Dim S, ss2, sp, PhotoName1, PhotoPath(200), PhotoPathP(200), CurrentPhotoPath As String
@@ -4040,13 +4080,13 @@ Dim pic As InlineShape
             "   0： Exact photo name was not required for other photos, will be named with serial number." & CHR(10) & _
             "   1： Exact photo name was required, will remain the name you input." & CHR(10) & _
             CHR(10) & _
-             "请输入插入图片的方式：(只输入0 或 1 的数据)，再点确定键" & CHR(10) & _
-            "   0：Other Photo图片不需要准确命名，将用顺序号命名图片" & CHR(10) & _
-            "   1：Other Photo图片需要准确命名，将保留你输入的图片名。" & CHR(10), "NOTICE", 0)
+             UText(35831, 36755, 20837, 25554, 20837, 22270, 29255, 30340, 26041, 24335) & "：(" & UText(21482, 36755, 20837) & "0 " & UText(25110) & " 1 " & UText(30340, 25968, 25454) & ")，" & UText(20877, 28857, 30830, 23450, 38190) & CHR(10) & _
+            "   0：Other Photo" & UText(22270, 29255, 19981, 38656, 35201, 20934, 30830, 21629, 21517) & "，" & UText(23558, 29992, 39034, 24207, 21495, 21629, 21517, 22270, 29255) & CHR(10) & _
+            "   1：Other Photo" & UText(22270, 29255, 38656, 35201, 20934, 30830, 21629, 21517) & "，" & UText(23558, 20445, 30041, 20320, 36755, 20837, 30340, 22270, 29255, 21517) & "。" & CHR(10), "NOTICE", 0)
 
 
              If ss2 <> "0" And ss2 <> "1" Then MsgBox "Your inputting was not 0 or 1, the program exit. please run the program again and input 0 or 1." & _
-             CHR(13) & "你输入的不是0或1,程序将退出，请重新运行并输入0或1": Exit Sub
+             CHR(13) & UText(20320, 36755, 20837, 30340, 19981, 26159) & "0" & UText(25110) & "1," & UText(31243, 24207, 23558, 36864, 20986) & "，" & UText(35831, 37325, 26032, 36816, 34892, 24182, 36755, 20837) & "0" & UText(25110) & "1": Exit Sub
 
 2    mypath = ThisDocument.Path
      ChDrive Split(mypath, "\")(0)
@@ -4064,7 +4104,7 @@ Dim pic As InlineShape
          End If
      End With
      Set fd = Nothing
-     PhotoPath(0) = S    '图片选择路径
+     PhotoPath(0) = S    ' translated comment
      
      If Dir(PhotoPath(0), vbDirectory) = "" Or S = "" Then
         MsgBox "The folder is not existed!", vbCritical, "Warning"
@@ -4074,7 +4114,7 @@ Dim pic As InlineShape
    s2 = 1
    i8 = 1
    i2 = 1
-   '----图片首层文件夹检查数量
+   '----
   CurrentPhotoPath = Dir(S, vbDirectory)
   Do While CurrentPhotoPath <> ""
      If CurrentPhotoPath <> "." And CurrentPhotoPath <> ".." And (GetAttr(S & CurrentPhotoPath) And vbDirectory) = vbDirectory Then
@@ -4084,7 +4124,7 @@ Dim pic As InlineShape
        If Not IsNumeric(Kw) Or Val(CurrentPhotoPath) > 11 Then MsgBox _
         "photo folders were not numbered or it's number larger than 11, " & _
        "please check. You can press “alt-1” to re-generate the 11 folders." & CHR(10) & _
-         "存在未编号或编号大于11的文件夹，请检查，或按“alt—1”重新运行程序生成11个文件夹！！！", vbCritical: Exit Sub
+         UText(23384, 22312, 26410, 32534, 21495, 25110, 32534, 21495, 22823, 20110) & "11" & UText(30340, 25991, 20214, 22841) & "，" & UText(35831, 26816, 26597) & "，" & UText(25110, 25353) & "“alt—1”" & UText(37325, 26032, 36816, 34892, 31243, 24207, 29983, 25104) & "11" & UText(20010, 25991, 20214, 22841) & "！！！", vbCritical: Exit Sub
        i2 = Val(CurrentPhotoPath)
        I4(i2) = i2
        PhotoPath(i2) = CurrentPhotoPath
@@ -4092,11 +4132,11 @@ Dim pic As InlineShape
      End If
       CurrentPhotoPath = Dir
     Loop
-  Jia = FN '文件夹数
+  Jia = FN ' translated comment
     If FN < 11 Then MsgBox "The photo folders was smaller than 12, the correct number of folder shall be 00 to 11,total 12 folders,please check, You can press “alt-1” to re-generate the 12 folders." & CHR(10) & _
-         "文件夹少于12个，正确文件夹编号应是00至11共12个，请检查或按“alt—1”运行程序重新生成12个文件夹！！！", vbCritical: Exit Sub
+         UText(25991, 20214, 22841, 23569, 20110) & "12" & UText(20010) & "，" & UText(27491, 30830, 25991, 20214, 22841, 32534, 21495, 24212, 26159) & "00" & UText(33267) & "11" & UText(20849) & "12" & UText(20010) & "，" & UText(35831, 26816, 26597, 25110, 25353) & "“alt—1”" & UText(36816, 34892, 31243, 24207, 37325, 26032, 29983, 25104) & "12" & UText(20010, 25991, 20214, 22841) & "！！！", vbCritical: Exit Sub
   '-------
-    tt = 0  '首页两图片
+    tt = 0  ' translated comment
     
      PhotoName(1) = Dir(S & PhotoPath(tt) & "\" & "*.*")
       If PhotoName(1) <> "" Then
@@ -4118,8 +4158,8 @@ Dim pic As InlineShape
         DefaultTableBehavior:=wdWord9TableBehavior, AutoFitBehavior:=wdAutoFitFixed
             WD.Tables(2).Select
              With Selection.Tables(1)
-                If .Style <> "网格型" Then
-                 .Style = "网格型"
+                If .Style <> UText(32593, 26684, 22411) Then
+                 .Style = UText(32593, 26684, 22411)
                  End If
               End With
               Call Setborders025
@@ -4133,10 +4173,10 @@ Dim pic As InlineShape
       End If
   
               If picN(tt) = 0 Then
-               msg = msg + PhotoPath(tt) & "has not any photo, it should have two photos normally." & CHR(13) & PhotoPath(tt) & "没有图片,正常要求要有两张图片" & CHR(13)
+               msg = msg + PhotoPath(tt) & "has not any photo, it should have two photos normally." & CHR(13) & PhotoPath(tt) & UText(27809, 26377, 22270, 29255) & "," & UText(27491, 24120, 35201, 27714, 35201, 26377, 20004, 24352, 22270, 29255) & CHR(13)
        
             ElseIf picN(tt) = 1 Then
-                 msg = msg + PhotoPath(tt) & " has only one photo, it should have two photos normally." & CHR(13) & PhotoPath(tt) & "图片只有一张，正常要求要有两张图片" & CHR(13)
+                 msg = msg + PhotoPath(tt) & " has only one photo, it should have two photos normally." & CHR(13) & PhotoPath(tt) & UText(22270, 29255, 21482, 26377, 19968, 24352) & "，" & UText(27491, 24120, 35201, 27714, 35201, 26377, 20004, 24352, 22270, 29255) & CHR(13)
                  With Selection.Tables(1)
                     .Cell(1, 1).Range.InlineShapes.AddPicture FileName:= _
                       PhotoNameN(tt, 1), LinkToFile:=False, _
@@ -4171,7 +4211,7 @@ Dim pic As InlineShape
                    End With
             End If
 '-------------------------------------------------------
-5    tt = 1  'Quantity/warehouse 图片
+5    tt = 1  'Quantity/warehouse
      picN(tt) = 0
      PhotoName(1) = Dir(S & PhotoPath(tt) & "\" & "*.*")
      If PhotoName(1) <> "" Then
@@ -4183,10 +4223,10 @@ Dim pic As InlineShape
          picN(tt) = i - 1
      End If
       If picN(tt) = 0 Then
-         msg = msg + PhotoPath(tt) & "has not any photo." & CHR(13) & PhotoPath(tt) & "没有图片" & CHR(13)
+         msg = msg + PhotoPath(tt) & "has not any photo." & CHR(13) & PhotoPath(tt) & UText(27809, 26377, 22270, 29255) & CHR(13)
         GoTo 12
       End If
-      If picN(tt) >= 10 Then '10个文件以上排序
+      If picN(tt) >= 10 Then '10
           i = picN(tt)
           i5 = 1
          For X = 1 To i
@@ -4236,7 +4276,7 @@ Dim pic As InlineShape
             End With
          Next X
          msg = msg + "The table name as Defect Photos for locating defects photo position was not found at report, the defect photo was not pasted" & _
-         CHR(10) & "报告中未发现用于定位defect图片位置名字为Defect Photos的表格，因而defect图片未贴上" & CHR(10)
+         CHR(10) & UText(25253, 21578, 20013, 26410, 21457, 29616, 29992, 20110, 23450, 20301) & "defect" & UText(22270, 29255, 20301, 32622, 21517, 23383, 20026) & "Defect Photos" & UText(30340, 34920, 26684) & "，" & UText(22240, 32780) & "defect" & UText(22270, 29255, 26410, 36148, 19978) & CHR(10)
          GoTo 25
      
 20      Call GeneratePhotoTable(Tn)
@@ -4255,7 +4295,7 @@ Dim pic As InlineShape
      End If
    
     If picN(tt) = 0 Then GoTo 22
-     If picN(tt) >= 10 Then '10个文件以上排序
+     If picN(tt) >= 10 Then '10
         i = picN(tt)
         i5 = 1
          For X = 1 To i
@@ -4321,7 +4361,7 @@ Dim pic As InlineShape
          picN(tt) = i - 1
      End If
 31   If picN(tt) = 0 Then GoTo 32
-     If picN(tt) >= 10 Then '10个文件以上排序
+     If picN(tt) >= 10 Then '10
         i = picN(tt)
         i5 = 1
          For X = 1 To i
@@ -4387,7 +4427,7 @@ Dim pic As InlineShape
          picN(tt) = i - 1
      End If
     If picN(tt) = 0 Then GoTo 42
-    If picN(tt) >= 10 Then '10个文件以上排序
+    If picN(tt) >= 10 Then '10
         i = picN(tt)
         i5 = 1
         For X = 1 To i
@@ -4468,8 +4508,8 @@ Dim pic As InlineShape
                       WD.Tables.add Range:=Selection.Range, NumRows:=2, NumColumns:=1, _
                       DefaultTableBehavior:=wdWord9TableBehavior, AutoFitBehavior:=wdAutoFitFixed
                       With Selection.Tables(1)
-                         If .Style <> "网格型" Then
-                           .Style = "网格型"
+                         If .Style <> UText(32593, 26684, 22411) Then
+                           .Style = UText(32593, 26684, 22411)
                          End If
                       End With
                       Call Setborders025
@@ -4554,7 +4594,7 @@ Dim pic As InlineShape
          picN(tt) = i - 1
      End If
     If picN(tt) = 0 Then GoTo 52
-    If picN(tt) >= 10 Then '10个文件以上排序
+    If picN(tt) >= 10 Then '10
         i = picN(tt)
         i5 = 1
         For X = 1 To i
@@ -4623,7 +4663,7 @@ Dim pic As InlineShape
          picN(tt) = i - 1
      End If
     If picN(tt) = 0 Then GoTo 62
-    If picN(tt) >= 10 Then '10个文件以上排序
+    If picN(tt) >= 10 Then '10
         i = picN(tt)
         i5 = 1
         For X = 1 To i
@@ -4691,7 +4731,7 @@ Dim pic As InlineShape
          picN(tt) = i - 1
      End If
     If picN(tt) = 0 Then GoTo 72
-    If picN(tt) >= 10 Then '10个文件以上排序
+    If picN(tt) >= 10 Then '10
         i = picN(tt)
         i5 = 1
         For X = 1 To i
@@ -4760,7 +4800,7 @@ Dim pic As InlineShape
          picN(tt) = i - 1
      End If
     If picN(tt) = 0 Then GoTo 82
-    If picN(tt) >= 10 Then '10个文件以上排序
+    If picN(tt) >= 10 Then '10
         i = picN(tt)
         i5 = 1
         For X = 1 To i
@@ -4827,7 +4867,7 @@ Dim pic As InlineShape
          picN(tt) = i - 1
      End If
     If picN(tt) = 0 Then GoTo 92
-    If picN(tt) >= 10 Then '10个文件以上排序
+    If picN(tt) >= 10 Then '10
         i = picN(tt)
         i5 = 1
         For X = 1 To i
@@ -4890,7 +4930,7 @@ Dim pic As InlineShape
          picN(tt) = i - 1
      End If
     If picN(tt) = 0 Then GoTo 102
-    If picN(tt) >= 10 Then '10个文件以上排序
+    If picN(tt) >= 10 Then '10
         i = picN(tt)
         i5 = 1
         For X = 1 To i
@@ -4938,7 +4978,7 @@ Dim pic As InlineShape
             End With
          Next X
          msg = msg + "The table name as Other Photos for locating other photo position was not found at report, the other photos were not pasted" & _
-         CHR(10) & "报告中未发现用于定位Other Photo图片位置名字为Other Photo的表格，因而Other Photo图片未贴上" & CHR(10)
+         CHR(10) & UText(25253, 21578, 20013, 26410, 21457, 29616, 29992, 20110, 23450, 20301) & "Other Photo" & UText(22270, 29255, 20301, 32622, 21517, 23383, 20026) & "Other Photo" & UText(30340, 34920, 26684) & "，" & UText(22240, 32780) & "Other Photo" & UText(22270, 29255, 26410, 36148, 19978) & CHR(10)
          GoTo 125
       NP = 0
      
@@ -4950,8 +4990,8 @@ Dim pic As InlineShape
                 WD.Tables.add Range:=Selection.Range, NumRows:=2, NumColumns:=2, _
                 DefaultTableBehavior:=wdWord9TableBehavior, AutoFitBehavior:=wdAutoFitFixed
                 With Selection.Tables(1)
-                 If .Style <> "网格型" Then
-                 .Style = "网格型"
+                 If .Style <> UText(32593, 26684, 22411) Then
+                 .Style = UText(32593, 26684, 22411)
                  End If
               End With
               Call Setborders025
@@ -4981,7 +5021,7 @@ Dim pic As InlineShape
          picN(tt) = i - 1
      End If
     If picN(tt) = 0 Then GoTo 112
-    If picN(tt) >= 10 Then '10个文件以上排序
+    If picN(tt) >= 10 Then '10
         i = picN(tt)
         i5 = 1
         For X = 1 To i
@@ -5017,7 +5057,7 @@ Dim pic As InlineShape
                     
 124   '-----------
    
-125 '---删除空的图片表格
+125 '---
 
  tb = WD.Tables.count - 1
   
@@ -5037,9 +5077,9 @@ Dim pic As InlineShape
    Next i    '===========================================
 
  If msg <> "" Then
-    MsgBox msg & " Please check and revise, if you are sure all are right, neglect this alarm." & CHR(10) & "请检查，如果确实没有问题，请忽略本提示", vbCritical
+    MsgBox msg & " Please check and revise, if you are sure all are right, neglect this alarm." & CHR(10) & UText(35831, 26816, 26597) & "，" & UText(22914, 26524, 30830, 23454, 27809, 26377, 38382, 39064) & "，" & UText(35831, 24573, 30053, 26412, 25552, 31034), vbCritical
  Else
-    MsgBox "Complete pasting photos." & CHR(10) & "贴图完成！", vbCritical
+    MsgBox "Complete pasting photos." & CHR(10) & UText(36148, 22270, 23436, 25104) & "！", vbCritical
  End If
  
  
@@ -5167,10 +5207,10 @@ End Sub
 
 Sub PasteItemPhoto(tt, TbNumber, S, PhotoPath, pic_Number, Show_Photo_Name, rnp, msg)
 
-Dim PhotoPathP(4000) As String   '图片数量200修改为4000 Vega 20251126
+Dim PhotoPathP(4000) As String   '2004000 Vega 20251126
 Dim i2P, i, i2, I4(500), i5, JiaP, X, NP, TpicNP, ttp, PicNP(1000), cnp As Integer
 Dim PhotoName(1000), TPhotoNameNP(1000) As String
-ReDim Itx(1 To 500) '款数量200修改为500 Vega 20251126
+ReDim Itx(1 To 500) '200500 Vega 20251126
 
 
        Set WD = ThisDocument
@@ -5196,7 +5236,7 @@ ReDim Itx(1 To 500) '款数量200修改为500 Vega 20251126
          JiaP = i2P
          If JiaP = 0 Then
            msg = msg + PhotoPath(tt) & "has not any subfolder nameed with item name." & CHR(13) & _
-           PhotoPath(tt) & "没有以款号命名的图片子文件夹" & CHR(13)
+           PhotoPath(tt) & UText(27809, 26377, 20197, 27454, 21495, 21629, 21517, 30340, 22270, 29255, 23376, 25991, 20214, 22841) & CHR(13)
            GoTo 25
          End If
          If JiaP >= 10 Then
@@ -5208,7 +5248,7 @@ ReDim Itx(1 To 500) '款数量200修改为500 Vega 20251126
                      Next X
           Call PhotoInSubfolderSort(i, I4, i5, PhotoPathP)
             
-            '=== 重新映射款号 === '修复款数大于100时款号和图片不一致问题 Vega 20251126
+            '=== === '100 Vega 20251126
             Dim tmp As String, X1 As Long
             For X1 = 1 To JiaP
                 tmp = PhotoPathP(X1)
@@ -5235,7 +5275,7 @@ ReDim Itx(1 To 500) '款数量200修改为500 Vega 20251126
                       PicNP(ttp) = i - 1
                   End If
                   If PicNP(ttp) = 0 Then
-                     msg = msg + sp & PhotoPathP(ttp) & "子文件中没有图片文件" & CHR(10) & sp & PhotoPathP(ttp) & " subfolder without photo file" & CHR(10)
+                     msg = msg + sp & PhotoPathP(ttp) & UText(23376, 25991, 20214, 20013, 27809, 26377, 22270, 29255, 25991, 20214) & CHR(10) & sp & PhotoPathP(ttp) & " subfolder without photo file" & CHR(10)
                      GoTo 24
                   Else
                      TpicNP = TpicNP + PicNP(ttp)
@@ -5329,7 +5369,7 @@ ReDim Itx(1 To 500) '款数量200修改为500 Vega 20251126
   End Sub
 Sub PasteAutoNameItemPhoto(tt, TbNumber, S, PhotoPath, pic_Number, Show_Photo_Name, rnp, msg)
 
-Dim PhotoPathP(4000) As String                                                    '缺陷图片数量100修改为4000 Vega 20251126
+Dim PhotoPathP(4000) As String                                                    '1004000 Vega 20251126
 Dim i2P, i, i2, I4(500), i5, JiaP, X, NP, TpicNP, ttp, PicNP(1000), cnp As Integer
 Dim PhotoName(1000), TPhotoNameNP(1000) As String
 Dim PhotoNameP(500, 100) As String
@@ -5404,7 +5444,7 @@ Dim PhotoNameP(500, 100) As String
       
          If JiaP = 0 Then
            msg = msg + PhotoPath(tt) & "has not any subfolder nameed with item name." & CHR(13) & _
-           PhotoPath(tt) & "没有以款号命名的图片子文件夹" & CHR(13)
+           PhotoPath(tt) & UText(27809, 26377, 20197, 27454, 21495, 21629, 21517, 30340, 22270, 29255, 23376, 25991, 20214, 22841) & CHR(13)
            GoTo 25
          End If
          
@@ -5416,7 +5456,7 @@ Dim PhotoNameP(500, 100) As String
               For ttp = 1 To JiaP
                  
                   If PicNP(ttp) = 0 Then
-                     msg = msg + sp & PhotoPathP(ttp) & "子文件中没有图片文件" & CHR(10) & sp & PhotoPathP(ttp) & " subfolder without photo file" & CHR(10)
+                     msg = msg + sp & PhotoPathP(ttp) & UText(23376, 25991, 20214, 20013, 27809, 26377, 22270, 29255, 25991, 20214) & CHR(10) & sp & PhotoPathP(ttp) & " subfolder without photo file" & CHR(10)
                      GoTo 24
                   End If
                 
@@ -5540,7 +5580,7 @@ End Sub
    Sub InitialWms()
 '
 '
-' 初始化手工缺陷表,by wyn/2025010824
+',by wyn/2025010824
 '
 '
 Dim i, j, k, p, Q, R, Y, Cn, tb, ss, Qtb, cnt, CeC, CRow, Typ, lvl, Ass, grp, tt, ch, FX As Integer
@@ -5560,12 +5600,12 @@ Dim StartTime As Single
     'pic.Delete
  
  'Next
- '------------抽样标准参数用于下面
+ '------------
          Dim SamplingStd_Name(), SamplingStd_Value() As String
          CCN = 9
          ReDim SamplingStd_Name(1 To CCN), SamplingStd_Value(1 To CCN)
   
-          '--------替换数值
+          '--------
           SamplingStd_Name(1) = "ISO2859.1":        SamplingStd_Value(1) = "ISO2859.1"
           SamplingStd_Name(2) = "N/A":              SamplingStd_Value(2) = "N/A"
           SamplingStd_Name(3) = "Other":            SamplingStd_Value(3) = "Other"
@@ -5578,7 +5618,7 @@ Dim StartTime As Single
         Dim InspectionLevel_Name(), InspectionLevel_Value() As String
         CCN = 12
         ReDim InspectionLevel_Name(1 To CCN), InspectionLevel_Value(1 To CCN)
-           '--------替换数值
+           '--------
                  InspectionLevel_Name(1) = "G-II":               InspectionLevel_Value(1) = "G-II"
                  InspectionLevel_Name(2) = "G-II per Item":      InspectionLevel_Value(2) = "G-II per Item"
                  InspectionLevel_Name(3) = "G-I":                InspectionLevel_Value(3) = "G-I"
@@ -5608,21 +5648,21 @@ Dim StartTime As Single
 5   With ThisDocument.Range.Tables(tbn)    'shipment qty
        qtyRow = .Rows.count
        SQty = Val(.Cell(qtyRow, 3).Range.Text)
-       If SQty = 0 Then MsgBox "1.Quantity表格的total shipment quantity=0,请先输好该表格数值！" & CHR(10) & _
-       "1.Quantity表格, shipment quantity=0, please complete inputing data first!", vbCritical: Exit Sub
-        Itms = qtyRow - 5 '款数以及款号，后面写入workmanship 表用
+       If SQty = 0 Then MsgBox "1.Quantity" & UText(34920, 26684, 30340) & "total shipment quantity=0," & UText(35831, 20808, 36755, 22909, 35813, 34920, 26684, 25968, 20540) & "！" & CHR(10) & _
+       "1.Quantity" & UText(34920, 26684) & ", shipment quantity=0, please complete inputing data first!", vbCritical: Exit Sub
+        Itms = qtyRow - 5 '，workmanship
         ReDim Itx(1 To Itms)
           For i = 5 To qtyRow - 1
               Itx(i - 4) = Mid(.Cell(i, 2).Range.Text, 1, Len(.Cell(i, 2).Range.Text) - 2)
-              Sm(i - 4) = Val(.Cell(i, 8).Range.Text)     '每款抽样量
-              DSQty(i - 4) = Val(.Cell(i, 4).Range.Text) '出货数
+              Sm(i - 4) = Val(.Cell(i, 8).Range.Text)     ' translated comment
+              DSQty(i - 4) = Val(.Cell(i, 4).Range.Text) ' translated comment
           Next i
          'SmS = Val(.Cell(qtyRow, 7).Range.Text)
           sco = Val(.Cell(qtyRow, 7).Range.Text)
           Unit = .Cell(4, 3).Range.words(2)
    End With
 
-                '-----同款号合并
+                '-----
    Dim ComItx_dict As Object
    Dim ComItx() As String
    ReDim ComItx(1 To Itms)
@@ -5669,19 +5709,19 @@ Dim StartTime As Single
 10 With ThisDocument.Range.Tables(tbn)
     
        If .Cell(3, 2).Range.Text Like "*Choose*" = True Or .Cell(4, 2).Range.Text Like "*Choose*" = True _
-       Or .Cell(5, 2).Range.Text Like "*Choose*" = True Then MsgBox "抽样标准，抽样方案，检验水平未完整输入，请输完整!" & CHR(10) & _
+       Or .Cell(5, 2).Range.Text Like "*Choose*" = True Then MsgBox UText(25277, 26679, 26631, 20934) & "，" & UText(25277, 26679, 26041, 26696) & "，" & UText(26816, 39564, 27700, 24179, 26410, 23436, 25972, 36755, 20837) & "，" & UText(35831, 36755, 23436, 25972) & "!" & CHR(10) & _
        "Sampling Standard,Sampling Plan,or Inspection Level not input completely,please input!", vbCritical: Exit Sub
        
        If .Cell(4, 4).Range.ContentControls.count = 0 And Len(.Cell(4, 4).Range.Text) <= 2 _
        Or .Cell(4, 5).Range.ContentControls.count = 0 And Len(.Cell(4, 5).Range.Text) <= 2 _
        Or .Cell(4, 6).Range.ContentControls.count = 0 And Len(.Cell(4, 6).Range.Text) <= 2 Then _
-       MsgBox "AQL未完整输入，如果没有AQL，请输入‘-’!" & CHR(10) & _
+       MsgBox "AQL" & UText(26410, 23436, 25972, 36755, 20837) & "，" & UText(22914, 26524, 27809, 26377) & "AQL，" & UText(35831, 36755, 20837) & "‘-’!" & CHR(10) & _
        "AQL not input completely,if there was not AQL please input‘-’!", vbCritical: Exit Sub
 
        Inslev = .Cell(5, 2).Range.Text
        If Inslev Like "*G-III*" = True Or Inslev Like "*III*" = True Then
        lvl = 7
-       If LCase(Inslev) Like "*per item*" = True Then SamT = 1 Else SamT = 2   '1,分款抽样，2，合并抽样
+       If LCase(Inslev) Like "*per item*" = True Then SamT = 1 Else SamT = 2   '1,，2，
        
        ElseIf Inslev Like "*G-II*" = True Or Inslev Like "*II*" = True Then
        lvl = 6
@@ -5711,14 +5751,14 @@ Dim StartTime As Single
         lvl = 0
        End If
    
-    If LCase(.Cell(4, 2).Range.Text) Like "*fixed sample*" = True Or .Cell(4, 2).Range.Text Like "*固定抽样*" = True Then
+    If LCase(.Cell(4, 2).Range.Text) Like "*fixed sample*" = True Or .Cell(4, 2).Range.Text Like "*" & UText(22266, 23450, 25277, 26679) & "*" = True Then
         'Styp = 5
         FX = 1
         If LCase(Inslev) Like "*per item*" = True Then SamT = 1 Else SamT = 2
        ' .Cell(3, 2).Range.Text = "N/A"
      
        
-    ElseIf LCase(.Cell(4, 2).Range.Text) Like "*single, normal*" = True Or .Cell(4, 2).Range.Text Like "*正常检查,一次抽样*" = True Then
+    ElseIf LCase(.Cell(4, 2).Range.Text) Like "*single, normal*" = True Or .Cell(4, 2).Range.Text Like "*" & UText(27491, 24120, 26816, 26597) & "," & UText(19968, 27425, 25277, 26679) & "*" = True Then
         Styp = 1
        
     End If
@@ -5728,7 +5768,7 @@ Dim StartTime As Single
 
        
 
-   '查sample size和AQL
+   'sample sizeAQL
  
 
        Lots(0) = 0
@@ -5780,13 +5820,13 @@ Dim StartTime As Single
         
         
 
-   Select Case SamT   '合并或按款
+   Select Case SamT   ' translated comment
    
-   Case 2  '合并抽样
+   Case 2  ' translated comment
     
       
      'Select Case Styp
-        'Case 1, 5     '2859一次抽样,固定抽样
+        'Case 1, 5 '2859,
         Call SingelNormal(CD, AC, AC2, Re, MV)
         ' Case 2
         ' Call SingelTightened(CD, AC, AC2, RE, MV)
@@ -5814,7 +5854,7 @@ Dim StartTime As Single
   '-----------------------------------------------------------
  
        
-      If .Cell(4, 4).Range.Text Like "*不允许*" = True Or LCase(.Cell(4, 4).Range.Text) Like "*not allowed*" = True Or Val(.Cell(4, 4).Range.Text) = 0 Then
+      If .Cell(4, 4).Range.Text Like "*" & UText(19981, 20801, 35768) & "*" = True Or LCase(.Cell(4, 4).Range.Text) Like "*not allowed*" = True Or Val(.Cell(4, 4).Range.Text) = 0 Then
         Acr = 0
         Y = 1
       Else
@@ -5831,17 +5871,17 @@ Dim StartTime As Single
        
       
       
-       If SQty < Lots(1) Then MsgBox "The batch size was too small." & CHR(13) & "批量数太小，本程序不能计算，请手工计算": Exit Sub
+       If SQty < Lots(1) Then MsgBox "The batch size was too small." & CHR(13) & UText(25209, 37327, 25968, 22826, 23567) & "，" & UText(26412, 31243, 24207, 19981, 33021, 35745, 31639) & "，" & UText(35831, 25163, 24037, 35745, 31639): Exit Sub
         ss = Val(.Cell(5, 4).Range.Text)
-        '＊＊＊处理fixed sample 又刚好是AQL表中的情况
+        '＊＊＊fixed sample AQL
       
         Dim Cell As Cell
         
         If FX = 1 Then
-            ss = Val(.Cell(5, 4).Range.Text)   '固定抽样时需要在workmanship表中输入样本量
-           If ss = 0 Then MsgBox "固定抽样，请先输入在workmanship表输入sample size" & CHR(10) & _
+            ss = Val(.Cell(5, 4).Range.Text)   'workmanship
+           If ss = 0 Then MsgBox UText(22266, 23450, 25277, 26679) & "，" & UText(35831, 20808, 36755, 20837, 22312) & "workmanship" & UText(34920, 36755, 20837) & "sample size" & CHR(10) & _
            "For fixed sample plan, please input sample size at workmanship table !", vbCritical: Exit Sub
-           If ss <> sco Then MsgBox "固定抽样在2.Workmanship表输入的抽样数不等于1.Quantity表的抽样数，请更正后再运行程序" & CHR(10) & _
+           If ss <> sco Then MsgBox UText(22266, 23450, 25277, 26679, 22312) & "2.Workmanship" & UText(34920, 36755, 20837, 30340, 25277, 26679, 25968, 19981, 31561, 20110) & "1.Quantity" & UText(34920, 30340, 25277, 26679, 25968) & "，" & UText(35831, 26356, 27491, 21518, 20877, 36816, 34892, 31243, 24207) & CHR(10) & _
            "The sample size in 2.Workmanship table is not the same with which in 1.Quantity table, please revise it and run program again!!", vbCritical
 
            For i = 1 To 15
@@ -5875,7 +5915,7 @@ Dim StartTime As Single
                    GoTo 20
                End If
              Next i
-            FX = 2    '固定抽样sample size不在列表中
+            FX = 2    'sample size
            .Cell(4, 4).Range.Text = "-"
            .Cell(4, 5).Range.Text = "-"
            .Cell(4, 6).Range.Text = "-"
@@ -5887,29 +5927,29 @@ Dim StartTime As Single
         End If
   
 
-        '算批量数在每一张表LotSiZE的第几组
+        'LotSiZE
        For i = 1 To 15
          If SQty >= Lots(i) And SQty < Lots(i + 1) Then grp = i: GoTo 20
        Next i
        
-    '算AQLSampleSiz在第二张表的纵向第几组
+    'AQLSampleSiz
       
 20     Scode = LG(grp, lvl)
        For i = 1 To 16
           If Scode = CD(i) Then Hgrp = i: GoTo 25
        Next i
        
-25    For k = Y To 2  'k 对应实际AQL的Ma,Mi
-        '算实际验货AQL在第二张表横向的组数
+25    For k = Y To 2  'k AQLMa,Mi
+        'AQL
          Cn = 0
          For i = 1 To 16
            If AQL(k) = AQ(i) Then Agrp = i: GoTo 30
-           If AQL(k) <> AQ(i) And AQL(k) <> 0 Then Cn = Cn + 1 '判定AQL 是否列入表格范围
+           If AQL(k) <> AQ(i) And AQL(k) <> 0 Then Cn = Cn + 1 'AQL
          Next i
 
         If Cn = 16 Then
            If FX = 1 Then
-                FX = 3       '固定抽样AQL不在列表中
+                FX = 3       'AQL
                 .Cell(4, 4).Range.Text = "-"
                 .Cell(4, 5).Range.Text = "-"
                 .Cell(4, 6).Range.Text = "-"
@@ -5918,7 +5958,7 @@ Dim StartTime As Single
                .Cell(5, 6).Range.Text = ss
                 GoTo 70
            Else
-             MsgBox "2.Workmanship表格中输入的AQL值不在程序规定范围内，请修改或手工处理！" & CHR(10) & _
+             MsgBox "2.Workmanship" & UText(34920, 26684, 20013, 36755, 20837, 30340) & "AQL" & UText(20540, 19981, 22312, 31243, 24207, 35268, 23450, 33539, 22260, 20869) & "，" & UText(35831, 20462, 25913, 25110, 25163, 24037, 22788, 29702) & "！" & CHR(10) & _
              "2.Workmanship table, input AQL value out of the program data scope, please revised it or dealing with it by hand！", vbCritical: Exit Sub
           End If
        End If
@@ -5929,7 +5969,7 @@ Dim StartTime As Single
          
          If MV(Hgrp, Agrp) > 0 And FX = 1 Then
            If MV(Hgrp, Agrp) > ss Then    'sQty
-              FX = 4                     'fixed sample 又下跳转
+              FX = 4                     'fixed sample
                 .Cell(4, 4).Range.Text = "-"
                 .Cell(4, 5).Range.Text = "-"
                 .Cell(4, 6).Range.Text = "-"
@@ -5943,7 +5983,7 @@ Dim StartTime As Single
         If MV(Hgrp, Agrp) = 0 Then SmpS(k) = CD(Hgrp)
         AAc(k) = AC(Hgrp, Agrp)
  
- '-------本段用于二次抽样方案，这里没结果，不用
+ '-------，，
         If Styp = 1 Or Styp = 2 Or Styp = 4 Then
              RRe(k) = AAc(k) + 1
         Else
@@ -5979,8 +6019,8 @@ Dim StartTime As Single
       
  
  
-        If Ass <> sco And Styp = 1 Then MsgBox "表格1.Quantity统计出的抽样数是：" & sco & " 但是按ISO2859标准查出的Sample Size应该是:" & Ass & _
-       " 两者不一致，请进行修改后再次运行程序！！！" & CHR(10) & _
+        If Ass <> sco And Styp = 1 Then MsgBox UText(34920, 26684) & "1.Quantity" & UText(32479, 35745, 20986, 30340, 25277, 26679, 25968, 26159) & "：" & sco & " " & UText(20294, 26159, 25353) & "ISO2859" & UText(26631, 20934, 26597, 20986, 30340) & "Sample Size" & UText(24212, 35813, 26159) & ":" & Ass & _
+       " " & UText(20004, 32773, 19981, 19968, 33268) & "，" & UText(35831, 36827, 34892, 20462, 25913, 21518, 20877, 27425, 36816, 34892, 31243, 24207) & "！！！" & CHR(10) & _
        "The sample size in 1.Quantity table is " & sco & ", however according to ISO28591 the sample size shall be " & Ass & _
        ", they are not the same, please revise it and run program again!!!": GoTo 1000
       .Cell(5, 4).Range.Text = SmpS(0)
@@ -6004,13 +6044,13 @@ Dim StartTime As Single
            '.Cell(3, 2).Range.Text = "STD-019-HQT"
        End If
 70      With ThisDocument.Range.Tables(tbn + 1) 'defects---------
-          If LCase(.Cell(1, 1).Range.Text) Like "*defects*" = False Then MsgBox "在2.wordmanship表下第一个表格不是Defect表，请更正！" & CHR(10) & _
+          If LCase(.Cell(1, 1).Range.Text) Like "*defects*" = False Then MsgBox UText(22312) & "2.wordmanship" & UText(34920, 19979, 31532, 19968, 20010, 34920, 26684, 19981, 26159) & "Defect" & UText(34920) & "，" & UText(35831, 26356, 27491) & "！" & CHR(10) & _
           "Not Defects Table is found below the 2.workmanship table, please revise it!!!", vbCritical: Exit Sub
             Coln = .Columns.count
             Rown = .Rows.count
   
             '----- -------------
-               '写入款号等
+               ' translated comment
                N = 0
                 For i = Rown - 2 To 3 Step -1
                  If .Rows(i).Cells.count > 1 Then
@@ -6031,11 +6071,11 @@ Dim StartTime As Single
                      .Cell(i, 1).Range.Text = "Item No."
                    End If
                    If .Rows(i).Cells.count = 1 And LCase(.Cell(i, 1).Range.Text) Like "*item*" = True Then
-                       Im(N + 1) = i   'Item行所处位置
-                       N = N + 1       'item数
+                       Im(N + 1) = i   'Item
+                       N = N + 1       'item
                     End If
                   Next i
-                  If N = 0 Then MsgBox "2. Workmanship表下的Defec表没有一整行用于填写item号的行，请增加后再运行程序。" & CHR(13) & _
+                  If N = 0 Then MsgBox "2. Workmanship" & UText(34920, 19979, 30340) & "Defec" & UText(34920, 27809, 26377, 19968, 25972, 34892, 29992, 20110, 22635, 20889) & "item" & UText(21495, 30340, 34892) & "，" & UText(35831, 22686, 21152, 21518, 20877, 36816, 34892, 31243, 24207) & "。" & CHR(13) & _
                   "The Defect tablle has is not any row for inputing Item No.,please revise it and run program again！": Exit Sub
 
                 If N > ComItms Then
@@ -6048,7 +6088,7 @@ Dim StartTime As Single
                    For j = 1 To ComItms - N
                     .Rows(Im(1)).Select
                       
-                        StartTime = Timer ' 获取当前时间 ' 循环直到超过100毫秒
+                        StartTime = Timer '' 100
                         Do While Timer - StartTime < 0.1
                           DoEvents
                         Loop
@@ -6059,7 +6099,7 @@ Dim StartTime As Single
                     rg.Copy
                     For j = 1 To ComItms - N
                      .Rows(Im(1)).Select
-                        StartTime = Timer ' 获取当前时间 ' 循环直到超过100毫秒
+                        StartTime = Timer '' 100
                         Do While Timer - StartTime < 0.1
                           DoEvents
                         Loop
@@ -6112,8 +6152,8 @@ Dim StartTime As Single
       'End select
     
     
-      Case 1    '分款抽样
-          '-------------------临时增加固定抽样 各款样品数不一样的情况-----------------------
+      Case 1    ' translated comment
+          '------------------- -----------------------
        Set dict = CreateObject("Scripting.Dictionary")
     
       For i = 1 To ComItms
@@ -6124,7 +6164,7 @@ Dim StartTime As Single
      N = dict.count
      Set dict = Nothing
 
-     If N > 1 Then   'per size 有不一样的款
+     If N > 1 Then   'per size
      
        FX = 5
        With WD.Tables(getTableNumber(2))
@@ -6162,7 +6202,7 @@ Dim StartTime As Single
   '-----------------------------------------------------------
  
        
-      If .Cell(4, 4).Range.Text Like "*不允许*" = True Or Val(.Cell(4, 4).Range.Text) = 0 Then
+      If .Cell(4, 4).Range.Text Like "*" & UText(19981, 20801, 35768) & "*" = True Or Val(.Cell(4, 4).Range.Text) = 0 Then
         Acr = 0
         Y = 1
         AAc(0) = 0
@@ -6182,19 +6222,19 @@ Dim StartTime As Single
        SQty = ComDSQty(tt)
 
 
-       If SQty < Lots(1) Then MsgBox "款号" & ComItx(tt) & "批量数太小，本程序不能计算，请手工计算" & CHR(10) & _
+       If SQty < Lots(1) Then MsgBox UText(27454, 21495) & ComItx(tt) & UText(25209, 37327, 25968, 22826, 23567) & "，" & UText(26412, 31243, 24207, 19981, 33021, 35745, 31639) & "，" & UText(35831, 25163, 24037, 35745, 31639) & CHR(10) & _
        "Lot size of item" & ComItx(tt) & "is two small for this program, please calculate by hand！": Exit Sub
 
-        '＊＊＊处理fixed sample 又刚好是AQL表中的情况
+        '＊＊＊fixed sample AQL
          If FX = 1 Then
-           ss = Val(.Cell(5, 4).Range.Text)   '固定抽样时需要在workmanship表中输入样本量
-           If ss = 0 Then MsgBox "固定抽样，请先输入在workmanship表输入sample size" & CHR(10) & _
+           ss = Val(.Cell(5, 4).Range.Text)   'workmanship
+           If ss = 0 Then MsgBox UText(22266, 23450, 25277, 26679) & "，" & UText(35831, 20808, 36755, 20837, 22312) & "workmanship" & UText(34920, 36755, 20837) & "sample size" & CHR(10) & _
            "For fixed sample plan, please input sample size at workmanship table !", vbCritical: Exit Sub
-             If ss <> sco Then MsgBox "固定抽样在2.Workmanship表输入的抽样数不等于1.Quantity表的抽样数，请更正后再运行程序" & CHR(10) & _
+             If ss <> sco Then MsgBox UText(22266, 23450, 25277, 26679, 22312) & "2.Workmanship" & UText(34920, 36755, 20837, 30340, 25277, 26679, 25968, 19981, 31561, 20110) & "1.Quantity" & UText(34920, 30340, 25277, 26679, 25968) & "，" & UText(35831, 26356, 27491, 21518, 20877, 36816, 34892, 31243, 24207) & CHR(10) & _
             "The sample size in 2.Workmanship table is not the same with which in 1.Quantity table, please revise it and run program again!!", vbCritical
            ss = ss / ComItms
            For i = 1 To ComItms
-                If ss <> ComSm(i) Then MsgBox "固定抽样款号：" & ComItx(i) & "在2.Workmanship表输入的抽样数不等于1.Quantity表的抽样数，请更正后再运行程序" & CHR(10) & _
+                If ss <> ComSm(i) Then MsgBox UText(22266, 23450, 25277, 26679, 27454, 21495) & "：" & ComItx(i) & UText(22312) & "2.Workmanship" & UText(34920, 36755, 20837, 30340, 25277, 26679, 25968, 19981, 31561, 20110) & "1.Quantity" & UText(34920, 30340, 25277, 26679, 25968) & "，" & UText(35831, 26356, 27491, 21518, 20877, 36816, 34892, 31243, 24207) & CHR(10) & _
                "The sample size in 2.Workmanship table is not the same with which in 1.Quantity table, please revise it and run program again!!", vbCritical
            Next i
           
@@ -6226,7 +6266,7 @@ Dim StartTime As Single
                End If
                
            Next i
-            FX = 2    '固定抽样sample size不在列表中
+            FX = 2    'sample size
            .Cell(4, 4).Range.Text = "-"
            .Cell(4, 5).Range.Text = "-"
            .Cell(4, 6).Range.Text = "-"
@@ -6240,30 +6280,30 @@ Dim StartTime As Single
         '--------------
  
 
-        '算批量数在每一张表LotSiZE的第几组
+        'LotSiZE
        For i = 1 To 15
          If SQty >= Lots(i) And SQty < Lots(i + 1) Then grp = i: GoTo 120
        Next i
        
-    '算AQLSampleSiz在第二张表的纵向第几组
+    'AQLSampleSiz
       
 120    Scode = LG(grp, lvl)
        For i = 1 To 16
           If Scode = CD(i) Then Hgrp = i: GoTo 125
        Next i
        
-125    For k = Y To 2  'k 对应实际AQL的Ma,Mi
-        '算实际验货AQL在第二张表横向的组数
+125    For k = Y To 2  'k AQLMa,Mi
+        'AQL
          Cn = 0
          For i = 1 To 16
            If AQL(k) = AQ(i) Then Agrp = i: GoTo 130
-           If AQL(k) <> AQ(i) And AQL(k) <> 0 Then Cn = Cn + 1 '判定AQL 是否列入表格范围
+           If AQL(k) <> AQ(i) And AQL(k) <> 0 Then Cn = Cn + 1 'AQL
          Next i
  
 
          If Cn = 16 Then
            If FX = 1 Then
-                FX = 3       '固定抽样AQL不在列表中
+                FX = 3       'AQL
                 .Cell(4, 4).Range.Text = "-"
                .Cell(4, 5).Range.Text = "-"
                .Cell(4, 6).Range.Text = "-"
@@ -6272,7 +6312,7 @@ Dim StartTime As Single
                .Cell(5, 6).Range.Text = ss * ComItms
                 GoTo 170
              Else
-               MsgBox "2.Workmanship表格中输入的AQL值不在程序规定范围内，请修改或手工处理！" & CHR(10) & _
+               MsgBox "2.Workmanship" & UText(34920, 26684, 20013, 36755, 20837, 30340) & "AQL" & UText(20540, 19981, 22312, 31243, 24207, 35268, 23450, 33539, 22260, 20869) & "，" & UText(35831, 20462, 25913, 25110, 25163, 24037, 22788, 29702) & "！" & CHR(10) & _
                 "2.Workmanship table, input AQL value out of the program data scope, please revised it or dealing with it by hand！", vbCritical: Exit Sub
             End If
        End If
@@ -6284,7 +6324,7 @@ Dim StartTime As Single
         
          If MV(Hgrp, Agrp) > 0 And FX = 1 Then
             If MV(Hgrp, Agrp) > ss Then     'sQty
-              FX = 4                     'fixed sample 又跳转
+              FX = 4                     'fixed sample
                .Cell(4, 4).Range.Text = "-"
                .Cell(4, 5).Range.Text = "-"
                .Cell(4, 6).Range.Text = "-"
@@ -6296,7 +6336,7 @@ Dim StartTime As Single
          End If
         If MV(Hgrp, Agrp) = 0 Then SmpS(k) = CD(Hgrp)
         AAc(k) = AC(Hgrp, Agrp)
- '-------本段用于二次抽样方案，这里没结果，不用
+ '-------，，
         If Styp = 1 Or Styp = 2 Or Styp = 4 Then
              RRe(k) = AAc(k) + 1
         Else
@@ -6340,14 +6380,14 @@ Dim StartTime As Single
        
 
  
-       '取填入的Sample size进行检查
+       'Sample size
        
        
-        If Ass <> ComSm(tt) And Styp = 1 Then msg = msg + "Item " & ComItx(tt) & ",1.Quantity表格填入的抽样数是" & ComSm(tt) & " 但是按ISO2859标准查出的Sample Size应该是:" & Ass & CHR(10) & _
+        If Ass <> ComSm(tt) And Styp = 1 Then msg = msg + "Item " & ComItx(tt) & ",1.Quantity" & UText(34920, 26684, 22635, 20837, 30340, 25277, 26679, 25968, 26159) & ComSm(tt) & " " & UText(20294, 26159, 25353) & "ISO2859" & UText(26631, 20934, 26597, 20986, 30340) & "Sample Size" & UText(24212, 35813, 26159) & ":" & Ass & CHR(10) & _
          "Item " & ComItx(tt) & ", the sample size in 1.quantity table is " & ComSm(tt) & "however according to ISO2859.1 it shall be " & Ass & CHR(10)
   Next tt
      
-     If msg <> "" Then MsgBox msg & " 请进行修改后再次运行程序!！！" & "Pease revise and run progaram again!!!": GoTo 1000
+     If msg <> "" Then MsgBox msg & " " & UText(35831, 36827, 34892, 20462, 25913, 21518, 20877, 27425, 36816, 34892, 31243, 24207) & "!！！" & "Pease revise and run progaram again!!!": GoTo 1000
 
       .Cell(5, 4).Range.Text = SmpS(0)
       .Cell(5, 5).Range.Text = SmpS(1)
@@ -6373,7 +6413,7 @@ Dim StartTime As Single
      
     
 
-170   '--------    '写入款号等
+170   '-------- '
  
 
         With ThisDocument.Range.Tables(tbn + 1)
@@ -6400,7 +6440,7 @@ Dim StartTime As Single
           Rown = .Rows.count
           If Rown < 4 Then
              MsgBox "The row for input defect details was deleted,please recover it from correct template" & CHR(10) & _
-            "用于输入缺陷的行被删除了，请先从正确的模板中恢复！"
+            UText(29992, 20110, 36755, 20837, 32570, 38519, 30340, 34892, 34987, 21024, 38500, 20102) & "，" & UText(35831, 20808, 20174, 27491, 30830, 30340, 27169, 26495, 20013, 24674, 22797) & "！"
              Exit Sub
           ElseIf Rown = 5 Then
              .Rows(5).Select
@@ -6435,13 +6475,13 @@ Dim StartTime As Single
                .Cell(i, 1).Range.Text = "Item No."
                 End If
                 If .Rows(i).Cells.count = 1 And LCase(.Cell(i, 1).Range.Text) Like "*item*" = True Then
-                   Im(N + 1) = i   'Item行所处位置
-                     N = N + 1       'item数
+                   Im(N + 1) = i   'Item
+                     N = N + 1       'item
                 End If
             Next i
             
       '-----------------
-            If N = 0 Then MsgBox "2. Workmanship表下的Defec表没有一整行用于填写item号的行，请增加后再运行程序。" & CHR(13) & _
+            If N = 0 Then MsgBox "2. Workmanship" & UText(34920, 19979, 30340) & "Defec" & UText(34920, 27809, 26377, 19968, 25972, 34892, 29992, 20110, 22635, 20889) & "item" & UText(21495, 30340, 34892) & "，" & UText(35831, 22686, 21152, 21518, 20877, 36816, 34892, 31243, 24207) & "。" & CHR(13) & _
                   "The Defect tablle has is not any row for inputing Item No.,please revise it and run program again！": Exit Sub
 
             If N > ComItms Then
@@ -6455,7 +6495,7 @@ Dim StartTime As Single
                     
                       
                      .Rows(Im(1)).Select
-                       StartTime = Timer ' 获取当前时间 ' 循环直到超过100毫秒
+                       StartTime = Timer '' 100
                         Do While Timer - StartTime < 0.1
                           DoEvents
                         Loop
@@ -6466,7 +6506,7 @@ Dim StartTime As Single
                     rg.Copy
                     For j = 1 To ComItms - N
                      .Rows(Im(1)).Select
-                        StartTime = Timer ' 获取当前时间 ' 循环直到超过100毫秒
+                        StartTime = Timer '' 100
                         Do While Timer - StartTime < 0.1
                           DoEvents
                         Loop
@@ -6617,9 +6657,9 @@ Dim StartTime As Single
  
      
    If msg <> "" Then
-      MsgBox msg & CHR(10) & "Completed!" & CHR(10) & "计算完成！"
+      MsgBox msg & CHR(10) & "Completed!" & CHR(10) & UText(35745, 31639, 23436, 25104) & "！"
     Else
-      MsgBox "Completed!" & CHR(10) & "计算完成！"
+      MsgBox "Completed!" & CHR(10) & UText(35745, 31639, 23436, 25104) & "！"
     End If
 
     
@@ -6883,7 +6923,7 @@ Dim I4(200) As Integer
 Set WD = ThisDocument
 
 
-   ' Quantity sap 图片
+   'Quantity sap
         picN(tt) = 0
        
         If Dir(Path & Sap_Note_type, vbDirectory) = Sap_Note_type Then
@@ -6900,7 +6940,7 @@ Set WD = ThisDocument
                      
                End If
        End If
-        If picN(tt) >= 10 Then '10个文件以上排序
+        If picN(tt) >= 10 Then '10
      i = picN(tt)
      i5 = 1
      For X = 1 To i
@@ -6958,7 +6998,7 @@ Set WD = ThisDocument
 
          msg = msg & "There are " & picN(tt) & " photos in " & tb_sap(tt) & " folder, However, not" & tb_sap(tt) & _
          " table was found at report" & CHR(10) & tb_sap(tt) & _
-         "文件夹中有" & picN(tt) & "张图片，但在报告中没有" & tb_sap(tt) & "表格" & CHR(10)
+         UText(25991, 20214, 22841, 20013, 26377) & picN(tt) & UText(24352, 22270, 29255) & "，" & UText(20294, 22312, 25253, 21578, 20013, 27809, 26377) & tb_sap(tt) & UText(34920, 26684) & CHR(10)
 
          GoTo 100
 
@@ -6970,8 +7010,8 @@ Set WD = ThisDocument
         WD.Tables.add Range:=Selection.Range, NumRows:=2, NumColumns:=2, _
         DefaultTableBehavior:=wdWord9TableBehavior, AutoFitBehavior:=wdAutoFitFixed
             With Selection.Tables(1)
-                If .Style <> "网格型" Then
-                 .Style = "网格型"
+                If .Style <> UText(32593, 26684, 22411) Then
+                 .Style = UText(32593, 26684, 22411)
                End If
             End With
             Call Setborders025
@@ -7069,7 +7109,7 @@ Dim I4(200) As Integer
 Set WD = ThisDocument
 
 
-   ' Quantity sap 图片
+   'Quantity sap
         picN(tt) = 0
        
         If Dir(Path & Sap_Note_type, vbDirectory) = Sap_Note_type Then
@@ -7086,7 +7126,7 @@ Set WD = ThisDocument
                     
                End If
        End If
-        If picN(tt) >= 10 Then '10个文件以上排序
+        If picN(tt) >= 10 Then '10
      i = picN(tt)
      i5 = 1
      For X = 1 To i
@@ -7143,7 +7183,7 @@ Set WD = ThisDocument
 
          msg = msg & "There are " & picN(tt) & " photos in " & tb_no(tt) & " folder, However, not" & tb_no(tt) & _
          " table was found at report" & CHR(10) & tb_no(tt) & _
-         "文件夹中有" & picN(tt) & "张图片，但在报告中没有" & tb_no(tt) & "表格" & CHR(10)
+         UText(25991, 20214, 22841, 20013, 26377) & picN(tt) & UText(24352, 22270, 29255) & "，" & UText(20294, 22312, 25253, 21578, 20013, 27809, 26377) & tb_no(tt) & UText(34920, 26684) & CHR(10)
 
          GoTo 100
 
@@ -7155,8 +7195,8 @@ Set WD = ThisDocument
         WD.Tables.add Range:=Selection.Range, NumRows:=2, NumColumns:=2, _
         DefaultTableBehavior:=wdWord9TableBehavior, AutoFitBehavior:=wdAutoFitFixed
             With Selection.Tables(1)
-                If .Style <> "网格型" Then
-                 .Style = "网格型"
+                If .Style <> UText(32593, 26684, 22411) Then
+                 .Style = UText(32593, 26684, 22411)
                End If
             End With
             Call Setborders025
@@ -7288,7 +7328,7 @@ Call FindAndHighlightText
 
 'Call Datacheck
 
- '删除空的图片，sap,note表格
+ '，sap,note
   tb = WD.Tables.count - 1
   
   For i = tb - 2 To 4 Step -1
@@ -7334,7 +7374,7 @@ Call FindAndHighlightText
 10 Next i
   
  
-   '----处理Note表格
+   '----Note
  tb = WD.Tables.count - 1
   For i = tb - 2 To 4 Step -1
     With WD.Tables(i)
@@ -7352,7 +7392,7 @@ Call FindAndHighlightText
                   Cw(N) = Mid(.Cell(k, 1).Range.Text, 1, Len(.Cell(k, 1).Range.Text) - 2)
                   Lw(N) = Len(.Cell(k, 1).Range.Text) - 2
                  
-                  ST(N) = TLn + 1 '生成链接用
+                  ST(N) = TLn + 1 ' translated comment
                   ED(N) = TLn + Lw(N)
                   TLn = TLn + Lw(N) + 2
                   BKText(N) = "Note" & Replace(Cw(N), ".", "")
@@ -7382,7 +7422,7 @@ Call FindAndHighlightText
 20 Next i
   
   
-  '----处理sap表格
+  '----sap
  tb = WD.Tables.count - 1
   For i = tb - 2 To 4 Step -1
     With WD.Tables(i)
@@ -7391,7 +7431,7 @@ Call FindAndHighlightText
           If LCase(.Cell(1, 1).Range.Text) Like "*" & Ltb_sap(j) & "*" = True Then
              Saptbn(j) = i
              Rn = .Rows.count
-             SapP(j) = Rn - 1    'SAP数
+             SapP(j) = Rn - 1    'SAP
              Kw = ""
              N = 0
              TLn = 0
@@ -7400,7 +7440,7 @@ Call FindAndHighlightText
                   Cw(N) = Mid(.Cell(k, 1).Range.Text, 1, Len(.Cell(k, 1).Range.Text) - 2)
                   Lw(N) = Len(.Cell(k, 1).Range.Text) - 2
              
-                  ST(N) = TLn + 1 '生成链接用
+                  ST(N) = TLn + 1 ' translated comment
                   ED(N) = TLn + Lw(N)
                   TLn = TLn + Lw(N) + 2
                   BKText(N) = "Sap" & Replace(Cw(N), ".", "")
@@ -7429,10 +7469,10 @@ Call FindAndHighlightText
     End With
 30 Next i
   
-'---------检查各项结论选择
+'---------
   tb = WD.Tables.count - 1
 
-  For i = 4 To tb     '各项总结论是否选择或输入
+  For i = 4 To tb     ' translated comment
      With WD.Tables(i)
       
         For j = 1 To 10
@@ -7443,7 +7483,7 @@ Call FindAndHighlightText
                rg.Bookmarks.add Name:=BK(j), Range:=rg
              End If
              If j < 10 Then
-               Ctrn(j) = .Range.ContentControls.count '选项数
+               Ctrn(j) = .Range.ContentControls.count ' translated comment
                If .Cell(1, 2).Range.ContentControls.count > 0 Then
                   Res(j) = .Cell(1, 2).Range.ContentControls(1).Range.Text
                   BG = 2
@@ -7462,7 +7502,7 @@ Call FindAndHighlightText
                End If
                If Res(j) <> CF And Res(j) <> NC And Res(j) <> PD Then
                   msg = msg & "The result of " & tb_tt(j) & "has not choosen or input" & CHR(10) & _
-                  tb_tt(j) & "的检验结果还未选择或输入" & CHR(10) & CHR(10)
+                  tb_tt(j) & UText(30340, 26816, 39564, 32467, 26524, 36824, 26410, 36873, 25321, 25110, 36755, 20837) & CHR(10) & CHR(10)
                End If
               GoTo 40
             End If
@@ -7471,10 +7511,10 @@ Call FindAndHighlightText
     End With
 40  Next i
   If msg <> "" Then MsgBox msg & "Please check, revice and run program again!" & CHR(10) & _
-  "请检查更正并重新运行程序！" & CHR(10), vbCritical: Exit Sub
+  UText(35831, 26816, 26597, 26356, 27491, 24182, 37325, 26032, 36816, 34892, 31243, 24207) & "！" & CHR(10), vbCritical: Exit Sub
   
   
-   For i = 3 To 9  '检查分项结果选择
+   For i = 3 To 9  ' translated comment
       
         N = 0
         SCF(i) = 0: SNC(i) = 0: SPD(i) = 0: NAP(i) = 0
@@ -7490,7 +7530,7 @@ Call FindAndHighlightText
                Kw = Mid(rg.Text, 1, Len(rg.Text) - 2)
              End If
             
-               If Kw = CF Then             '用于判定分项结论是否选择以及合理性
+               If Kw = CF Then             ' translated comment
                  SCF(i) = SCF(i) + 1
                ElseIf Kw = NC Then
                   SNC(i) = SNC(i) + 1
@@ -7508,12 +7548,12 @@ Call FindAndHighlightText
         Next j
 
          If N > 0 Then msg = msg & N & " options of sub result items in " & tb_tt(i) & " section has not been choosen or input" & CHR(10) & _
-         tb_tt(i) & "区域有" & N & "个分项的结果选项未选择或输入" & CHR(10)
+         tb_tt(i) & UText(21306, 22495, 26377) & N & UText(20010, 20998, 39033, 30340, 32467, 26524, 36873, 39033, 26410, 36873, 25321, 25110, 36755, 20837) & CHR(10)
          
          N = 0
       
 
-         For j = Restbn(i) To Restbn(i + 1) - 1 '检查分项结果输入
+         For j = Restbn(i) To Restbn(i + 1) - 1 ' translated comment
             With WD.Tables(j)
               Rn = .Rows.count
               Cn = .Columns.count
@@ -7526,7 +7566,7 @@ Call FindAndHighlightText
                     For L = RI + 1 To Rn
                       Kw = Trim(.Cell(L, Cn).Range.Text)
                       Kw = Trim(Mid(Kw, 1, Len(Kw) - 2))
-                       If Kw = "" Then             '用于判定分项结论是否选择以及合理性
+                       If Kw = "" Then             ' translated comment
                           N = N + 1
                        End If
                     Next L
@@ -7537,14 +7577,14 @@ Call FindAndHighlightText
             End With
 38     Next j
          If N > 0 Then msg = msg & "For tables of " & tb_tt(i) & " section , there are total " & N & " rows without input result data " & CHR(10) & _
-         tb_tt(i) & "区域的表格中有" & N & "行结果项未输入数据" & CHR(10)
+         tb_tt(i) & UText(21306, 22495, 30340, 34920, 26684, 20013, 26377) & N & UText(34892, 32467, 26524, 39033, 26410, 36755, 20837, 25968, 25454) & CHR(10)
      End With
    Next i
      
      If msg <> "" Then MsgBox CHR(10) & msg & "Please check,revise and run program again!" & CHR(10) & _
-   "请检查修改并重新运行程序", vbCritical: Exit Sub
+   UText(35831, 26816, 26597, 20462, 25913, 24182, 37325, 26032, 36816, 34892, 31243, 24207), vbCritical: Exit Sub
    
- '---总结论导入首页
+ '---
    
   
     
@@ -7635,7 +7675,7 @@ Call FindAndHighlightText
     End With
   
 
-'--------------检查分项结论合理性
+'--------------
 50 For i = 1 To 9
    Select Case i
      
@@ -7643,13 +7683,13 @@ Call FindAndHighlightText
        If SapP(i) > 0 Then
           If Res(i) = CF Then msg = msg & "For " & tb_tt(i) & ", There were " & SapP(i) & _
            " Special Attention Points, however the inspection reuslt was " & _
-            Res(i) & ". It shall be " & NC & " Or " & PD & CHR(10) & tb_tt(i) & ",有" & SapP(i) & _
-           "项Special Attention Points,但结论却是" & Res(i) & ",应为" & NC & "或" & PD & CHR(10)
+            Res(i) & ". It shall be " & NC & " Or " & PD & CHR(10) & tb_tt(i) & "," & UText(26377) & SapP(i) & _
+           UText(39033) & "Special Attention Points," & UText(20294, 32467, 35770, 21364, 26159) & Res(i) & "," & UText(24212, 20026) & NC & UText(25110) & PD & CHR(10)
           
        Else
          If Res(i) <> CF Then msg = msg & "For " & tb_tt(i) & ", not any Special Attention Points was input" & _
          ", however the inspection reuslt was " & Res(i) & ", It shall be " & CF & CHR(10) & _
-          tb_tt(i) & ",没有Special Attention Points,但结论却是" & Res(i) & ",应为" & CF & CHR(10)
+          tb_tt(i) & "," & UText(27809, 26377) & "Special Attention Points," & UText(20294, 32467, 35770, 21364, 26159) & Res(i) & "," & UText(24212, 20026) & CF & CHR(10)
        End If
     Case 2
        With WD.Tables(Restbn(i) + 1)
@@ -7660,27 +7700,27 @@ Call FindAndHighlightText
                 Kcr = Trim(Mid(.Cell(j, 2).Range.Text, 1, Len(.Cell(j, 2).Range.Text) - 2))
                 Kma = Trim(Mid(.Cell(j, 3).Range.Text, 1, Len(.Cell(j, 3).Range.Text) - 2))
                 Kmi = Trim(Mid(.Cell(j, 4).Range.Text, 1, Len(.Cell(j, 4).Range.Text) - 2))
-                 If Not IsNumeric(Kcr) Or Not IsNumeric(Kma) Or Not IsNumeric(Kmi) Then               '没有AQL
+                 If Not IsNumeric(Kcr) Or Not IsNumeric(Kma) Or Not IsNumeric(Kmi) Then               'AQL
                    If Res(i) <> PD Then
                       msg = msg + "For " & tb_tt(i) & ", not Allowed data was input in defects table, " & _
                       " however, the inspection reuslt was " & Res(i) & ".It shall be " & PD & CHR(10) & _
-                      tb_tt(i) & ",Defect表中未输入Allowed数值,但结论却是" & Res(i) & ",应为" & PD & CHR(10)
+                      tb_tt(i) & ",Defect" & UText(34920, 20013, 26410, 36755, 20837) & "Allowed" & UText(25968, 20540) & "," & UText(20294, 32467, 35770, 21364, 26159) & Res(i) & "," & UText(24212, 20026) & PD & CHR(10)
                       GoTo 55
                     End If
                  Else
                      If Val(.Cell(j - 1, 2).Range.Text) > Val(Kcr) Or Val(.Cell(j - 1, 3).Range.Text) > Val(Kma) Or _
-                        Val(.Cell(j - 1, 4).Range.Text) > Val(Kmi) Then     'AQL超标
+                        Val(.Cell(j - 1, 4).Range.Text) > Val(Kmi) Then     'AQL
                          If Res(i) <> NC Then
                             msg = msg + "For " & tb_tt(i) & ", defects found exceed allowance, " & _
                            " however, the inspection reuslt was " & Res(i) & ".It shall be " & NC & CHR(10) & _
-                            tb_tt(i) & ",发现缺陷数超过允许值,但结论却是" & Res(i) & ",应为" & NC & CHR(10)
+                            tb_tt(i) & "," & UText(21457, 29616, 32570, 38519, 25968, 36229, 36807, 20801, 35768, 20540) & "," & UText(20294, 32467, 35770, 21364, 26159) & Res(i) & "," & UText(24212, 20026) & NC & CHR(10)
                             GoTo 55
                           End If
                      Else
                           If SapP(i) = 0 And Res(i) <> CF Then
                             msg = msg + "For " & tb_tt(i) & ", defects not exceed allowance and not special attention point was record, " & _
                            " however, the inspection reuslt was " & Res(i) & ". It shall be " & CF & CHR(10) & _
-                            tb_tt(i) & ",缺陷数未超过允许值且没有special attention point,但结论却是" & Res(i) & ",应为" & CF & CHR(10)
+                            tb_tt(i) & "," & UText(32570, 38519, 25968, 26410, 36229, 36807, 20801, 35768, 20540, 19988, 27809, 26377) & "special attention point," & UText(20294, 32467, 35770, 21364, 26159) & Res(i) & "," & UText(24212, 20026) & CF & CHR(10)
                             GoTo 55
                           End If
                      End If
@@ -7690,8 +7730,8 @@ Call FindAndHighlightText
          Next j
          If SapP(i) > 0 And Res(i) <> NC Then msg = msg & "For " & tb_tt(i) & ", There were " & SapP(i) & _
            " Special Attention Points, however, the inspection reuslt was " & _
-            Res(i) & ". It shall be " & NC & CHR(10) & tb_tt(i) & ",有" & SapP(i) & _
-           "项Special Attention Points,但结论却是" & Res(i) & ",应为" & NC & CHR(10)
+            Res(i) & ". It shall be " & NC & CHR(10) & tb_tt(i) & "," & UText(26377) & SapP(i) & _
+           UText(39033) & "Special Attention Points," & UText(20294, 32467, 35770, 21364, 26159) & Res(i) & "," & UText(24212, 20026) & NC & CHR(10)
          
 55     End With
       
@@ -7700,23 +7740,23 @@ Call FindAndHighlightText
        If SNC(i) > 0 Then
            If Res(i) <> NC Then msg = msg & "For " & tb_tt(i) & ", There were " & SNC(i) & " sub items were " & NC & _
            ", however, the inspection reuslt was " & Res(i) & ". It shall be " & NC & CHR(10) & _
-           tb_tt(i) & ",有" & SNC(i) & "子项结果是" & NC & ",但结论却是" & Res(i) & ",应为" & NC & CHR(10)
+           tb_tt(i) & "," & UText(26377) & SNC(i) & UText(23376, 39033, 32467, 26524, 26159) & NC & "," & UText(20294, 32467, 35770, 21364, 26159) & Res(i) & "," & UText(24212, 20026) & NC & CHR(10)
           
        Else
            If SPD(i) > 0 Then
              If Res(i) <> PD Then msg = msg & "For " & tb_tt(i) & ", There were " & SPD(i) & " sub items  were " & PD & _
              ", however, the inspection reuslt was " & Res(i) & ". It shall be " & PD & CHR(10) & _
-                tb_tt(i) & ",有" & SPD(i) & "子项结果是" & PD & ",但结论却是" & Res(i) & ",应为" & PD & CHR(10)
+                tb_tt(i) & "," & UText(26377) & SPD(i) & UText(23376, 39033, 32467, 26524, 26159) & PD & "," & UText(20294, 32467, 35770, 21364, 26159) & Res(i) & "," & UText(24212, 20026) & PD & CHR(10)
           Else
                 If SapP(i) > 0 Then
                   If Res(i) <> PD Then msg = msg & "For " & tb_tt(i) & ", There were " & SapP(i) & _
                     " Special Attention Points , however, the inspection reuslt was " & Res(i) & ". It shall be " & PD & CHR(10) & _
-                     tb_tt(i) & ",有" & SapP(i) & "Special Attention Points项,但结论却是" & Res(i) & ",应为" & PD & CHR(10)
+                     tb_tt(i) & "," & UText(26377) & SapP(i) & "Special Attention Points" & UText(39033) & "," & UText(20294, 32467, 35770, 21364, 26159) & Res(i) & "," & UText(24212, 20026) & PD & CHR(10)
                  Else
                     If Res(i) <> CF Then msg = msg & "For " & tb_tt(i) & ", All sub items were " & CF & _
                     " and with out Special Attention Points , however, the inspection reuslt was " & _
                      Res(i) & ". It shall be " & CF & CHR(10) & _
-                     tb_tt(i) & ",所有子项都是" & CF & "且没有Special Attention Points,但结论却是" & Res(i) & ",应为" & CF & CHR(10)
+                     tb_tt(i) & "," & UText(25152, 26377, 23376, 39033, 37117, 26159) & CF & UText(19988, 27809, 26377) & "Special Attention Points," & UText(20294, 32467, 35770, 21364, 26159) & Res(i) & "," & UText(24212, 20026) & CF & CHR(10)
                 
                 End If
         End If
@@ -7728,14 +7768,14 @@ Call FindAndHighlightText
   Next i
 
     
-   '==================后续追加的个别客户增加SAP表格,不改以前程序
+   '==================SAP,
 
  
   ' CustomerID = GetPropertyValue("CustomerID")
     
   'If CustomerID <> "" Then
     'Select Case CustomerID
-       'Case "32927", "49858"   'Jokey Sohland GmbH,Topitop 所有SAP汇总显示在第二页
+       'Case "32927", "49858" 'Jokey Sohland GmbH,Topitop SAP
        Dim sn As Integer
    
       '-----------------------------
@@ -7772,8 +7812,8 @@ Call FindAndHighlightText
              2, DefaultTableBehavior:=wdWord9TableBehavior, AutoFitBehavior:= _
              wdAutoFitFixed
            With Selection.Tables(1)
-               If .Style <> "网格型" Then
-                 .Style = "网格型"
+               If .Style <> UText(32593, 26684, 22411) Then
+                 .Style = UText(32593, 26684, 22411)
                End If
                Call Setborders025
               .Range.ParagraphFormat.Alignment = wdAlignParagraphLeft
@@ -7786,8 +7826,8 @@ Call FindAndHighlightText
               .Columns(2).Width = 504.65 - 28.2 'CentimetersToPoints(W2)
               .Rows(1).Range.Cells.Merge
               .Rows(1).Range.ParagraphFormat.Alignment = wdAlignParagraphCenter
-              .Rows(1).Range.Cells.Shading.BackgroundPatternColor = 12040421 '12040421 粉色，-603914241 '无色 -603917569  '浅灰
-              '.Rows(2).Range.Cells.Shading.BackgroundPatternColor = -603914241 '-603914241 '无色 -603917569  '浅灰
+              .Rows(1).Range.Cells.Shading.BackgroundPatternColor = 12040421 '12040421 ，-603914241 ' -603917569 '
+              '.Rows(2).Range.Cells.Shading.BackgroundPatternColor = -603914241 '-603914241 ' -603917569 '
               .Cell(1, 1).Range.Text = "Reference Note Summary "
                 With .Cell(1, 1).Range.Font
                  .Bold = True
@@ -7844,8 +7884,8 @@ Call FindAndHighlightText
              2, DefaultTableBehavior:=wdWord9TableBehavior, AutoFitBehavior:= _
              wdAutoFitFixed
            With Selection.Tables(1)
-               If .Style <> "网格型" Then
-                 .Style = "网格型"
+               If .Style <> UText(32593, 26684, 22411) Then
+                 .Style = UText(32593, 26684, 22411)
                End If
                Call Setborders025
               .Range.ParagraphFormat.Alignment = wdAlignParagraphLeft
@@ -7858,8 +7898,8 @@ Call FindAndHighlightText
               .Columns(2).Width = 504.65 - 28.2 'CentimetersToPoints(W2)
               .Rows(1).Range.Cells.Merge
               .Rows(1).Range.ParagraphFormat.Alignment = wdAlignParagraphCenter
-              .Rows(1).Range.Cells.Shading.BackgroundPatternColor = 12040421 '12040421 粉色，-603914241 '无色 -603917569  '浅灰
-              '.Rows(2).Range.Cells.Shading.BackgroundPatternColor = -603914241 '-603914241 '无色 -603917569  '浅灰
+              .Rows(1).Range.Cells.Shading.BackgroundPatternColor = 12040421 '12040421 ，-603914241 ' -603917569 '
+              '.Rows(2).Range.Cells.Shading.BackgroundPatternColor = -603914241 '-603914241 ' -603917569 '
               .Cell(1, 1).Range.Text = "Special Attention Point Summary "
                 With .Cell(1, 1).Range.Font
                  .Bold = True
@@ -7892,11 +7932,11 @@ Call FindAndHighlightText
 100  '========================
       If msg <> "" Then
        MsgBox msg & "Please check,if you are sure all are correct, negled this alart, otherwise, revise these and run program again!" & CHR(10) & _
-      "请检查,如果你确定一切正确请忽略本提示，否则请修改并重新运行程序", vbCritical
+      UText(35831, 26816, 26597) & "," & UText(22914, 26524, 20320, 30830, 23450, 19968, 20999, 27491, 30830, 35831, 24573, 30053, 26412, 25552, 31034) & "，" & UText(21542, 21017, 35831, 20462, 25913, 24182, 37325, 26032, 36816, 34892, 31243, 24207), vbCritical
       Else
        MsgBox "Result check completed!" & CHR(10) & "If you find that all tables are in inappropriate positions due to the version of Office," & _
-       "please click CTRL-0 to make adjustment." & CHR(10) & "结论检查完成！" & CHR(10) & _
-       "如果你发现因为office版本的原因所有表格处于不恰当的位置请按CTRL-0进行调整！"
+       "please click CTRL-0 to make adjustment." & CHR(10) & UText(32467, 35770, 26816, 26597, 23436, 25104) & "！" & CHR(10) & _
+       UText(22914, 26524, 20320, 21457, 29616, 22240, 20026) & "office" & UText(29256, 26412, 30340, 21407, 22240, 25152, 26377, 34920, 26684, 22788, 20110, 19981, 24688, 24403, 30340, 20301, 32622, 35831, 25353) & "CTRL-0" & UText(36827, 34892, 35843, 25972) & "！"
       End If
 
 '------------------
@@ -7958,7 +7998,7 @@ Dim TableChoise As String
 Dim TbCount1, TbCount2, TbCount3 As Integer
 
 For i = 1 To N_Cat_Middle
-  If Cat_Middle(i) = "鞋类" Then
+  If Cat_Middle(i) = UText(38795, 31867) Then
     TableChoise = 1
     GoTo 3
   End If
@@ -7968,14 +8008,14 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
 "1:  normal datasheet, one check point with one table, one row for one item of product." & CHR(10) & _
 "2:  complex datasheet, some cell units for one item of product,each row for one sub check point, and support pasting in drawings photo." & CHR(10) & _
 "3:  Both 1 and 2 mentioned above" & CHR(10) & CHR(10) & _
-"程序将生成数据表格，请输入数字选择生成的数据表格类型" & CHR(10) & _
-"1: 通用数据表，每个检查项目一个表格，每款产品数据占用一行" & CHR(10) & _
-"2: 复合数据表格，每款产品占用多个单元格组合，每行可用于输入子检查项目，支持粘贴入测量图纸照片" & CHR(10) & _
-"3: 同时生成上述1，2表格" & CHR(10), "Please Choose datasheet type" & "  " & "请选择表格类型", "1")
+UText(31243, 24207, 23558, 29983, 25104, 25968, 25454, 34920, 26684) & "，" & UText(35831, 36755, 20837, 25968, 23383, 36873, 25321, 29983, 25104, 30340, 25968, 25454, 34920, 26684, 31867, 22411) & CHR(10) & _
+"1: " & UText(36890, 29992, 25968, 25454, 34920) & "，" & UText(27599, 20010, 26816, 26597, 39033, 30446, 19968, 20010, 34920, 26684) & "，" & UText(27599, 27454, 20135, 21697, 25968, 25454, 21344, 29992, 19968, 34892) & CHR(10) & _
+"2: " & UText(22797, 21512, 25968, 25454, 34920, 26684) & "，" & UText(27599, 27454, 20135, 21697, 21344, 29992, 22810, 20010, 21333, 20803, 26684, 32452, 21512) & "，" & UText(27599, 34892, 21487, 29992, 20110, 36755, 20837, 23376, 26816, 26597, 39033, 30446) & "，" & UText(25903, 25345, 31896, 36148, 20837, 27979, 37327, 22270, 32440, 29031, 29255) & CHR(10) & _
+"3: " & UText(21516, 26102, 29983, 25104, 19978, 36848) & "1，2" & UText(34920, 26684) & CHR(10), "Please Choose datasheet type" & "  " & UText(35831, 36873, 25321, 34920, 26684, 31867, 22411), "1")
    
 3 StoretoProperty "TableChoise", TableChoise
 
-    W1 = 3.8    '表格宽度
+    W1 = 3.8    ' translated comment
     W2 = 4
     W3 = 2.2
     W4 = 7.8
@@ -7993,7 +8033,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
        If Mid(.Cell(i, 1).Range.Text, 1, Len(.Cell(i, 1).Range.Text) - 2) <> "" Or Mid(.Cell(i, 2).Range.Text, 1, Len(.Cell(i, 2).Range.Text) - 2) <> "" Then
           Ptx(i - 4) = Mid(.Cell(i, 1).Range.Text, 1, Len(.Cell(i, 1).Range.Text) - 2)
           Itx(i - 4) = Mid(.Cell(i, 2).Range.Text, 1, Len(.Cell(i, 2).Range.Text) - 2)
-          Sm(i - 4) = Val(.Cell(i, 8).Range.Text)     '每款抽样量
+          Sm(i - 4) = Val(.Cell(i, 8).Range.Text)     ' translated comment
       End If
      Next i
    End With
@@ -8028,7 +8068,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
      StoretoProperty "ItemsQty", CStr(Itms)
    '-----------
  
- '（0）测试项目编码-（1）测试项目名称-（2)按形式归类-（3）要求-（4）抽样量-（5）参数-（6）允差值-（7）定量类型-（8）产品特征
+ '（0）-（1）-（2)-（3）-（4）-（5）-（6）-（7）-（8）
 
  For i = 1 To N
     p(i) = Replace(p(i), "，", ",")
@@ -8063,7 +8103,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
     Tol(i) = Trim(a(6))
     Nat(i) = Trim(a(7))
     
-    Cha(i) = Trim(a(8))      '属性   char（）
+    Cha(i) = Trim(a(8))      'char（）
        TCHAR = Split(Cha(i), ",")
        uC(i) = UBound(TCHAR)
        For j = 0 To uC(i)
@@ -8080,7 +8120,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
       
       Select Case LCase(Typ(i))
        '-------------------
-      Case "手工检查"
+      Case UText(25163, 24037, 26816, 26597)
       'Case "workmanship"
                     
                             W = W + 1
@@ -8089,7 +8129,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
                             GoTo 10
                 
        '-------------------
-      Case "特殊测试"
+      Case UText(29305, 27530, 27979, 35797)
      ' Case "on site test"
          
                             o = o + 1
@@ -8098,7 +8138,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
                             GoTo 10
                  
     '------------------
-   Case "产品测量", "重量检查"
+   Case UText(20135, 21697, 27979, 37327), UText(37325, 37327, 26816, 26597)
    ' Case "product dimension and weight"
         
                             D = D + 1
@@ -8106,14 +8146,14 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
                            ChkD(D) = Chk(i)
                             GoTo 10
     '===================
-    Case "款式检查", "文件检查"
+    Case UText(27454, 24335, 26816, 26597), UText(25991, 20214, 26816, 26597)
                            S = S + 1
                            NumS(S) = Num(i)
                            ChkS(S) = Chk(i)
                             GoTo 10
     
     '----------
-    Case "颜色检查"
+    Case UText(39068, 33394, 26816, 26597)
     
                            C = C + 1
                            NumC(C) = Num(i)
@@ -8121,7 +8161,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
                            GoTo 10
      
     '===
-     Case "标签标识检查"
+     Case UText(26631, 31614, 26631, 35782, 26816, 26597)
        ' Case "labeling check"
                              L = L + 1
                              NumL(L) = Num(i)
@@ -8129,14 +8169,14 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
                             GoTo 10
                             
        '==================
-     Case "唛头检查"
+     Case UText(21787, 22836, 26816, 26597)
                             M = M + 1
                            NumM(M) = Num(i)
                            ChkM(M) = Chk(i)
                            GoTo 10
        
       '--------------------------------------
-       Case "包装检查"
+       Case UText(21253, 35013, 26816, 26597)
       'Case "packing and packaging"
                 
                              PP = PP + 1
@@ -8154,7 +8194,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
   tbn = 0
   tbn = getTableNumber(2)
      If tbn = 0 Then
-        msg = msg & "未发现2. Workmanship的表格，该部分测试项目未导入" & CHR(10) & _
+        msg = msg & UText(26410, 21457, 29616) & "2. Workmanship" & UText(30340, 34920, 26684) & "，" & UText(35813, 37096, 20998, 27979, 35797, 39033, 30446, 26410, 23548, 20837) & CHR(10) & _
         "2. Workmanship table is not found, the check item for workmanship is not imported" & CHR(10)
         GoTo 40
     End If
@@ -8164,7 +8204,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
           If Rn = 5 Then
              .Cell(Rn, 1).Select
               Selection.InsertRowsBelow 1
-             .Rows(Rn + 1).Range.Cells.Shading.BackgroundPatternColor = -603917569 '浅灰  -603914241 '无色
+             .Rows(Rn + 1).Range.Cells.Shading.BackgroundPatternColor = -603917569 '-603914241 '
              .Rows(Rn + 1).Range.Cells.Merge
              .Rows(Rn + 1).Range.Cells.Split NumRows:=1, NumColumns:=3, mergebeforesplit:=True
              .Cell(Rn + 1, 1).SetWidth ColumnWidth:=36, RulerStyle:=wdAdjustFirstColumn
@@ -8179,17 +8219,17 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
              .Cell(Rn + 1, 1).Select
               Selection.InsertRowsBelow 1
             
-             .Rows(Rn + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '无色
-             .Rows(Rn + 2).Range.Cells(1).Shading.BackgroundPatternColor = -603914241  '无色 -603917569   '浅灰
+             .Rows(Rn + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  ' translated comment
+             .Rows(Rn + 2).Range.Cells(1).Shading.BackgroundPatternColor = -603914241  '-603917569 '
              .Cell(Rn + 2, 1).Select
               Selection.InsertRowsBelow cnw - 1
           ElseIf Rn = 6 Then
-              .Rows(Rn).Range.Cells.Shading.BackgroundPatternColor = -603917569  '浅灰  -603914241 '无色
+              .Rows(Rn).Range.Cells.Shading.BackgroundPatternColor = -603917569  '-603914241 '
               .Rows(Rn).Range.ParagraphFormat.Alignment = wdAlignParagraphLeft
               .Cell(Rn, 1).Select
                Selection.InsertRowsBelow 1
-             .Rows(Rn + 1).Range.Cells.Shading.BackgroundPatternColor = -603914241  '无色
-             .Rows(Rn + 1).Range.Cells(1).Shading.BackgroundPatternColor = -603914241  '无色 -603917569   '浅灰
+             .Rows(Rn + 1).Range.Cells.Shading.BackgroundPatternColor = -603914241  ' translated comment
+             .Rows(Rn + 1).Range.Cells(1).Shading.BackgroundPatternColor = -603914241  '-603917569 '
              .Cell(Rn + 1, 1).Select
                Selection.InsertRowsBelow cnw - 1
           ElseIf Rn < cnw + 6 Then
@@ -8235,14 +8275,14 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
        Next i
      End With
   
-     '---workmanship 数据表
+     '---workmanship
     TbnB = tbn
     DelTab = ""
     
   
    For i = 1 To cnw
-     If Nat(NumW(i)) = "定量" Then
-          DelTab = DelTab & "," & "Data Sheet for " & Chk(NumW(i))  '用于删除多余表格
+     If Nat(NumW(i)) = UText(23450, 37327) Then
+          DelTab = DelTab & "," & "Data Sheet for " & Chk(NumW(i))  ' translated comment
           TbCount1 = 0
           tb = WD.Tables.count - 1
           For j = TbnB To tb
@@ -8266,7 +8306,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
                          Next k
                       End If
                       For k = 1 To ComItms
-                        .Rows(k + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241 '无色 -603917569  '浅灰
+                        .Rows(k + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241 '-603917569 '
                         .Cell(k + 2, 1).Width = CentimetersToPoints(W1)
                         .Cell(k + 2, 1).Range.Text = ComItx(k)
                         .Cell(k + 2, 2).Width = CentimetersToPoints(W2)
@@ -8283,7 +8323,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
 35    tbn = 0
       tbn = getTableNumber(3)
       If tbn = 0 Then
-          msg = msg & "未发现3. On Site Test的表格，Workmanship 数据表格无法生成" & CHR(10) & _
+          msg = msg & UText(26410, 21457, 29616) & "3. On Site Test" & UText(30340, 34920, 26684) & "，Workmanship " & UText(25968, 25454, 34920, 26684, 26080, 27861, 29983, 25104) & CHR(10) & _
          "3. On Site Test table is not found, Data sheet for Workmanship form can not generate" & CHR(10)
           GoTo 40
       End If
@@ -8296,7 +8336,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
                 Call DeleteBookMark(Cel)
                 Cel.Range.Bookmarks.add Name:=Ino(NumW(i)) & "_Data", Range:=Cel.Range
                 For j = 1 To ComItms
-                 .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 '无色 -603917569  '浅灰
+                 .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 ' -603917569 '
                  .Cell(j + 2, 1).Range.Text = ComItx(j)
                  .Cell(j + 2, 2).Range.Text = Spe(NumW(i))
                  .Cell(j + 2, 3).Range.Text = Tol(NumW(i))
@@ -8311,7 +8351,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
      tbn = 0
      tbn = getTableNumber(3)
       If tbn = 0 Then
-         msg = msg & "未发现3. On Site Test的表格，该部分测试项目未导入" & CHR(10) & _
+         msg = msg & UText(26410, 21457, 29616) & "3. On Site Test" & UText(30340, 34920, 26684) & "，" & UText(35813, 37096, 20998, 27979, 35797, 39033, 30446, 26410, 23548, 20837) & CHR(10) & _
         "3. On Site Test table is not found, the check item for On Site Test is not imported" & CHR(10)
          GoTo 60
      End If
@@ -8320,7 +8360,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
          If Rn = 3 Then
           .Cell(Rn, 1).Select
             Selection.InsertRowsBelow 1
-          .Rows(Rn + 1).Range.Cells.Shading.BackgroundPatternColor = -603914241 '无色 -603917569  '浅灰
+          .Rows(Rn + 1).Range.Cells.Shading.BackgroundPatternColor = -603914241 '-603917569 '
            Rn = .Rows.count
         End If
        If Rn < cno + 3 Then
@@ -8329,7 +8369,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
           For j = 1 To cno + 3 - Rn
            .Rows(Rn).Select
              Dim StartTime As Single
-            StartTime = Timer ' 获取当前时间 ' 循环直到超过100毫秒
+            StartTime = Timer '' 100
             Do While Timer - StartTime < 0.1
                DoEvents
             Loop
@@ -8384,15 +8424,15 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
        Next i
   End With
        
-       '---On site test 数据表
+       '---On site test
     TbnB = tbn
     DelTab = ""
    
    For i = 1 To cno
-     If Nat(NumO(i)) = "定量" Then
+     If Nat(NumO(i)) = UText(23450, 37327) Then
      
 
-          DelTab = DelTab & "," & "Data Sheet for " & Chk(NumO(i))  '用于删除多余表格
+          DelTab = DelTab & "," & "Data Sheet for " & Chk(NumO(i))  ' translated comment
           TbCount1 = 0
           tb = WD.Tables.count - 1
           For j = 3 To tb - 3
@@ -8416,7 +8456,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
                                   Next k
                              End If
                              For k = 1 To ComItms
-                               .Rows(k + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241 '无色 -603917569  '浅灰
+                               .Rows(k + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241 '-603917569 '
                                .Cell(k + 2, 1).Width = CentimetersToPoints(W1)
                                .Cell(k + 2, 1).Range.Text = ComItx(k)
                                .Cell(k + 2, 2).Width = CentimetersToPoints(W2)
@@ -8432,7 +8472,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
 55     tbn = 0
        tbn = getTableNumber(4)
          If tbn = 0 Then
-            msg = msg & "未发现4. Product Dimension & Weight的表格，On Site Test 数据表格无法生成" & CHR(10) & _
+            msg = msg & UText(26410, 21457, 29616) & "4. Product Dimension & Weight" & UText(30340, 34920, 26684) & "，On Site Test " & UText(25968, 25454, 34920, 26684, 26080, 27861, 29983, 25104) & CHR(10) & _
            "4. Product Dimension & Weight table is not found, Data sheet for On Site Test form can not generate" & CHR(10)
             GoTo 60
         End If
@@ -8445,7 +8485,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
                    Cel.Range.Bookmarks.add Name:=Ino(NumO(i)) & "_Data", Range:=Cel.Range
              
                    For j = 1 To ComItms
-                     .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 '无色 -603917569  '浅灰
+                     .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 ' -603917569 '
                      .Cell(j + 2, 1).Range.Text = ComItx(j)
                      .Cell(j + 2, 2).Range.Text = Spe(NumO(i))
                      .Cell(j + 2, 3).Range.Text = Tol(NumO(i))
@@ -8462,7 +8502,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
     tbn = 0
     tbn = getTableNumber(4)
       If tbn = 0 Then
-          msg = msg & "未发现4. Product Dimension & Weight的表格，该部分测试项目未导入" & CHR(10) & _
+          msg = msg & UText(26410, 21457, 29616) & "4. Product Dimension & Weight" & UText(30340, 34920, 26684) & "，" & UText(35813, 37096, 20998, 27979, 35797, 39033, 30446, 26410, 23548, 20837) & CHR(10) & _
           "4. Product Dimension & Weight table is not found, the check item for Product Dimension & Weight is not imported" & CHR(10)
           GoTo 80
       End If
@@ -8471,7 +8511,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
          If Rn = 3 Then
            .Cell(Rn, 1).Select
             Selection.InsertRowsBelow 1
-           .Rows(Rn + 1).Range.Cells.Shading.BackgroundPatternColor = -603914241 '无色 -603917569  '浅灰
+           .Rows(Rn + 1).Range.Cells.Shading.BackgroundPatternColor = -603914241 '-603917569 '
              Rn = .Rows.count
           End If
 
@@ -8480,7 +8520,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
           Selection.Copy
           For j = 1 To cnd + 3 - Rn
           .Rows(Rn).Select
-          StartTime = Timer ' 获取当前时间 ' 循环直到超过100毫秒
+          StartTime = Timer '' 100
                         Do While Timer - StartTime < 0.1
                           DoEvents
                         Loop
@@ -8531,22 +8571,22 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
        Next i
   End With
    
-        'Product Dimension & Weight---数据表
+        'Product Dimension & Weight---
      TbnB = tbn
      DelTab = ""
      
  Dim WithShoe As String
  WithShoe = ""
    For i = 1 To cnd
-     If Nat(NumD(i)) = "定量" Then
+     If Nat(NumD(i)) = UText(23450, 37327) Then
 
-          DelTab = DelTab & "," & "Data Sheet for " & Chk(NumD(i))  '用于删除多余表格
+          DelTab = DelTab & "," & "Data Sheet for " & Chk(NumD(i))  ' translated comment
           tb = WD.Tables.count - 1
         
           Select Case TableChoise
            Case 1
              TbCount1 = 0
-             If Ino(NumD(i)) = "TSG056" Then   '鞋类内长度
+             If Ino(NumD(i)) = "TSG056" Then   ' translated comment
                 WithShoe = DelTab
                For j = 3 To tb - 3
                 With WD.Tables(j)
@@ -8599,7 +8639,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
                          Next k
                        End If
                        For k = 1 To ComItms
-                        .Rows(k + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 '无色 -603917569  '浅灰
+                        .Rows(k + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 ' -603917569 '
                         .Cell(k + 2, 1).Width = CentimetersToPoints(W1)
                         .Cell(k + 2, 1).Range.Text = ComItx(k)
                         .Cell(k + 2, 2).Width = CentimetersToPoints(W2)
@@ -8663,7 +8703,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
                               Next k
                            End If
                            For k = 1 To ComItms
-                               .Rows(k + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 '无色 -603917569  '浅灰
+                               .Rows(k + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 ' -603917569 '
                                .Cell(k + 2, 1).Width = CentimetersToPoints(W1)
                                .Cell(k + 2, 1).Range.Text = ComItx(k)
                                .Cell(k + 2, 2).Width = CentimetersToPoints(W2)
@@ -8705,13 +8745,13 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
 75      tbn = 0
         tbn = getTableNumber(5)
          If tbn = 0 Then
-           msg = msg & "未发现5. Style / Material / Construction表格，Product Dimension & Weight 数据表格无法生成" & CHR(10) & _
+           msg = msg & UText(26410, 21457, 29616) & "5. Style / Material / Construction" & UText(34920, 26684) & "，Product Dimension & Weight " & UText(25968, 25454, 34920, 26684, 26080, 27861, 29983, 25104) & CHR(10) & _
            "5. Style / Material / Construction table is not found, Data sheet for Product Dimension & Weight form can not generate" & CHR(10)
            GoTo 80
         End If
 77      Select Case TableChoise
          Case "1"
-         If Ino(NumD(i)) = "TSG056" Then   '鞋类内长度
+         If Ino(NumD(i)) = "TSG056" Then   ' translated comment
             For j = 1 To ComItms - TbCount1
               tbn = getTableNumber(5)
               Call MakeShoesDataSheet(tbn, ComItms)
@@ -8734,7 +8774,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
                   Call DeleteBookMark(Cel)
                   Cel.Range.Bookmarks.add Name:=Ino(NumD(i)) & "_Data", Range:=Cel.Range
                   For j = 1 To ComItms
-                   .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 '无色 -603917569  '浅灰
+                   .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 ' -603917569 '
                    .Cell(j + 2, 1).Range.Text = ComItx(j)
                    .Cell(j + 2, 2).Range.Text = Spe(NumD(i))
                    .Cell(j + 2, 3).Range.Text = Tol(NumD(i))
@@ -8754,7 +8794,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
                      Set Cel = .Cell(2, 1)
                      Cel.Range.Text = "Item No.:" & ComItx(j + TbCount2)
                
-               'For j = 1 To ComItms                                                    '用于MakeWithPicDataSheet_combined
+               'For j = 1 To ComItms 'MakeWithPicDataSheet_combined
                 '.cell((j - 1) * 6 + 2, 1).Range.Text = "Item No.:" & Comitx(j)
                 '.cell(j + 2, 2).Range.Text = Spe(NumD(i))
                ' .cell(j + 2, 3).Range.Text = Tol(NumD(i))
@@ -8771,7 +8811,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
                   Call DeleteBookMark(Cel)
                   Cel.Range.Bookmarks.add Name:=Ino(NumD(i)) & "_Data", Range:=Cel.Range
                   For j = 1 To ComItms
-                     .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 '无色 -603917569  '浅灰
+                     .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 ' -603917569 '
                      .Cell(j + 2, 1).Range.Text = ComItx(j)
                      .Cell(j + 2, 2).Range.Text = Spe(NumD(i))
                     .Cell(j + 2, 3).Range.Text = Tol(NumD(i))
@@ -8789,7 +8829,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
                         Cel.Range.Bookmarks.add Name:=Ino(NumD(i)) & "_Data" & "_" & j + TbCount2, Range:=Cel.Range
                         Set Cel = .Cell(2, 1)
                         Cel.Range.Text = "Item No.:" & ComItx(j + TbCount2)
-               'For j = 1 To ComItms                                                    '用于MakeWithPicDataSheet_combined
+               'For j = 1 To ComItms 'MakeWithPicDataSheet_combined
                 '.cell((j - 1) * 6 + 2, 1).Range.Text = "Item No.:" & Comitx(j)
                 '.cell(j + 2, 2).Range.Text = Spe(NumD(i))
                ' .cell(j + 2, 3).Range.Text = Tol(NumD(i))
@@ -8804,7 +8844,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
     
     
  
-       '非鞋类产品删除除鞋类表格
+       ' translated comment
        If WithShoe = "" Then
          tb = WD.Tables.count - 1
          For i = tb To 3 Step -1
@@ -8820,7 +8860,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
      tbn = 0
      tbn = getTableNumber(5)
       If tbn = 0 Then
-          msg = msg & "未发现5. Style / Material / Construction的表格，该部分测试项目未导入" & CHR(10) & _
+          msg = msg & UText(26410, 21457, 29616) & "5. Style / Material / Construction" & UText(30340, 34920, 26684) & "，" & UText(35813, 37096, 20998, 27979, 35797, 39033, 30446, 26410, 23548, 20837) & CHR(10) & _
          "5. Style / Material / Construction table is not found, the check item for Style / Material / Construction is not imported" & CHR(10)
           GoTo 100
      End If
@@ -8829,7 +8869,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
          If Rn = 3 Then
            .Cell(Rn, 1).Select
             Selection.InsertRowsBelow 1
-           .Rows(Rn + 1).Range.Cells.Shading.BackgroundPatternColor = -603914241 '无色 -603917569  '浅灰
+           .Rows(Rn + 1).Range.Cells.Shading.BackgroundPatternColor = -603914241 '-603917569 '
              Rn = .Rows.count
           End If
 
@@ -8838,7 +8878,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
           Selection.Copy
           For j = 1 To cns + 3 - Rn
           .Rows(Rn).Select
-          StartTime = Timer ' 获取当前时间 ' 循环直到超过100毫秒
+          StartTime = Timer '' 100
                         Do While Timer - StartTime < 0.1
                           DoEvents
                         Loop
@@ -8890,14 +8930,14 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
 91       Next i
   End With
    
-        '5. Style / Material / Construction---数据表
+        '5. Style / Material / Construction---
     TbnB = tbn
      DelTab = ""
 
    For i = 1 To cns
-     If Nat(NumS(i)) = "定量" Then
+     If Nat(NumS(i)) = UText(23450, 37327) Then
 
-       DelTab = DelTab & "," & "Data Sheet for " & Chk(NumS(i))  '用于删除多余表格
+       DelTab = DelTab & "," & "Data Sheet for " & Chk(NumS(i))  ' translated comment
        If Ino(NumS(i)) <> "TEE086" Then    'check item was not Constructional Data Form (CDF)
             'If Chk(NumS(i)) Like "*Constructional Data Form*" = False Then
            TbCount1 = 0
@@ -8924,7 +8964,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
                        Next k
                      End If
                      For k = 1 To ComItms
-                      .Rows(k + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 '无色 -603917569  '浅灰
+                      .Rows(k + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 ' -603917569 '
                       .Cell(k + 2, 1).Width = CentimetersToPoints(W1)
                       .Cell(k + 2, 1).Range.Text = ComItx(k)
                       .Cell(k + 2, 2).Width = CentimetersToPoints(W2)
@@ -8941,7 +8981,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
 95      tbn = 0
         tbn = getTableNumber(6)
          If tbn = 0 Then
-             msg = msg & "未发现6. Product Color表格，Style / Material / Construction 数据表格无法生成" & CHR(10) & _
+             msg = msg & UText(26410, 21457, 29616) & "6. Product Color" & UText(34920, 26684) & "，Style / Material / Construction " & UText(25968, 25454, 34920, 26684, 26080, 27861, 29983, 25104) & CHR(10) & _
             "6. Product Color table is not found, Data sheet for Style / Material / Construction form can not generate" & CHR(10)
             GoTo 110
         End If
@@ -8954,7 +8994,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
                  Call DeleteBookMark(Cel)
                  Cel.Range.Bookmarks.add Name:=Ino(NumS(i)) & "_Data", Range:=Cel.Range
                  For j = 1 To ComItms
-                    .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 '无色 -603917569  '浅灰
+                    .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 ' -603917569 '
                     .Cell(j + 2, 1).Range.Text = ComItx(j)
                     .Cell(j + 2, 2).Range.Text = Spe(NumS(i))
                     .Cell(j + 2, 3).Range.Text = Tol(NumS(i))
@@ -8965,9 +9005,9 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
       End If
      Next i
      
-     '===== 两段分开，使CDF表放最后面
+     '===== ，CDF
      For i = 1 To cns
-        If Nat(NumS(i)) = "定量" Then
+        If Nat(NumS(i)) = UText(23450, 37327) Then
           If Ino(NumS(i)) = "TEE086" Then    'check item was Constructional Data Form (CDF)
             TbCount1 = 0
             tb = WD.Tables.count - 1
@@ -8990,7 +9030,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
 100        tbn = 0
            tbn = getTableNumber(6)
            If tbn = 0 Then
-               msg = msg & "未发现6. Product Color表格，Style / Material / Construction 数据表格无法生成" & CHR(10) & _
+               msg = msg & UText(26410, 21457, 29616) & "6. Product Color" & UText(34920, 26684) & "，Style / Material / Construction " & UText(25968, 25454, 34920, 26684, 26080, 27861, 29983, 25104) & CHR(10) & _
                "6. Product Color table is not found, Data sheet for Style / Material / Construction form can not generate" & CHR(10)
                GoTo 110
             End If
@@ -9014,7 +9054,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
    tbn = 0
    tbn = getTableNumber(6)
       If tbn = 0 Then
-         msg = msg & "未发现6. Product Color的表格，该部分测试项目未导入" & CHR(10) & _
+         msg = msg & UText(26410, 21457, 29616) & "6. Product Color" & UText(30340, 34920, 26684) & "，" & UText(35813, 37096, 20998, 27979, 35797, 39033, 30446, 26410, 23548, 20837) & CHR(10) & _
         "6. Product Color table is not found, the check item for Product Color is not imported" & CHR(10)
         GoTo 130
      End If
@@ -9023,7 +9063,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
          If Rn = 3 Then
            .Cell(Rn, 1).Select
             Selection.InsertRowsBelow 1
-           .Rows(Rn + 1).Range.Cells.Shading.BackgroundPatternColor = -603914241 '无色 -603917569  '浅灰
+           .Rows(Rn + 1).Range.Cells.Shading.BackgroundPatternColor = -603914241 '-603917569 '
              Rn = .Rows.count
           End If
 
@@ -9032,7 +9072,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
           Selection.Copy
           For j = 1 To cnc + 3 - Rn
           .Rows(Rn).Select
-          StartTime = Timer ' 获取当前时间 ' 循环直到超过100毫秒
+          StartTime = Timer '' 100
                         Do While Timer - StartTime < 0.1
                           DoEvents
                         Loop
@@ -9083,14 +9123,14 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
 121  Next i
   End With
    
-        '6. Product Color--数据表
+        '6. Product Color--
     TbnB = tbn
      DelTab = ""
    
    For i = 1 To cnc
-     If Nat(NumC(i)) = "定量" Then
+     If Nat(NumC(i)) = UText(23450, 37327) Then
 
-          DelTab = DelTab & "," & "Data Sheet for " & Chk(NumC(i))  '用于删除多余表格
+          DelTab = DelTab & "," & "Data Sheet for " & Chk(NumC(i))  ' translated comment
           TbCount1 = 0
           tb = WD.Tables.count - 1
           For j = 3 To tb - 3
@@ -9114,7 +9154,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
                           Next k
                         End If
                         For k = 1 To ComItms
-                         .Rows(k + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 '无色 -603917569  '浅灰
+                         .Rows(k + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 ' -603917569 '
                          .Cell(k + 2, 1).Width = CentimetersToPoints(W1)
                          .Cell(k + 2, 1).Range.Text = ComItx(k)
                          .Cell(k + 2, 2).Width = CentimetersToPoints(W2)
@@ -9131,7 +9171,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
 125     tbn = 0
         tbn = getTableNumber(7)
          If tbn = 0 Then
-             msg = msg & "未发现7. Product Label / Marking表格，Product Color数据表格无法生成" & CHR(10) & _
+             msg = msg & UText(26410, 21457, 29616) & "7. Product Label / Marking" & UText(34920, 26684) & "，Product Color" & UText(25968, 25454, 34920, 26684, 26080, 27861, 29983, 25104) & CHR(10) & _
             "7. Product Label / Marking table is not found, Data sheet for Product Color form can not generate" & CHR(10)
              GoTo 130
          End If
@@ -9144,7 +9184,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
                  Cel.Range.Bookmarks.add Name:=Ino(NumC(i)) & "_Data", Range:=Cel.Range
              
                  For j = 1 To ComItms
-                    .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 '无色 -603917569  '浅灰
+                    .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 ' -603917569 '
                     .Cell(j + 2, 1).Range.Text = ComItx(j)
                     .Cell(j + 2, 2).Range.Text = Spe(NumC(i))
                     .Cell(j + 2, 3).Range.Text = Tol(NumC(i))
@@ -9160,7 +9200,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
      tbn = 0
      tbn = getTableNumber(7)
      If tbn = 0 Then
-         msg = msg & "未发现7. Product Label / Marking的表格，该部分测试项目未导入" & CHR(10) & _
+         msg = msg & UText(26410, 21457, 29616) & "7. Product Label / Marking" & UText(30340, 34920, 26684) & "，" & UText(35813, 37096, 20998, 27979, 35797, 39033, 30446, 26410, 23548, 20837) & CHR(10) & _
         "7. Product Label / Marking table is not found, the check item for Product Label / Marking is not imported" & CHR(10)
         GoTo 150
      End If
@@ -9170,7 +9210,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
         If Rn = 3 Then
            .Cell(Rn, 1).Select
             Selection.InsertRowsBelow 1
-           .Rows(Rn + 1).Range.Cells.Shading.BackgroundPatternColor = -603914241 '无色 -603917569  '浅灰
+           .Rows(Rn + 1).Range.Cells.Shading.BackgroundPatternColor = -603914241 '-603917569 '
              Rn = .Rows.count
         End If
         If Rn < cnl + 3 Then
@@ -9178,7 +9218,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
           Selection.Copy
           For j = 1 To cnl + 3 - Rn
           .Rows(Rn).Select
-          StartTime = Timer ' 获取当前时间 ' 循环直到超过100毫秒
+          StartTime = Timer '' 100
                         Do While Timer - StartTime < 0.1
                           DoEvents
                         Loop
@@ -9230,14 +9270,14 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
 141   Next i
   End With
         
-        '7. Product Label / Marking--数据表
+        '7. Product Label / Marking--
     TbnB = tbn
      DelTab = ""
    
    For i = 1 To cnl
-      If Nat(NumL(i)) = "定量" Then
-         If Chk(NumL(i)) = "Readability test for Barcode,QR code" Then GoTo 148   'BadCode表格不用通用表格，通过手工运行GenerateBarCodeDataSheet生成
-         DelTab = DelTab & "," & "Data Sheet for " & Chk(NumL(i))  '用于删除多余表格
+      If Nat(NumL(i)) = UText(23450, 37327) Then
+         If Chk(NumL(i)) = "Readability test for Barcode,QR code" Then GoTo 148   'BadCode，GenerateBarCodeDataSheet
+         DelTab = DelTab & "," & "Data Sheet for " & Chk(NumL(i))  ' translated comment
          Select Case TableChoise
          Case 1
              TbCount1 = 0
@@ -9264,7 +9304,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
                                        Next k
                                    End If
                                    For k = 1 To ComItms
-                                     .Rows(k + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 '无色 -603917569  '浅灰
+                                     .Rows(k + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 ' -603917569 '
                                       .Cell(k + 2, 1).Width = CentimetersToPoints(W1)
                                       .Cell(k + 2, 1).Range.Text = ComItx(k)
                                       .Cell(k + 2, 2).Width = CentimetersToPoints(W2)
@@ -9328,7 +9368,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
                               Next k
                            End If
                            For k = 1 To ComItms
-                               .Rows(k + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 '无色 -603917569  '浅灰
+                               .Rows(k + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 ' -603917569 '
                                .Cell(k + 2, 1).Width = CentimetersToPoints(W1)
                                .Cell(k + 2, 1).Range.Text = ComItx(k)
                                .Cell(k + 2, 2).Width = CentimetersToPoints(W2)
@@ -9370,7 +9410,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
 145  tbn = 0
      tbn = getTableNumber(8)
          If tbn = 0 Then
-            msg = msg & "未发现8. Shipping Mark表格，Product Label / Marking数据表格无法生成" & CHR(10) & _
+            msg = msg & UText(26410, 21457, 29616) & "8. Shipping Mark" & UText(34920, 26684) & "，Product Label / Marking" & UText(25968, 25454, 34920, 26684, 26080, 27861, 29983, 25104) & CHR(10) & _
            "8. Shipping Mark table is not found, Data sheet for Product Label / Marking form can not generate" & CHR(10)
             GoTo 150
          End If
@@ -9385,7 +9425,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
                   Call DeleteBookMark(Cel)
                   Cel.Range.Bookmarks.add Name:=Ino(NumL(i)) & "_Data", Range:=Cel.Range
                   For j = 1 To ComItms
-                   .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 '无色 -603917569  '浅灰
+                   .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 ' -603917569 '
                    .Cell(j + 2, 1).Range.Text = ComItx(j)
                    .Cell(j + 2, 2).Range.Text = Spe(NumL(i))
                    .Cell(j + 2, 3).Range.Text = Tol(NumL(i))
@@ -9417,7 +9457,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
                        Call DeleteBookMark(Cel)
                        Cel.Range.Bookmarks.add Name:=Ino(NumL(i)) & "_Data", Range:=Cel.Range
                        For j = 1 To ComItms
-                          .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 '无色 -603917569  '浅灰
+                          .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 ' -603917569 '
                           .Cell(j + 2, 1).Range.Text = ComItx(j)
                           .Cell(j + 2, 2).Range.Text = Spe(NumL(i))
                          .Cell(j + 2, 3).Range.Text = Tol(NumL(i))
@@ -9447,7 +9487,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
      tbn = getTableNumber(8)
      tb = WD.Tables.count - 1
     If tbn = 0 Then
-         msg = msg & "未发现8. Shipping Mark的表格，该部分测试项目未导入" & CHR(10) & _
+         msg = msg & UText(26410, 21457, 29616) & "8. Shipping Mark" & UText(30340, 34920, 26684) & "，" & UText(35813, 37096, 20998, 27979, 35797, 39033, 30446, 26410, 23548, 20837) & CHR(10) & _
         "8. Shipping Mark table is not found, the check item for  Shipping Mark is not imported" & CHR(10)
          GoTo 170
      End If
@@ -9456,7 +9496,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
          If Rn = 3 Then
            .Cell(Rn, 1).Select
             Selection.InsertRowsBelow 1
-           .Rows(Rn + 1).Range.Cells.Shading.BackgroundPatternColor = -603914241 '无色 -603917569  '浅灰
+           .Rows(Rn + 1).Range.Cells.Shading.BackgroundPatternColor = -603914241 '-603917569 '
              Rn = .Rows.count
           End If
 
@@ -9465,7 +9505,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
           Selection.Copy
           For j = 1 To cnm + 3 - Rn
           .Rows(Rn).Select
-          StartTime = Timer ' 获取当前时间 ' 循环直到超过100毫秒
+          StartTime = Timer '' 100
                         Do While Timer - StartTime < 0.1
                           DoEvents
                         Loop
@@ -9515,14 +9555,14 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
 161  Next i
   End With
    
-        '8. Shipping Mark-数据表
+        '8. Shipping Mark-
     TbnB = tbn
      DelTab = ""
    
    For i = 1 To cnm
-     If Nat(NumM(i)) = "定量" Then
+     If Nat(NumM(i)) = UText(23450, 37327) Then
 
-          DelTab = DelTab & "," & "Data Sheet for " & Chk(NumM(i))  '用于删除多余表格
+          DelTab = DelTab & "," & "Data Sheet for " & Chk(NumM(i))  ' translated comment
          Select Case TableChoise
          Case 1
               TbCount1 = 0
@@ -9549,7 +9589,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
                                        Next k
                                    End If
                                    For k = 1 To ComItms
-                                     .Rows(k + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 '无色 -603917569  '浅灰
+                                     .Rows(k + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 ' -603917569 '
                                       .Cell(k + 2, 1).Width = CentimetersToPoints(W1)
                                       .Cell(k + 2, 1).Range.Text = ComItx(k)
                                       .Cell(k + 2, 2).Width = CentimetersToPoints(W2)
@@ -9613,7 +9653,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
                               Next k
                            End If
                            For k = 1 To ComItms
-                               .Rows(k + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 '无色 -603917569  '浅灰
+                               .Rows(k + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 ' -603917569 '
                                .Cell(k + 2, 1).Width = CentimetersToPoints(W1)
                                .Cell(k + 2, 1).Range.Text = ComItx(k)
                                .Cell(k + 2, 2).Width = CentimetersToPoints(W2)
@@ -9655,7 +9695,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
 165   tbn = 0
       tbn = getTableNumber(9)
       If tbn = 0 Then
-          msg = msg & "未发现9. Packing / Packaging表格，Shipping Mark-数据表格无法生成" & CHR(10) & _
+          msg = msg & UText(26410, 21457, 29616) & "9. Packing / Packaging" & UText(34920, 26684) & "，Shipping Mark-" & UText(25968, 25454, 34920, 26684, 26080, 27861, 29983, 25104) & CHR(10) & _
          "9. Packing / Packaging table is not found, Data sheet for Shipping Mark form can not generate" & CHR(10)
           GoTo 170
       End If
@@ -9670,7 +9710,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
                   Call DeleteBookMark(Cel)
                   Cel.Range.Bookmarks.add Name:=Ino(NumM(i)) & "_Data", Range:=Cel.Range
                   For j = 1 To ComItms
-                   .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 '无色 -603917569  '浅灰
+                   .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 ' -603917569 '
                    .Cell(j + 2, 1).Range.Text = ComItx(j)
                    .Cell(j + 2, 2).Range.Text = Spe(NumM(i))
                    .Cell(j + 2, 3).Range.Text = Tol(NumM(i))
@@ -9702,7 +9742,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
                        Call DeleteBookMark(Cel)
                        Cel.Range.Bookmarks.add Name:=Ino(NumM(i)) & "_Data", Range:=Cel.Range
                        For j = 1 To ComItms
-                          .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 '无色 -603917569  '浅灰
+                          .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 ' -603917569 '
                           .Cell(j + 2, 1).Range.Text = ComItx(j)
                           .Cell(j + 2, 2).Range.Text = Spe(NumM(i))
                          .Cell(j + 2, 3).Range.Text = Tol(NumM(i))
@@ -9731,7 +9771,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
      tbn = 0
      tbn = getTableNumber(9)
      If tbn = 0 Then
-        msg = msg & "未发现9. Packing / Packaging的表格，该部分测试项目未导入" & CHR(10) & _
+        msg = msg & UText(26410, 21457, 29616) & "9. Packing / Packaging" & UText(30340, 34920, 26684) & "，" & UText(35813, 37096, 20998, 27979, 35797, 39033, 30446, 26410, 23548, 20837) & CHR(10) & _
        "9. Packing / Packaging is not found, the check item for Packing / Packaging is not imported" & CHR(10)
        GoTo 190
      End If
@@ -9743,7 +9783,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
           Selection.Copy
           For j = 1 To cnp + 3 - Rn
           .Rows(Rn).Select
-            StartTime = Timer ' 获取当前时间 ' 循环直到超过100毫秒
+            StartTime = Timer '' 100
                         Do While Timer - StartTime < 0.1
                           DoEvents
                         Loop
@@ -9794,14 +9834,14 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
        Next i
   End With
       
-      'Packing / Packaging---数据表
+      'Packing / Packaging---
      TbnB = tbn
      DelTab = ""
    
    For i = 1 To cnp
-     If Nat(NumP(i)) = "定量" Then
+     If Nat(NumP(i)) = UText(23450, 37327) Then
 
-          DelTab = DelTab & "," & "Data Sheet for " & Chk(NumP(i))  '用于删除多余表格
+          DelTab = DelTab & "," & "Data Sheet for " & Chk(NumP(i))  ' translated comment
           TbCount1 = 0
            tb = WD.Tables.count - 1
            For j = 3 To tb - 3
@@ -9825,7 +9865,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
                        Next k
                     End If
                     For k = 1 To ComItms
-                     .Rows(k + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 '无色 -603917569  '浅灰
+                     .Rows(k + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 ' -603917569 '
                      .Cell(k + 2, 1).Width = CentimetersToPoints(W1)
                      .Cell(k + 2, 1).Range.Text = ComItx(k)
                      .Cell(k + 2, 2).Width = CentimetersToPoints(W2)
@@ -9843,7 +9883,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
 185       tbn = 0
          tbn = getTableNumber(10)
           If tbn = 0 Then
-            msg = msg & "未发现10. Other Note表格Packing / Packaging数据表格无法生成" & CHR(10) & _
+            msg = msg & UText(26410, 21457, 29616) & "10. Other Note" & UText(34920, 26684) & "Packing / Packaging" & UText(25968, 25454, 34920, 26684, 26080, 27861, 29983, 25104) & CHR(10) & _
             "10. Other Note table is not found, Data sheet for Packing / Packagingform can not generate" & CHR(10)
             GoTo 190
           End If
@@ -9855,7 +9895,7 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
                  Call DeleteBookMark(Cel)
                  Cel.Range.Bookmarks.add Name:=Ino(NumP(i)) & "_Data", Range:=Cel.Range
                  For j = 1 To ComItms
-                    .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 '无色 -603917569  '浅灰
+                    .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 ' -603917569 '
                     .Cell(j + 2, 1).Range.Text = ComItx(j)
                     .Cell(j + 2, 2).Range.Text = Spe(NumP(i))
                     .Cell(j + 2, 3).Range.Text = Tol(NumP(i))
@@ -9868,15 +9908,15 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
      
    
       
-190      '不包括有电器产品时CDF数据表删除
+190      'CDF
     
       For k = 1 To 3
-         If Cat_Large(k) = "电子电器类" Then
+         If Cat_Large(k) = UText(30005, 23376, 30005, 22120, 31867) Then
            GoTo 300
           End If
       Next k
       
-           tb = WD.Tables.count - 1           '5. Style / Material / Construction纺织品,杂货删CDF
+           tb = WD.Tables.count - 1           '5. Style / Material / Construction,CDF
            For j = tb To 3 Step -1
              With WD.Tables(j)
                If .Cell(1, 1).Range.Text Like "*Data Sheet for Constructional Data Form (CDF)*" = True Then
@@ -9891,10 +9931,10 @@ TableChoise = InputBox("The program will generate tabels for datasheet, please i
 
  
 300  If msg <> "" Then
-      MsgBox msg & CHR(10) & CHR(10) & "测试项目导入完成，请根据实际情况进行修改或补充,请不要再运行本程序否则修改或补充的数据将被覆盖!" & CHR(10) & _
+      MsgBox msg & CHR(10) & CHR(10) & UText(27979, 35797, 39033, 30446, 23548, 20837, 23436, 25104) & "，" & UText(35831, 26681, 25454, 23454, 38469, 24773, 20917, 36827, 34892, 20462, 25913, 25110, 34917, 20805) & "," & UText(35831, 19981, 35201, 20877, 36816, 34892, 26412, 31243, 24207, 21542, 21017, 20462, 25913, 25110, 34917, 20805, 30340, 25968, 25454, 23558, 34987, 35206, 30422) & "!" & CHR(10) & _
      "Complete importing test items, please modify or add according to the actual situation,  do not run this procedure again or the data will be overwritten"
   Else
-     MsgBox "测试项目导入完成，请根据实际情况进行修改或补充,请不要再运行本程序否则修改或补充的数据将被覆盖!" & CHR(10) & _
+     MsgBox UText(27979, 35797, 39033, 30446, 23548, 20837, 23436, 25104) & "，" & UText(35831, 26681, 25454, 23454, 38469, 24773, 20917, 36827, 34892, 20462, 25913, 25110, 34917, 20805) & "," & UText(35831, 19981, 35201, 20877, 36816, 34892, 26412, 31243, 24207, 21542, 21017, 20462, 25913, 25110, 34917, 20805, 30340, 25968, 25454, 23558, 34987, 35206, 30422) & "!" & CHR(10) & _
      "Complete importing test items, please modify or add according to the actual situation,  do not run this procedure again or the data will be overwritten"
   End If
 
@@ -9915,7 +9955,7 @@ Set WD = ThisDocument
        If Mid(.Cell(i, 1).Range.Text, 1, Len(.Cell(i, 1).Range.Text) - 2) <> "" Or Mid(.Cell(i, 2).Range.Text, 1, Len(.Cell(i, 2).Range.Text) - 2) <> "" Then
          
           Itx(i - 4) = Mid(.Cell(i, 2).Range.Text, 1, Len(.Cell(i, 2).Range.Text) - 2)
-          Sm(i - 4) = Val(.Cell(i, 8).Range.Text)     '每款抽样量
+          Sm(i - 4) = Val(.Cell(i, 8).Range.Text)     ' translated comment
       End If
      Next i
    End With
@@ -9952,13 +9992,13 @@ Set WD = ThisDocument
  
  tbn = getTableNumber(8)
  Response = MsgBox("Dose each color and size of the sampe item of product has the same barcode?" & CHR(10) & _
- "是否同款产品中不同颜色和尺码的条款都相同?", vbYesNo)
+ UText(26159, 21542, 21516, 27454, 20135, 21697, 20013, 19981, 21516, 39068, 33394, 21644, 23610, 30721, 30340, 26465, 27454, 37117, 30456, 21516) & "?", vbYesNo)
 
  
    If Response = vbNo Then
      For i = 1 To ComItms
         InputText = InputBox("Please enter the number of colors and sizes of " & ComItx(i) & "separated by commas." & CHR(10) & _
-        "请输入款号为" & ComItx(i) & "产品的颜色数和尺寸数,并用逗号隔开" & CHR(10), "Please input the number of colors and sizes for the item" & " " & "请输入本款产品的尺寸数和尺码数", _
+        UText(35831, 36755, 20837, 27454, 21495, 20026) & ComItx(i) & UText(20135, 21697, 30340, 39068, 33394, 25968, 21644, 23610, 23544, 25968) & "," & UText(24182, 29992, 36887, 21495, 38548, 24320) & CHR(10), "Please input the number of colors and sizes for the item" & " " & UText(35831, 36755, 20837, 26412, 27454, 20135, 21697, 30340, 23610, 23544, 25968, 21644, 23610, 30721, 25968), _
        "1,1")
        If InputText = "" Then Exit Sub
        ColorN(i) = Val(Mid(InputText, 1, InStr(1, InputText, ",") - 1))
@@ -9992,7 +10032,7 @@ End Sub
 Sub MakeNormalDataSheet(tbn, ComItms)
    Dim W1, W2, W3, W4 As Single
     
-    W1 = 3.8    '表格宽度
+    W1 = 3.8    ' translated comment
     W2 = 4
     W3 = 2.2
     W4 = 7.8
@@ -10003,8 +10043,8 @@ Sub MakeNormalDataSheet(tbn, ComItms)
           ActiveDocument.Tables.add Range:=Selection.Range, NumRows:=ComItms + 2, NumColumns:= _
              4, DefaultTableBehavior:=wdWord9TableBehavior, AutoFitBehavior:=wdAutoFitFixed
            With Selection.Tables(1)
-               If .Style <> "网格型" Then
-                 .Style = "网格型"
+               If .Style <> UText(32593, 26684, 22411) Then
+                 .Style = UText(32593, 26684, 22411)
                End If
                Call Setborders025
               .Range.ParagraphFormat.Alignment = wdAlignParagraphLeft
@@ -10019,16 +10059,16 @@ Sub MakeNormalDataSheet(tbn, ComItms)
               .Cell(2, 2).Range.Text = "Specification"
               .Cell(2, 3).Range.Text = "Tolerance"
               .Cell(2, 4).Range.Text = "Result"
-              .Rows(1).Range.Cells.Shading.BackgroundPatternColor = -603917569 '-603914241 '无色 -603917569  '浅灰
-              .Rows(2).Range.Cells.Shading.BackgroundPatternColor = -603917569 '-603914241 '无色 -603917569  '浅灰
+              .Rows(1).Range.Cells.Shading.BackgroundPatternColor = -603917569 '-603914241 ' -603917569 '
+              .Rows(2).Range.Cells.Shading.BackgroundPatternColor = -603917569 '-603914241 ' -603917569 '
          End With
 End Sub
 Sub MakeBarCodeDataSheet(tbn, ComItms, ColorN, SizeN)
-'生成单个BAOCDOE标准表格
+'BAOCDOE
    Dim W1, W2, W3, W4 As Single
 
    Dim RST As Integer
-    W1 = 3.8    '表格宽度
+    W1 = 3.8    ' translated comment
     W2 = 5
     W3 = 9
     
@@ -10039,8 +10079,8 @@ Sub MakeBarCodeDataSheet(tbn, ComItms, ColorN, SizeN)
           ActiveDocument.Tables.add Range:=Selection.Range, NumRows:=9, NumColumns:= _
              3, DefaultTableBehavior:=wdWord9TableBehavior, AutoFitBehavior:=wdAutoFitFixed
            With Selection.Tables(1)
-               If .Style <> "网格型" Then
-                 .Style = "网格型"
+               If .Style <> UText(32593, 26684, 22411) Then
+                 .Style = UText(32593, 26684, 22411)
                End If
                Call Setborders025
               .Range.ParagraphFormat.Alignment = wdAlignParagraphCenter
@@ -10060,14 +10100,14 @@ Sub MakeBarCodeDataSheet(tbn, ComItms, ColorN, SizeN)
               .Cell(5, 1).Range.Text = "Position"
               .Cell(5, 2).Range.Text = "Specification"
               .Cell(5, 3).Range.Text = "Findings"
-              .Rows(1).Range.Cells.Shading.BackgroundPatternColor = -603917569 '-603914241 '无色 -603917569  '浅灰
-              .Rows(5).Range.Cells.Shading.BackgroundPatternColor = -603917569 '-603914241 '无色 -603917569  '浅灰
+              .Rows(1).Range.Cells.Shading.BackgroundPatternColor = -603917569 '-603914241 ' -603917569 '
+              .Rows(5).Range.Cells.Shading.BackgroundPatternColor = -603917569 '-603914241 ' -603917569 '
          End With
 End Sub
 Sub MakeCDFDataSheet(tbn, ComItms)
    Dim TblW, W1, W2, W3, W4, W5 As Single
     TblW = 17.8
-    W1 = 1.31  '表格宽度
+    W1 = 1.31  ' translated comment
     W2 = 3.57
     W3 = 4.61
     W4 = 4.83
@@ -10082,8 +10122,8 @@ Sub MakeCDFDataSheet(tbn, ComItms)
                      5, DefaultTableBehavior:=wdWord9TableBehavior, AutoFitBehavior:=wdAutoFitFixed
                    
                     With Selection.Tables(1)
-                      If .Style <> "网格型" Then
-                         .Style = "网格型"
+                      If .Style <> UText(32593, 26684, 22411) Then
+                         .Style = UText(32593, 26684, 22411)
                       End If
                       Call Setborders025
                      .PreferredWidth = CentimetersToPoints(TblW)
@@ -10095,7 +10135,7 @@ Sub MakeCDFDataSheet(tbn, ComItms)
                       .Range.ParagraphFormat.Alignment = wdAlignParagraphCenter
                       .Rows(1).Range.Cells.Merge
                       .Cell(1, 1).Range.Text = "Data Sheet for Constructional Data Form (CDF)"
-                      .Rows(1).Range.Cells.Shading.BackgroundPatternColor = -603917569 '-603914241 '无色 -603917569  '浅灰
+                      .Rows(1).Range.Cells.Shading.BackgroundPatternColor = -603917569 '-603914241 ' -603917569 '
                       .Rows(2).Range.Cells.Merge
                       .Rows(2).Range.Cells.Split NumRows:=1, NumColumns:=3, mergebeforesplit:=True
                       '.Rows(2).Range.ParagraphFormat.Alignment = wdAlignParagraphLeft
@@ -10105,7 +10145,7 @@ Sub MakeCDFDataSheet(tbn, ComItms)
                       .Cell(2, 2).Range.Text = "Manufacture Model No.:"
                        .Cell(2, 3).Width = CentimetersToPoints(5.8)
                        .Cell(2, 3).Range.Text = "Report No.:"
-                       .Rows(3).Range.Cells.Shading.BackgroundPatternColor = -603917569 '-603914241 '无色 -603917569  '浅灰
+                       .Rows(3).Range.Cells.Shading.BackgroundPatternColor = -603917569 '-603914241 ' -603917569 '
                        .Cell(3, 1).Range.Text = "No."
                        .Cell(3, 2).Range.Text = "Component Name"
                        .Cell(3, 3).Range.Text = "On CDF"
@@ -10153,7 +10193,7 @@ Sub MakeWithPicDataSheet(tbn, ComItms)
     
     
 
-    TblW = 17.8 '表格宽度
+    TblW = 17.8 ' translated comment
     W1 = 3.8
     W2 = 4
     W3 = 2.2
@@ -10167,8 +10207,8 @@ Sub MakeWithPicDataSheet(tbn, ComItms)
           ActiveDocument.Tables.add Range:=Selection.Range, NumRows:=Rn, NumColumns:= _
              4, DefaultTableBehavior:=wdWord9TableBehavior, AutoFitBehavior:=wdAutoFitFixed
            With Selection.Tables(1)
-               If .Style <> "网格型" Then
-                 .Style = "网格型"
+               If .Style <> UText(32593, 26684, 22411) Then
+                 .Style = UText(32593, 26684, 22411)
                End If
                Call Setborders025
               .Range.ParagraphFormat.Alignment = wdAlignParagraphCenter
@@ -10178,13 +10218,13 @@ Sub MakeWithPicDataSheet(tbn, ComItms)
               .Columns(4).Width = CentimetersToPoints(W4)
               .Rows(1).Range.Cells.Merge
              ' .Rows(1).Range.ParagraphFormat.Alignment = wdAlignParagraphCenter
-              .Rows(1).Range.Cells.Shading.BackgroundPatternColor = -603917569 '-603914241 '无色 -603917569  '浅灰
+              .Rows(1).Range.Cells.Shading.BackgroundPatternColor = -603917569 '-603914241 ' -603917569 '
               i = 2
                 .Rows(i).Range.Cells.Merge
               '  .Rows(i).Range.ParagraphFormat.Alignment = wdAlignParagraphLeft
                 .Rows(i + 1).Range.Cells.Merge
               '  .Rows(i + 1).Range.ParagraphFormat.Alignment = wdAlignParagraphCenter
-                .Rows(i + 2).Range.Cells.Shading.BackgroundPatternColor = -603917569 '-603914241 '无色 -603917569
+                .Rows(i + 2).Range.Cells.Shading.BackgroundPatternColor = -603917569 '-603914241 ' -603917569
                 .Rows(i + 2).Range.ParagraphFormat.Alignment = wdAlignParagraphCenter
                 .Cell(i + 2, 1).Range.Text = "Check point"
                 .Cell(i + 2, 2).Range.Text = "Specification"
@@ -10201,7 +10241,7 @@ Sub MakeWithPicDataSheet_Combinded(tbn, ComItms)
     
     
 
-    TblW = 17.8 '表格宽度
+    TblW = 17.8 ' translated comment
     W1 = 3.8
     W2 = 4
     W3 = 2.2
@@ -10214,8 +10254,8 @@ Sub MakeWithPicDataSheet_Combinded(tbn, ComItms)
           ActiveDocument.Tables.add Range:=Selection.Range, NumRows:=Rn, NumColumns:= _
              4, DefaultTableBehavior:=wdWord9TableBehavior, AutoFitBehavior:=wdAutoFitFixed
            With Selection.Tables(1)
-               If .Style <> "网格型" Then
-                 .Style = "网格型"
+               If .Style <> UText(32593, 26684, 22411) Then
+                 .Style = UText(32593, 26684, 22411)
                End If
                Call Setborders025
               .Range.ParagraphFormat.Alignment = wdAlignParagraphCenter
@@ -10225,13 +10265,13 @@ Sub MakeWithPicDataSheet_Combinded(tbn, ComItms)
               .Columns(4).Width = CentimetersToPoints(W4)
               .Rows(1).Range.Cells.Merge
             '  .Rows(1).Range.ParagraphFormat.Alignment = wdAlignParagraphCenter
-              .Rows(1).Range.Cells.Shading.BackgroundPatternColor = -603917569 '-603914241 '无色 -603917569  '浅灰
+              .Rows(1).Range.Cells.Shading.BackgroundPatternColor = -603917569 '-603914241 ' -603917569 '
               For i = 2 To Rn Step 6
                 .Rows(i).Range.Cells.Merge
               ' .Rows(i).Range.ParagraphFormat.Alignment = wdAlignParagraphLeft
                 .Rows(i + 1).Range.Cells.Merge
                ' .Rows(i + 1).Range.ParagraphFormat.Alignment = wdAlignParagraphCenter
-                .Rows(i + 2).Range.Cells.Shading.BackgroundPatternColor = -603917569 '-603914241 '无色 -603917569
+                .Rows(i + 2).Range.Cells.Shading.BackgroundPatternColor = -603917569 '-603914241 ' -603917569
                 .Rows(i + 2).Range.ParagraphFormat.Alignment = wdAlignParagraphCenter
                 .Cell(i + 2, 1).Range.Text = "Check point"
                 .Cell(i + 2, 2).Range.Text = "Specification"
@@ -10250,7 +10290,7 @@ Sub MakeShoesDataSheet(tbn, ComItms)
 
 
     
-    TblW = 17.8 '表格宽度
+    TblW = 17.8 ' translated comment
     TtlW = 3.6
     ClW = 0.8
     DatW = 1.2
@@ -10265,8 +10305,8 @@ Sub MakeShoesDataSheet(tbn, ComItms)
           ActiveDocument.Tables.add Range:=Selection.Range, NumRows:=Rn, NumColumns:= _
               CLn, DefaultTableBehavior:=wdWord9TableBehavior, AutoFitBehavior:=wdAutoFitFixed
            With Selection.Tables(1)
-               If .Style <> "网格型" Then
-                 .Style = "网格型"
+               If .Style <> UText(32593, 26684, 22411) Then
+                 .Style = UText(32593, 26684, 22411)
                End If
                Call Setborders025
               .Range.ParagraphFormat.Alignment = wdAlignParagraphCenter
@@ -10279,7 +10319,7 @@ Sub MakeShoesDataSheet(tbn, ComItms)
               Next i
                  .Columns(CLn).Width = CentimetersToPoints(TolW)
                 ' .Rows(1).Range.ParagraphFormat.Alignment = wdAlignParagraphCenter
-                 .Rows(1).Range.Cells.Shading.BackgroundPatternColor = -603917569 '-603914241 '无色 -603917569  '浅灰
+                 .Rows(1).Range.Cells.Shading.BackgroundPatternColor = -603917569 '-603914241 ' -603917569 '
               '   .Rows(2).Range.ParagraphFormat.Alignment = wdAlignParagraphLeft
               For i = 11 To 3 Step -4
                 For j = 10 To 2 Step -4
@@ -10372,10 +10412,10 @@ If TableChoise = "" Then
   "1:  normal datasheet, one check point with one table, one row for one item of product." & CHR(10) & _
   "2:  complex datasheet, some cell units for one item of product,each row for one sub check point, and support pasting in drawings photo." & CHR(10) & _
   "3:  Both 1 and 2 mentioned above" & CHR(10) & CHR(10) & _
-  "程序将生成数据表格，请输入数字选择生成的数据表格类型" & CHR(10) & _
-  "1: 通用数据表，每个检查项目一个表格，每款产品数据占用一行" & CHR(10) & _
-  "2: 复合数据表格，每款产品占用多个单元格组合，每行可用于输入子检查项目，支持粘贴入测量图纸照片" & CHR(10) & _
-  "3: 同时生成上述1，2表格" & CHR(10), "Please Choose datasheet type" & "  " & "请选择表格类型", "1")
+  UText(31243, 24207, 23558, 29983, 25104, 25968, 25454, 34920, 26684) & "，" & UText(35831, 36755, 20837, 25968, 23383, 36873, 25321, 29983, 25104, 30340, 25968, 25454, 34920, 26684, 31867, 22411) & CHR(10) & _
+  "1: " & UText(36890, 29992, 25968, 25454, 34920) & "，" & UText(27599, 20010, 26816, 26597, 39033, 30446, 19968, 20010, 34920, 26684) & "，" & UText(27599, 27454, 20135, 21697, 25968, 25454, 21344, 29992, 19968, 34892) & CHR(10) & _
+  "2: " & UText(22797, 21512, 25968, 25454, 34920, 26684) & "，" & UText(27599, 27454, 20135, 21697, 21344, 29992, 22810, 20010, 21333, 20803, 26684, 32452, 21512) & "，" & UText(27599, 34892, 21487, 29992, 20110, 36755, 20837, 23376, 26816, 26597, 39033, 30446) & "，" & UText(25903, 25345, 31896, 36148, 20837, 27979, 37327, 22270, 32440, 29031, 29255) & CHR(10) & _
+  "3: " & UText(21516, 26102, 29983, 25104, 19978, 36848) & "1，2" & UText(34920, 26684) & CHR(10), "Please Choose datasheet type" & "  " & UText(35831, 36873, 25321, 34920, 26684, 31867, 22411), "1")
 End If
 
 Dim i, j, k, X, tb, tbn, TbnB, TbnE, cnt, tNum, Z As Integer
@@ -10403,7 +10443,7 @@ Dim qtyRow As Integer
           
           Ptx(i - 4) = Mid(.Cell(i, 1).Range.Text, 1, Len(.Cell(i, 1).Range.Text) - 2)
           Itx(i - 4) = Mid(.Cell(i, 2).Range.Text, 1, Len(.Cell(i, 2).Range.Text) - 2)
-          Sm(i - 4) = Val(.Cell(i, 8).Range.Text)     '每款抽样量
+          Sm(i - 4) = Val(.Cell(i, 8).Range.Text)     ' translated comment
       End If
      Next i
    End With
@@ -10438,7 +10478,7 @@ Dim qtyRow As Integer
    
    '-----------
  
- '（0）测试项目编码-（1）测试项目名称-（2)按形式归类-（3）要求-（4）抽样量-（5）参数-（6）允差值-（7）定量类型-（8）产品特征
+ '（0）-（1）-（2)-（3）-（4）-（5）-（6）-（7）-（8）
 
 
 Dim SelPriChkNo() As Integer
@@ -10488,7 +10528,7 @@ For i = 1 To N
     Tol(i) = Trim(a(6))
     Nat(i) = Trim(a(7))
     
-      Cha(i) = Trim(a(8))      '属性   char（）
+      Cha(i) = Trim(a(8))      'char（）
         TCHAR = Split(Cha(i), ",")
         uC(i) = UBound(TCHAR)
        For j = 0 To uC(i)
@@ -10509,12 +10549,12 @@ For i = 1 To N
         j = 0
         msg = ""
  For X = 1 To Cn
-   If ThisDocument.Bookmarks.Exists(AddchkCode(X)) = False Then  '避免重复
+   If ThisDocument.Bookmarks.Exists(AddchkCode(X)) = False Then  ' translated comment
     For i = 1 To N
      If AddchkCode(X) = Ino(i) Then
             Select Case LCase(Typ(i))
                 '-------------------
-            Case "手工检查"
+            Case UText(25163, 24037, 26816, 26597)
              'Case "workmanship"
                     
                             W = W + 1
@@ -10523,7 +10563,7 @@ For i = 1 To N
                             GoTo 10
                 
                '-------------------
-           Case "特殊测试"
+           Case UText(29305, 27530, 27979, 35797)
          ' Case "on site test"
          
                             o = o + 1
@@ -10532,7 +10572,7 @@ For i = 1 To N
                             GoTo 10
                  
             '------------------
-          Case "产品测量", "重量检查"
+          Case UText(20135, 21697, 27979, 37327), UText(37325, 37327, 26816, 26597)
         ' Case "product dimension and weight"
         
                             D = D + 1
@@ -10540,14 +10580,14 @@ For i = 1 To N
                            ChkD(D) = Chk(i)
                             GoTo 10
              '===================
-            Case "款式检查", "文件检查"
+            Case UText(27454, 24335, 26816, 26597), UText(25991, 20214, 26816, 26597)
                            S = S + 1
                            NumS(S) = Num(i)
                            ChkS(S) = Chk(i)
                             GoTo 10
     
               '----------
-              Case "颜色检查"
+              Case UText(39068, 33394, 26816, 26597)
     
                            C = C + 1
                            NumC(C) = Num(i)
@@ -10555,7 +10595,7 @@ For i = 1 To N
                            GoTo 10
      
                '===
-             Case "标签标识检查"
+             Case UText(26631, 31614, 26631, 35782, 26816, 26597)
              ' Case "labeling check"
                              L = L + 1
                              NumL(L) = Num(i)
@@ -10563,14 +10603,14 @@ For i = 1 To N
                             GoTo 10
                             
                 '==================
-              Case "唛头检查"
+              Case UText(21787, 22836, 26816, 26597)
                             M = M + 1
                            NumM(M) = Num(i)
                            ChkM(M) = Chk(i)
                            GoTo 10
        
                  '--------------------------------------
-               Case "包装检查"
+               Case UText(21253, 35013, 26816, 26597)
               'Case "packing and packaging"
                 
                              PP = PP + 1
@@ -10591,7 +10631,7 @@ For i = 1 To N
  Next X
     If msg <> "" Then
        MsgBox "The report exist the checkitems of" & CHR(10) & msg & "to avoid deplicating, these checkitems will not be imported" & CHR(10) _
-       & CHR(10) & "报告中已包含有下列检查项目" & CHR(10) & msg & "为避免重复，将不再导入这些项目"
+       & CHR(10) & UText(25253, 21578, 20013, 24050, 21253, 21547, 26377, 19979, 21015, 26816, 26597, 39033, 30446) & CHR(10) & msg & UText(20026, 36991, 20813, 37325, 22797) & "，" & UText(23558, 19981, 20877, 23548, 20837, 36825, 20123, 39033, 30446)
     End If
     msg = ""
     
@@ -10609,7 +10649,7 @@ For i = 1 To N
 20  If cnw > 0 Then
         tbn = getTableNumber(2)
         If tbn = 0 Then
-           msg = msg & "未发现2. Workmanship的表格，该部分测试项目未导入" & CHR(10) & _
+           msg = msg & UText(26410, 21457, 29616) & "2. Workmanship" & UText(30340, 34920, 26684) & "，" & UText(35813, 37096, 20998, 27979, 35797, 39033, 30446, 26410, 23548, 20837) & CHR(10) & _
           "2. Workmanship table is not found, the check item for workmanship is not imported" & CHR(10)
           GoTo 40
         End If
@@ -10642,17 +10682,17 @@ For i = 1 To N
            Next i
        End With
   
-     '---workmanship 数据表
+     '---workmanship
       TbnB = tbn
        DelTab = ""
        
  
 35     For i = 1 To cnw
-        If Nat(NumW(i)) = "定量" Then
+        If Nat(NumW(i)) = UText(23450, 37327) Then
           tbn = 0
           tbn = getTableNumber(3)
           If tbn = 0 Then
-             msg = msg & "未发现3. On Site Test的表格，Workmanship 数据表格无法生成" & CHR(10) & _
+             msg = msg & UText(26410, 21457, 29616) & "3. On Site Test" & UText(30340, 34920, 26684) & "，Workmanship " & UText(25968, 25454, 34920, 26684, 26080, 27861, 29983, 25104) & CHR(10) & _
             "3. On Site Test table is not found, Data sheet for Workmanship form can not generate" & CHR(10)
              GoTo 40
           End If
@@ -10666,7 +10706,7 @@ For i = 1 To N
                Cel.Range.Bookmarks.add Name:=Ino(NumW(i)) & "_Data", Range:=Cel.Range
              
                For j = 1 To ComItms
-                .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 '无色 -603917569  '浅灰
+                .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 ' -603917569 '
                 .Cell(j + 2, 1).Range.Text = ComItx(j)
                 .Cell(j + 2, 2).Range.Text = Spe(NumW(i))
                 .Cell(j + 2, 3).Range.Text = Tol(NumW(i))
@@ -10681,7 +10721,7 @@ For i = 1 To N
        tbn = 0
        tbn = getTableNumber(3)
        If tbn = 0 Then
-          msg = msg & "未发现3. On Site Test的表格，该部分测试项目未导入" & CHR(10) & _
+          msg = msg & UText(26410, 21457, 29616) & "3. On Site Test" & UText(30340, 34920, 26684) & "，" & UText(35813, 37096, 20998, 27979, 35797, 39033, 30446, 26410, 23548, 20837) & CHR(10) & _
          "3. On Site Test table is not found, the check item for On Site Test is not imported" & CHR(10)
           GoTo 60
        End If
@@ -10747,16 +10787,16 @@ For i = 1 To N
            Next i
      
        End With
-       '---On site test 数据表
+       '---On site test
        TbnB = tbn
        DelTab = ""
        
        For i = 1 To cno
-        If Nat(NumO(i)) = "定量" Then
+        If Nat(NumO(i)) = UText(23450, 37327) Then
 55        tbn = 0
           tbn = getTableNumber(4)
           If tbn = 0 Then
-             msg = msg & "未发现4. Product Dimension & Weight的表格，On Site Test 数据表格无法生成" & CHR(10) & _
+             msg = msg & UText(26410, 21457, 29616) & "4. Product Dimension & Weight" & UText(30340, 34920, 26684) & "，On Site Test " & UText(25968, 25454, 34920, 26684, 26080, 27861, 29983, 25104) & CHR(10) & _
              "4. Product Dimension & Weight table is not found, Data sheet for On Site Test form can not generate" & CHR(10)
              GoTo 60
           End If
@@ -10771,7 +10811,7 @@ For i = 1 To N
                Cel.Range.Bookmarks.add Name:=Ino(NumO(i)) & "_Data", Range:=Cel.Range
              
                For j = 1 To ComItms
-                .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 '无色 -603917569  '浅灰
+                .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 ' -603917569 '
                 .Cell(j + 2, 1).Range.Text = ComItx(j)
                 .Cell(j + 2, 2).Range.Text = Spe(NumO(i))
                 .Cell(j + 2, 3).Range.Text = Tol(NumO(i))
@@ -10785,7 +10825,7 @@ For i = 1 To N
        tbn = 0
        tbn = getTableNumber(4)
        If tbn = 0 Then
-          msg = msg & "未发现4. Product Dimension & Weight的表格，该部分测试项目未导入" & CHR(10) & _
+          msg = msg & UText(26410, 21457, 29616) & "4. Product Dimension & Weight" & UText(30340, 34920, 26684) & "，" & UText(35813, 37096, 20998, 27979, 35797, 39033, 30446, 26410, 23548, 20837) & CHR(10) & _
           "4. Product Dimension & Weight table is not found, the check item for Product Dimension & Weight is not imported" & CHR(10)
           GoTo 80
        End If
@@ -10843,20 +10883,20 @@ For i = 1 To N
         Next i
       End With
      
-        'Product Dimension & Weight---数据表
+        'Product Dimension & Weight---
       TbnB = tbn
       DelTab = ""
      
       Dim WithShoe As String
       WithShoe = ""
       For i = 1 To cnd
-        If Nat(NumD(i)) = "定量" Then
-          DelTab = DelTab & "," & "Data Sheet for " & Chk(NumD(i))  '用于删除多余表格
+        If Nat(NumD(i)) = UText(23450, 37327) Then
+          DelTab = DelTab & "," & "Data Sheet for " & Chk(NumD(i))  ' translated comment
           tb = WD.Tables.count - 1
           Select Case TableChoise
           Case 1
              TbCount1 = 0
-             If Ino(NumD(i)) = "TSG056" Then   '鞋类内长度
+             If Ino(NumD(i)) = "TSG056" Then   ' translated comment
                 WithShoe = DelTab
                For j = 3 To tb - 3
                 With WD.Tables(j)
@@ -10919,13 +10959,13 @@ For i = 1 To N
 75    tbn = 0
       tbn = getTableNumber(5)
       If tbn = 0 Then
-           msg = msg & "未发现5. Style / Material / Construction表格，Product Dimension & Weight 数据表格无法生成" & CHR(10) & _
+           msg = msg & UText(26410, 21457, 29616) & "5. Style / Material / Construction" & UText(34920, 26684) & "，Product Dimension & Weight " & UText(25968, 25454, 34920, 26684, 26080, 27861, 29983, 25104) & CHR(10) & _
            "5. Style / Material / Construction table is not found, Data sheet for Product Dimension & Weight form can not generate" & CHR(10)
            GoTo 80
       End If
 77    Select Case TableChoise
          Case "1"
-           If Ino(NumD(i)) = "TSG056" Then   '鞋类内长度
+           If Ino(NumD(i)) = "TSG056" Then   ' translated comment
              For j = 1 To ComItms
                 tbn = getTableNumber(5)
                 Call MakeShoesDataSheet(tbn, ComItms)
@@ -10947,7 +10987,7 @@ For i = 1 To N
                   Call DeleteBookMark(Cel)
                   Cel.Range.Bookmarks.add Name:=Ino(NumD(i)) & "_Data", Range:=Cel.Range
                   For j = 1 To ComItms
-                    .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 '无色 -603917569  '浅灰
+                    .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 ' -603917569 '
                     .Cell(j + 2, 1).Range.Text = ComItx(j)
                     .Cell(j + 2, 2).Range.Text = Spe(NumD(i))
                     .Cell(j + 2, 3).Range.Text = Tol(NumD(i))
@@ -10976,7 +11016,7 @@ For i = 1 To N
                    Call DeleteBookMark(Cel)
                   Cel.Range.Bookmarks.add Name:=Ino(NumD(i)) & "_Data", Range:=Cel.Range
                   For j = 1 To ComItms
-                     .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 '无色 -603917569  '浅灰
+                     .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 ' -603917569 '
                      .Cell(j + 2, 1).Range.Text = ComItx(j)
                      .Cell(j + 2, 2).Range.Text = Spe(NumD(i))
                     .Cell(j + 2, 3).Range.Text = Tol(NumD(i))
@@ -11004,7 +11044,7 @@ For i = 1 To N
             tbn = 0
      tbn = getTableNumber(5)
       If tbn = 0 Then
-          msg = msg & "未发现5. Style / Material / Construction的表格，该部分测试项目未导入" & CHR(10) & _
+          msg = msg & UText(26410, 21457, 29616) & "5. Style / Material / Construction" & UText(30340, 34920, 26684) & "，" & UText(35813, 37096, 20998, 27979, 35797, 39033, 30446, 26410, 23548, 20837) & CHR(10) & _
          "5. Style / Material / Construction table is not found, the check item for Style / Material / Construction is not imported" & CHR(10)
           GoTo 110
      End If
@@ -11061,14 +11101,14 @@ For i = 1 To N
         Next i
       End With
      
-        '5. Style / Material / Construction---数据表
+        '5. Style / Material / Construction---
      TbnB = tbn
      DelTab = ""
     
    
     For i = 1 To cns
-      If Nat(NumS(i)) = "定量" Then
-        'DelTab = DelTab & "," & "Data Sheet for " & Chk(NumS(i))  '用于删除多余表格
+      If Nat(NumS(i)) = UText(23450, 37327) Then
+        'DelTab = DelTab & "," & "Data Sheet for " & Chk(NumS(i)) '
          If Chk(NumS(i)) Like "*Constructional Data Form*" = False Then
             tb = WD.Tables.count - 1
             For j = 3 To tb - 3
@@ -11087,7 +11127,7 @@ For i = 1 To N
                        Next k
                     End If
                     For k = 1 To ComItms
-                     .Rows(k + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 '无色 -603917569  '浅灰
+                     .Rows(k + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 ' -603917569 '
                      .Cell(k + 2, 1).Width = CentimetersToPoints(W1)
                      .Cell(k + 2, 1).Range.Text = ComItx(k)
                      .Cell(k + 2, 2).Width = CentimetersToPoints(W2)
@@ -11103,7 +11143,7 @@ For i = 1 To N
 95    tbn = 0
       tbn = getTableNumber(6)
          If tbn = 0 Then
-             msg = msg & "未发现6. Product Color表格，Style / Material / Construction 数据表格无法生成" & CHR(10) & _
+             msg = msg & UText(26410, 21457, 29616) & "6. Product Color" & UText(34920, 26684) & "，Style / Material / Construction " & UText(25968, 25454, 34920, 26684, 26080, 27861, 29983, 25104) & CHR(10) & _
             "6. Product Color table is not found, Data sheet for Style / Material / Construction form can not generate" & CHR(10)
             GoTo 110
         End If
@@ -11118,7 +11158,7 @@ For i = 1 To N
                Cel.Range.Bookmarks.add Name:=Ino(NumS(i)) & "_Data", Range:=Cel.Range
             
                For j = 1 To ComItms
-                 .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 '无色 -603917569  '浅灰
+                 .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 ' -603917569 '
                 .Cell(j + 2, 1).Range.Text = ComItx(j)
                 .Cell(j + 2, 2).Range.Text = Spe(NumS(i))
                 .Cell(j + 2, 3).Range.Text = Tol(NumS(i))
@@ -11153,7 +11193,7 @@ For i = 1 To N
                End With
               Next j
               msg = msg + "The CDF data tables were not generated due to not 6. Product Color for locating the table position." & CHR(10) & _
-             "由于没有找到6. Product Color表格用于定位，Data Sheet for Constructional Data Form (CDF)表格未生成！"
+             UText(30001, 20110, 27809, 26377, 25214, 21040) & "6. Product Color" & UText(34920, 26684, 29992, 20110, 23450, 20301) & "，Data Sheet for Constructional Data Form (CDF)" & UText(34920, 26684, 26410, 29983, 25104) & "！"
               GoTo 110
            End If
           
@@ -11176,7 +11216,7 @@ For i = 1 To N
                 Selection.Copy
                 Selection.MoveDown
                 Selection.TypeParagraph
-                StartTime = Timer ' 获取当前时间 ' 循环直到超过100毫秒
+                StartTime = Timer '' 100
                         Do While Timer - StartTime < 0.1
                           DoEvents
                         Loop
@@ -11207,7 +11247,7 @@ For i = 1 To N
       tbn = 0
       tbn = getTableNumber(6)
       If tbn = 0 Then
-         msg = msg & "未发现6. Product Color的表格，该部分测试项目未导入" & CHR(10) & _
+         msg = msg & UText(26410, 21457, 29616) & "6. Product Color" & UText(30340, 34920, 26684) & "，" & UText(35813, 37096, 20998, 27979, 35797, 39033, 30446, 26410, 23548, 20837) & CHR(10) & _
         "6. Product Color table is not found, the check item for Product Color is not imported" & CHR(10)
         GoTo 130
      End If
@@ -11265,17 +11305,17 @@ For i = 1 To N
         Next i
       End With
      
-        '6. Product Color---数据表
+        '6. Product Color---
      TbnB = tbn
      DelTab = ""
      
    
 125  For i = 1 To cnc
-      If Nat(NumC(i)) = "定量" Then
+      If Nat(NumC(i)) = UText(23450, 37327) Then
         tbn = 0
         tbn = getTableNumber(7)
          If tbn = 0 Then
-             msg = msg & "未发现7. Product Label / Marking表格，Product Color数据表格无法生成" & CHR(10) & _
+             msg = msg & UText(26410, 21457, 29616) & "7. Product Label / Marking" & UText(34920, 26684) & "，Product Color" & UText(25968, 25454, 34920, 26684, 26080, 27861, 29983, 25104) & CHR(10) & _
             "7. Product Label / Marking table is not found, Data sheet for Product Color form can not generate" & CHR(10)
              GoTo 130
          End If
@@ -11289,7 +11329,7 @@ For i = 1 To N
                Cel.Range.Bookmarks.add Name:=Ino(NumC(i)) & "_Data", Range:=Cel.Range
               
                For j = 1 To ComItms
-                 .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 '无色 -603917569  '浅灰
+                 .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 ' -603917569 '
                 .Cell(j + 2, 1).Range.Text = ComItx(j)
                 .Cell(j + 2, 2).Range.Text = Spe(NumC(i))
                 .Cell(j + 2, 3).Range.Text = Tol(NumC(i))
@@ -11305,7 +11345,7 @@ For i = 1 To N
      tbn = getTableNumber(7)
      If tbn = 0 Then
      
-         msg = msg & "未发现7. Product Label / Marking的表格，该部分测试项目未导入" & CHR(10) & _
+         msg = msg & UText(26410, 21457, 29616) & "7. Product Label / Marking" & UText(30340, 34920, 26684) & "，" & UText(35813, 37096, 20998, 27979, 35797, 39033, 30446, 26410, 23548, 20837) & CHR(10) & _
         "7. Product Label / Marking table is not found, the check item for Product Label / Marking is not imported" & CHR(10)
         GoTo 150
      End If
@@ -11366,14 +11406,14 @@ For i = 1 To N
              Next i
        End With
            
-           '7. Product Label / Marking--数据表
+           '7. Product Label / Marking--
     TbnB = tbn
      DelTab = ""
    
    For i = 1 To cnl
-      If Nat(NumL(i)) = "定量" Then
-         If Chk(NumL(i)) = "Readability test for Barcode,QR code" Then GoTo 148   'BadCode表格不用通用表格，通过手工运行GenerateBarCodeDataSheet生成
-         DelTab = DelTab & "," & "Data Sheet for " & Chk(NumL(i))  '用于删除多余表格
+      If Nat(NumL(i)) = UText(23450, 37327) Then
+         If Chk(NumL(i)) = "Readability test for Barcode,QR code" Then GoTo 148   'BadCode，GenerateBarCodeDataSheet
+         DelTab = DelTab & "," & "Data Sheet for " & Chk(NumL(i))  ' translated comment
          
          Select Case TableChoise
          Case 1
@@ -11428,7 +11468,7 @@ For i = 1 To N
 145  tbn = 0
      tbn = getTableNumber(8)
          If tbn = 0 Then
-            msg = msg & "未发现8. Shipping Mark表格，Product Label / Marking数据表格无法生成" & CHR(10) & _
+            msg = msg & UText(26410, 21457, 29616) & "8. Shipping Mark" & UText(34920, 26684) & "，Product Label / Marking" & UText(25968, 25454, 34920, 26684, 26080, 27861, 29983, 25104) & CHR(10) & _
            "8. Shipping Mark table is not found, Data sheet for Product Label / Marking form can not generate" & CHR(10)
             GoTo 150
          End If
@@ -11443,7 +11483,7 @@ For i = 1 To N
                   Call DeleteBookMark(Cel)
                   Cel.Range.Bookmarks.add Name:=Ino(NumL(i)) & "_Data", Range:=Cel.Range
                   For j = 1 To ComItms
-                   .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 '无色 -603917569  '浅灰
+                   .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 ' -603917569 '
                    .Cell(j + 2, 1).Range.Text = ComItx(j)
                    .Cell(j + 2, 2).Range.Text = Spe(NumL(i))
                    .Cell(j + 2, 3).Range.Text = Tol(NumL(i))
@@ -11475,7 +11515,7 @@ For i = 1 To N
                        Call DeleteBookMark(Cel)
                        Cel.Range.Bookmarks.add Name:=Ino(NumL(i)) & "_Data", Range:=Cel.Range
                        For j = 1 To ComItms
-                          .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 '无色 -603917569  '浅灰
+                          .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 ' -603917569 '
                           .Cell(j + 2, 1).Range.Text = ComItx(j)
                           .Cell(j + 2, 2).Range.Text = Spe(NumL(i))
                          .Cell(j + 2, 3).Range.Text = Tol(NumL(i))
@@ -11505,7 +11545,7 @@ For i = 1 To N
      tbn = getTableNumber(8)
      tb = WD.Tables.count - 1
     If tbn = 0 Then
-         msg = msg & "未发现8. Shipping Mark的表格，该部分测试项目未导入" & CHR(10) & _
+         msg = msg & UText(26410, 21457, 29616) & "8. Shipping Mark" & UText(30340, 34920, 26684) & "，" & UText(35813, 37096, 20998, 27979, 35797, 39033, 30446, 26410, 23548, 20837) & CHR(10) & _
         "8. Shipping Mark table is not found, the check item for  Shipping Mark is not imported" & CHR(10)
          GoTo 170
      End If
@@ -11567,14 +11607,14 @@ For i = 1 To N
        End With
          
          
-         '8. Shipping Mark-数据表
+         '8. Shipping Mark-
     TbnB = tbn
      DelTab = ""
    
    For i = 1 To cnm
-     If Nat(NumM(i)) = "定量" Then
+     If Nat(NumM(i)) = UText(23450, 37327) Then
 
-          DelTab = DelTab & "," & "Data Sheet for " & Chk(NumM(i))  '用于删除多余表格
+          DelTab = DelTab & "," & "Data Sheet for " & Chk(NumM(i))  ' translated comment
          Select Case TableChoise
          Case 1
               TbCount1 = 0
@@ -11628,7 +11668,7 @@ For i = 1 To N
 165   tbn = 0
       tbn = getTableNumber(9)
       If tbn = 0 Then
-          msg = msg & "未发现9. Packing / Packaging表格，Shipping Mark-数据表格无法生成" & CHR(10) & _
+          msg = msg & UText(26410, 21457, 29616) & "9. Packing / Packaging" & UText(34920, 26684) & "，Shipping Mark-" & UText(25968, 25454, 34920, 26684, 26080, 27861, 29983, 25104) & CHR(10) & _
          "9. Packing / Packaging table is not found, Data sheet for Shipping Mark form can not generate" & CHR(10)
           GoTo 170
       End If
@@ -11643,7 +11683,7 @@ For i = 1 To N
                   Call DeleteBookMark(Cel)
                   Cel.Range.Bookmarks.add Name:=Ino(NumM(i)) & "_Data", Range:=Cel.Range
                   For j = 1 To ComItms
-                   .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 '无色 -603917569  '浅灰
+                   .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 ' -603917569 '
                    .Cell(j + 2, 1).Range.Text = ComItx(j)
                    .Cell(j + 2, 2).Range.Text = Spe(NumM(i))
                    .Cell(j + 2, 3).Range.Text = Tol(NumM(i))
@@ -11675,7 +11715,7 @@ For i = 1 To N
                        Call DeleteBookMark(Cel)
                        Cel.Range.Bookmarks.add Name:=Ino(NumM(i)) & "_Data", Range:=Cel.Range
                        For j = 1 To ComItms
-                          .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 '无色 -603917569  '浅灰
+                          .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 ' -603917569 '
                           .Cell(j + 2, 1).Range.Text = ComItx(j)
                           .Cell(j + 2, 2).Range.Text = Spe(NumM(i))
                          .Cell(j + 2, 3).Range.Text = Tol(NumM(i))
@@ -11705,7 +11745,7 @@ For i = 1 To N
           tbn = 0
      tbn = getTableNumber(9)
      If tbn = 0 Then
-        msg = msg & "未发现9. Packing / Packaging的表格，该部分测试项目未导入" & CHR(10) & _
+        msg = msg & UText(26410, 21457, 29616) & "9. Packing / Packaging" & UText(30340, 34920, 26684) & "，" & UText(35813, 37096, 20998, 27979, 35797, 39033, 30446, 26410, 23548, 20837) & CHR(10) & _
        "9. Packing / Packaging is not found, the check item for Packing / Packaging is not imported" & CHR(10)
        GoTo 190
      End If
@@ -11766,13 +11806,13 @@ For i = 1 To N
            
       End With
       
-      'Packing / Packaging---数据表
+      'Packing / Packaging---
      TbnB = tbn
      DelTab = ""
       
 
 185   For i = 1 To cnp
-        If Nat(NumP(i)) = "定量" Then
+        If Nat(NumP(i)) = UText(23450, 37327) Then
            tb = WD.Tables.count - 1
            For j = 3 To tb - 3
               With WD.Tables(j)
@@ -11785,7 +11825,7 @@ For i = 1 To N
           tbn = 0
          tbn = getTableNumber(10)
           If tbn = 0 Then
-             msg = msg & "未发现10. Other Note表格,Packing / Packaging数据表格无法生成" & CHR(10) & _
+             msg = msg & UText(26410, 21457, 29616) & "10. Other Note" & UText(34920, 26684) & ",Packing / Packaging" & UText(25968, 25454, 34920, 26684, 26080, 27861, 29983, 25104) & CHR(10) & _
            " 10. Other Note table is not found, Data sheet for Packing / Packaging form can not generate" & CHR(10)
             GoTo 190
           End If
@@ -11798,7 +11838,7 @@ For i = 1 To N
                Cel.Range.Bookmarks.add Name:=Ino(NumP(i)) & "_Data", Range:=Cel.Range
             
                For j = 1 To ComItms
-                .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 '无色 -603917569  '浅灰
+                .Rows(j + 2).Range.Cells.Shading.BackgroundPatternColor = -603914241  '-603914241 ' -603917569 '
                 .Cell(j + 2, 1).Range.Text = ComItx(j)
                 .Cell(j + 2, 2).Range.Text = Spe(NumP(i))
                 .Cell(j + 2, 3).Range.Text = Tol(NumP(i))
@@ -11812,10 +11852,10 @@ For i = 1 To N
 
  
 300  If msg <> "" Then
-      MsgBox msg & CHR(10) & CHR(10) & "测试项目导入完成，请根据实际情况进行修改或补充,请不要重复运行本程序否则修改或补充的数据将被覆盖!" & CHR(10) & _
+      MsgBox msg & CHR(10) & CHR(10) & UText(27979, 35797, 39033, 30446, 23548, 20837, 23436, 25104) & "，" & UText(35831, 26681, 25454, 23454, 38469, 24773, 20917, 36827, 34892, 20462, 25913, 25110, 34917, 20805) & "," & UText(35831, 19981, 35201, 37325, 22797, 36816, 34892, 26412, 31243, 24207, 21542, 21017, 20462, 25913, 25110, 34917, 20805, 30340, 25968, 25454, 23558, 34987, 35206, 30422) & "!" & CHR(10) & _
      "Complete importing test items, please modify or add according to the actual situation, do no Run this program repeatedly or the data will be overwritten"
     Else
-     MsgBox "测试项目导入完成，请根据实际情况进行修改或补充,请不要再运行本程序否则修改或补充的数据将被覆盖!" & CHR(10) & _
+     MsgBox UText(27979, 35797, 39033, 30446, 23548, 20837, 23436, 25104) & "，" & UText(35831, 26681, 25454, 23454, 38469, 24773, 20917, 36827, 34892, 20462, 25913, 25110, 34917, 20805) & "," & UText(35831, 19981, 35201, 20877, 36816, 34892, 26412, 31243, 24207, 21542, 21017, 20462, 25913, 25110, 34917, 20805, 30340, 25968, 25454, 23558, 34987, 35206, 30422) & "!" & CHR(10) & _
      "Complete importing test items, please modify or add according to the actual situation,  do not Run this program repeatedly or the data will be overwritten"
     End If
 
@@ -11856,7 +11896,7 @@ Dim BK As bookmark
         Selection.Copy
        For i = 1 To Cn - Rd + 1
             .Rows(Rc).Select
-                        StartTime = Timer ' 获取当前时间 ' 循环直到超过100毫秒
+                        StartTime = Timer '' 100
                         Do While Timer - StartTime < 0.1
                           DoEvents
                         Loop
@@ -12180,7 +12220,7 @@ Sub SAPForQuantity(Remark_col, ByRef Title() As String)
       tbn = 0
       tbn = getTableNumber(1)
       If tbn = 0 Then
-         MsgBox tb_tt(1) & "was not found,program exit" & CHR(10) & "未找到名称为" & tb_tt(1) & "的表格,程序退出"
+         MsgBox tb_tt(1) & "was not found,program exit" & CHR(10) & UText(26410, 25214, 21040, 21517, 31216, 20026) & tb_tt(1) & UText(30340, 34920, 26684) & "," & UText(31243, 24207, 36864, 20986)
          Exit Sub
       End If
       Dim Qty_Dict As Object
@@ -12247,7 +12287,7 @@ Set WD = ThisDocument
       tbn = 0
       tbn = getTableNumber(1)
       If tbn = 0 Then
-         MsgBox tb_tt(1) & "was not found,program exit" & CHR(10) & "未找到名称为" & tb_tt(1) & "的表格,程序退出"
+         MsgBox tb_tt(1) & "was not found,program exit" & CHR(10) & UText(26410, 25214, 21040, 21517, 31216, 20026) & tb_tt(1) & UText(30340, 34920, 26684) & "," & UText(31243, 24207, 36864, 20986)
          Exit Sub
       End If
       Dim Qty_Dict As Object
@@ -13349,7 +13389,7 @@ Sub Export1545ResultToHUB()
      tb_tt(7) = "7. Product Label / Marking"
      tb_tt(8) = "8. Shipping Mark"
      tb_tt(9) = "9. Packing / Packaging"
-      '--------------------为使PSI，DPI使用相同程序做如下设置
+      '--------------------PSI，DPI
      tb_tt(10) = "10. Semi-finished product Inspection and Process Viewing"
      '--------------------
      
@@ -13359,7 +13399,7 @@ Sub Export1545ResultToHUB()
      tb_tt(14) = "OVERALL CONCLUSION"
     '-----------------------------
      Application.StatusBar = "Packing report data and uploading data to HUB, please wait......" & "" & _
-     "打包数据并上传HUB中，请稍候......"
+     UText(25171, 21253, 25968, 25454, 24182, 19978, 20256) & "HUB" & UText(20013) & "，" & UText(35831, 31245, 20505) & "......"
      
      
      ReportID = GetPropertyValue("ReportID")
@@ -13616,7 +13656,7 @@ Sub Export1545ResultToHUB()
       tbn = 0
       tbn = getTableNumber(1)
       If tbn = 0 Then
-         MsgBox tb_tt(1) & "was not found,program exit" & CHR(10) & "未找到名称为" & tb_tt(1) & "的表格,程序退出"
+         MsgBox tb_tt(1) & "was not found,program exit" & CHR(10) & UText(26410, 25214, 21040, 21517, 31216, 20026) & tb_tt(1) & UText(30340, 34920, 26684) & "," & UText(31243, 24207, 36864, 20986)
          Exit Sub
       End If
 20    Dim Qty_Dict As Object
@@ -13707,7 +13747,7 @@ Sub Export1545ResultToHUB()
       tbn = 0
       tbn = getTableNumber(2)
       If tbn = 0 Then
-         MsgBox tb_tt(2) & "was not found,program exit" & CHR(10) & "未找到名称为" & tb_tt(2) & "的表格,程序退出"
+         MsgBox tb_tt(2) & "was not found,program exit" & CHR(10) & UText(26410, 25214, 21040, 21517, 31216, 20026) & tb_tt(2) & UText(30340, 34920, 26684) & "," & UText(31243, 24207, 36864, 20986)
          Exit Sub
       End If
         
@@ -14016,14 +14056,14 @@ Sub Export1545ResultToHUB()
       tbn = 0
       tbn = getTableNumber(3)
       If tbn = 0 Then
-         MsgBox tb_tt(3) & "was not found,program exit" & CHR(10) & "未找到名称为" & tb_tt(3) & "的表格,程序退出"
+         MsgBox tb_tt(3) & "was not found,program exit" & CHR(10) & UText(26410, 25214, 21040, 21517, 31216, 20026) & tb_tt(3) & UText(30340, 34920, 26684) & "," & UText(31243, 24207, 36864, 20986)
          Exit Sub
       End If
       TbnE = 0
       TbnE = getTableNumber(4)
        
       If TbnE = 0 Then
-         MsgBox tb_tt(4) & "was not found,program exit" & CHR(10) & "未找到名称为" & tb_tt(4) & "的表格,程序退出"
+         MsgBox tb_tt(4) & "was not found,program exit" & CHR(10) & UText(26410, 25214, 21040, 21517, 31216, 20026) & tb_tt(4) & UText(30340, 34920, 26684) & "," & UText(31243, 24207, 36864, 20986)
          Exit Sub
       End If
      
@@ -14081,7 +14121,7 @@ Sub Export1545ResultToHUB()
       tbn = 0
       tbn = getTableNumber(4)
       If tbn = 0 Then
-         MsgBox tb_tt(4) & "was not found,program exit" & CHR(10) & "未找到名称为" & tb_tt(4) & "的表格,程序退出"
+         MsgBox tb_tt(4) & "was not found,program exit" & CHR(10) & UText(26410, 25214, 21040, 21517, 31216, 20026) & tb_tt(4) & UText(30340, 34920, 26684) & "," & UText(31243, 24207, 36864, 20986)
          Exit Sub
       End If
      
@@ -14148,7 +14188,7 @@ Sub Export1545ResultToHUB()
       tbn = 0
       tbn = getTableNumber(5)
       If tbn = 0 Then
-         MsgBox tb_tt(5) & "was not found,program exit" & CHR(10) & "未找到名称为" & tb_tt(5) & "的表格,程序退出"
+         MsgBox tb_tt(5) & "was not found,program exit" & CHR(10) & UText(26410, 25214, 21040, 21517, 31216, 20026) & tb_tt(5) & UText(30340, 34920, 26684) & "," & UText(31243, 24207, 36864, 20986)
          Exit Sub
       End If
      
@@ -14213,7 +14253,7 @@ Sub Export1545ResultToHUB()
       tbn = 0
       tbn = getTableNumber(6)
       If tbn = 0 Then
-         MsgBox tb_tt(6) & "was not found,program exit" & CHR(10) & "未找到名称为" & tb_tt(6) & "的表格,程序退出"
+         MsgBox tb_tt(6) & "was not found,program exit" & CHR(10) & UText(26410, 25214, 21040, 21517, 31216, 20026) & tb_tt(6) & UText(30340, 34920, 26684) & "," & UText(31243, 24207, 36864, 20986)
          Exit Sub
       End If
      
@@ -14275,7 +14315,7 @@ Sub Export1545ResultToHUB()
       tbn = 0
       tbn = getTableNumber(7)
       If tbn = 0 Then
-         MsgBox tb_tt(7) & "was not found,program exit" & CHR(10) & "未找到名称为" & tb_tt(7) & "的表格,程序退出"
+         MsgBox tb_tt(7) & "was not found,program exit" & CHR(10) & UText(26410, 25214, 21040, 21517, 31216, 20026) & tb_tt(7) & UText(30340, 34920, 26684) & "," & UText(31243, 24207, 36864, 20986)
          Exit Sub
       End If
      
@@ -14337,7 +14377,7 @@ Sub Export1545ResultToHUB()
       tbn = 0
       tbn = getTableNumber(8)
       If tbn = 0 Then
-         MsgBox tb_tt(8) & "was not found,program exit" & CHR(10) & "未找到名称为" & tb_tt(8) & "的表格,程序退出"
+         MsgBox tb_tt(8) & "was not found,program exit" & CHR(10) & UText(26410, 25214, 21040, 21517, 31216, 20026) & tb_tt(8) & UText(30340, 34920, 26684) & "," & UText(31243, 24207, 36864, 20986)
          Exit Sub
       End If
      
@@ -14399,7 +14439,7 @@ Sub Export1545ResultToHUB()
       tbn = 0
       tbn = getTableNumber(9)
       If tbn = 0 Then
-         MsgBox tb_tt(9) & "was not found,program exit" & CHR(10) & "未找到名称为" & tb_tt(9) & "的表格,程序退出"
+         MsgBox tb_tt(9) & "was not found,program exit" & CHR(10) & UText(26410, 25214, 21040, 21517, 31216, 20026) & tb_tt(9) & UText(30340, 34920, 26684) & "," & UText(31243, 24207, 36864, 20986)
          Exit Sub
       End If
      
@@ -14575,14 +14615,14 @@ Sub Export1545ResultToHUB()
       For M = 2 To 9
          TbnB = getTableNumber(M)
          TbnE = getTableNumber(M + 1)
-         ChkPoints = ""         '用于避免同一测试点有多表格的重复记录
+         ChkPoints = ""         '" & UText(29992, 20110, 36991, 20813, 21516, 19968, 27979, 35797, 28857, 26377, 22810, 34920, 26684, 30340, 37325, 22797, 35760, 24405) & "
          CDFTableCount = 0
          BarCodeTableCount = 0
          ShoeTableCount = 0
          WithPicTableCount = 0
          DTN = 0
          
-         '表格种类
+         '" & UText(34920, 26684, 31181, 31867) & "
          For i = TbnB + 1 To TbnE - 1
             With WD.Tables(i)
                 Kw = Mid(.Cell(1, 1).Range.Text, 1, Len(.Cell(1, 1).Range.Text) - 2)
@@ -14601,7 +14641,7 @@ Sub Export1545ResultToHUB()
          If DTN = 0 Then GoTo 129
          For N = 1 To DTN
          Set TestData_dict = New Scripting.Dictionary
-          Tn = 0       '同类表格计数
+          Tn = 0       '" & UText(21516, 31867, 34920, 26684, 35745, 25968) & "
            For i = TbnB + 1 To TbnE - 1
              With WD.Tables(i)
                Kw = Mid(.Cell(1, 1).Range.Text, 1, Len(.Cell(1, 1).Range.Text) - 2)
@@ -14630,7 +14670,7 @@ Sub Export1545ResultToHUB()
                      ElseIf LCase(Kw) = "check point" Or LCase(Kw) = "check points" Then     'withpictable
                        RChkIdx = Cel.rowIndex
                        CChkIdx = Cel.ColumnIndex
-                     ElseIf LCase(Kw) = "measurement point" Or LCase(Kw) = "measurement points" Then       '鞋类尺寸表=Barcode表的position
+                     ElseIf LCase(Kw) = "measurement point" Or LCase(Kw) = "measurement points" Then       '" & UText(38795, 31867, 23610, 23544, 34920) & "=Barcode" & UText(34920, 30340) & "position
                        RPsIdx = Cel.rowIndex
                        CPsIdx = Cel.ColumnIndex
                        StRow = RPsIdx + 2
@@ -14639,7 +14679,7 @@ Sub Export1545ResultToHUB()
                        RPsIdx = Cel.rowIndex
                        CPsIdx = Cel.ColumnIndex
                        StRow = RPsIdx + 1
-                     ElseIf LCase(Kw) = "component name" Or LCase(Kw) = "component" Then  'CDF表
+                     ElseIf LCase(Kw) = "component name" Or LCase(Kw) = "component" Then  'CDF" & UText(34920) & "
                        RCpnIdx = Cel.rowIndex
                        CCpnIdx = Cel.ColumnIndex
                      ElseIf LCase(Kw) = "on cdf" Then
@@ -14759,7 +14799,7 @@ Sub Export1545ResultToHUB()
                       For j = 2 To Dn
                           If ChkG(j) - ChkG(j - 1) <> DR Then
                             MsgBox "On Data Sheet for Insole Length of footwear table, different size has different number of check point rows, please correct before upload data to HUB!" & CHR(10) & _
-                            "鞋类中底尺寸表中，不同码有不同的测量点行数，请在上传数据到HUB前，先更正！"
+                            UText(38795, 31867, 20013, 24213, 23610, 23544, 34920, 20013) & "，" & UText(19981, 21516, 30721, 26377, 19981, 21516, 30340, 27979, 37327, 28857, 34892, 25968) & "，" & UText(35831, 22312, 19978, 20256, 25968, 25454, 21040) & "HUB" & UText(21069) & "，" & UText(20808, 26356, 27491) & "！"
                             Exit Sub
                           End If
                       Next j
@@ -14899,7 +14939,7 @@ Sub Export1545ResultToHUB()
          
       Next N
             
-         'If DTN > 0 Then    '某些分项没有数据会导致TestData_dict会重复
+         'If DTN > 0 Then    '" & UText(26576, 20123, 20998, 39033, 27809, 26377, 25968, 25454, 20250, 23548, 33268) & "TestData_dict" & UText(20250, 37325, 22797) & "
             
            TestData_dict.add "CheckPointCode", CheckpointCode
            TestData_dict.add "CheckPoint", CheckPoint
@@ -15054,7 +15094,7 @@ For X = 1 To tb
    End With
 Next X
 50 Call DatacheckModule(MBG, MED)
-MsgBox "Data check completed！" & CHR(10) & "数据检查完成！"
+MsgBox "Data check completed！" & CHR(10) & UText(25968, 25454, 26816, 26597, 23436, 25104) & "！"
 
 End Sub
 Sub DatacheckOST()
@@ -15074,7 +15114,7 @@ For X = 1 To tb
    End With
 Next X
 50 Call DatacheckModule(MBG, MED)
-MsgBox "Data check completed！" & CHR(10) & "数据检查完成！"
+MsgBox "Data check completed！" & CHR(10) & UText(25968, 25454, 26816, 26597, 23436, 25104) & "！"
 
 End Sub
 
@@ -15095,7 +15135,7 @@ For X = 1 To tb
    End With
 Next X
 50 Call DatacheckModule(MBG, MED)
-MsgBox "Data check completed！" & CHR(10) & "数据检查完成！"
+MsgBox "Data check completed！" & CHR(10) & UText(25968, 25454, 26816, 26597, 23436, 25104) & "！"
 
 End Sub
 Sub DatacheckSMC()
@@ -15115,7 +15155,7 @@ For X = 1 To tb
    End With
 Next X
 50 Call DatacheckModule(MBG, MED)
-MsgBox "Data check completed！" & CHR(10) & "数据检查完成！"
+MsgBox "Data check completed！" & CHR(10) & UText(25968, 25454, 26816, 26597, 23436, 25104) & "！"
 
 End Sub
 Sub DatacheckLM()
@@ -15135,7 +15175,7 @@ For X = 1 To tb
    End With
 Next X
 50 Call DatacheckModule(MBG, MED)
-MsgBox "Data check completed！" & CHR(10) & "数据检查完成！"
+MsgBox "Data check completed！" & CHR(10) & UText(25968, 25454, 26816, 26597, 23436, 25104) & "！"
 End Sub
 Sub DatacheckPP()
 
@@ -15154,7 +15194,7 @@ For X = 1 To tb
    End With
 Next X
 50 Call DatacheckModule(MBG, MED)
-MsgBox "Data check completed！" & CHR(10) & "数据检查完成！"
+MsgBox "Data check completed！" & CHR(10) & UText(25968, 25454, 26816, 26597, 23436, 25104) & "！"
 
 End Sub
 Sub DatacheckModule(MBG, MED)
@@ -15273,7 +15313,7 @@ For X = MBG To MED
                   If KSpe = "" Or KSpe = "-" Then
                       SType = ""
                       msg = msg + KTT & " table " & i & " row, without specification data,  please corrct it!" & CHR(10) & _
-                         KTT & "表格第" & i & "行，没有指标要求数据！，请更正!" & CHR(10)
+                         KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(27809, 26377, 25351, 26631, 35201, 27714, 25968, 25454) & "！，" & UText(35831, 26356, 27491) & "!" & CHR(10)
                          GoTo 50
                   ElseIf InStr(1, KSpe, "-") > 1 Then
                      SType = "-"
@@ -15420,7 +15460,7 @@ For X = MBG To MED
                     .Cell(i, CActIdx).Range.Text = Replace(KAct, ",", ", ")
                   If Len(Trim(KAct)) = 0 Then
                       msg = msg + KTT & " table " & i & " row, without result data or the inputing result begin with text instead of data,  please corrct it!" & CHR(10) & _
-                         KTT & "表格第" & i & "行，未输入结果数据或输入的结果数据以文本而不是数据开头！，请更正!" & CHR(10)
+                         KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(26410, 36755, 20837, 32467, 26524, 25968, 25454, 25110, 36755, 20837, 30340, 32467, 26524, 25968, 25454, 20197, 25991, 26412, 32780, 19981, 26159, 25968, 25454, 24320, 22836) & "！，" & UText(35831, 26356, 27491) & "!" & CHR(10)
                          GoTo 50
                   End If
                   KAct = Replace(KAct, " ", "")
@@ -15459,10 +15499,10 @@ For X = MBG To MED
                        ED(j, k) = BG(j, k) + Ln - 1
                      Next k
                       
-                    If TAn <> sn Then    '检查数据维数
+                    If TAn <> sn Then    '" & UText(26816, 26597, 25968, 25454, 32500, 25968) & "
                        If KSpe <> "" And KSpe <> "-" Then
                          msg = msg + KTT & " table " & i & " row, the data format of result not match to specification's,  please corrct it!" & CHR(10) & _
-                         KTT & "表格第" & i & "行，结果数据的格式和参数的不匹配！，请更正!" & CHR(10)
+                         KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(32467, 26524, 25968, 25454, 30340, 26684, 24335, 21644, 21442, 25968, 30340, 19981, 21305, 37197) & "！，" & UText(35831, 26356, 27491) & "!" & CHR(10)
                          GoTo 50
                       End If
                     End If
@@ -15476,10 +15516,10 @@ For X = MBG To MED
                              Select Case SType
                              Case ""
                                msg = msg + KTT & " table " & i & " row, no specifications and tolerance data was input,  please corrct it!" & CHR(10) & _
-                               KTT & "表格第" & i & "行，参数和允差值数据未录入，请更正!" & CHR(10)
+                               KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 25968, 25454, 26410, 24405, 20837) & "，" & UText(35831, 26356, 27491) & "!" & CHR(10)
                              Case "0"
                                msg = msg + KTT & " table " & i & " row, no tolerance data was input,  please check!" & CHR(10) & _
-                               KTT & "表格第" & i & "行，允差值数据未录入，请检查!" & CHR(10)
+                               KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(20801, 24046, 20540, 25968, 25454, 26410, 24405, 20837) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "<"
                                 
                                 If VAct(j, k) >= VSpe(k) Then
@@ -15517,7 +15557,7 @@ For X = MBG To MED
                             Select Case SType
                              Case ""
                                msg = msg + KTT & " table " & i & " row, no specifications and tolerance data was input,  please corrct it!" & CHR(10) & _
-                               KTT & "表格第" & i & "行，参数和允差值数据未录入，请更正!" & CHR(10)
+                               KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 25968, 25454, 26410, 24405, 20837) & "，" & UText(35831, 26356, 27491) & "!" & CHR(10)
                              Case "0"
                                 If VAct(j, k) > VSpe(k) + VTolP * VSpe(k) Or VAct(j, k) < VSpe(k) Then
                                         For Y = BG(j, k) + j To ED(j, k) + j
@@ -15526,27 +15566,27 @@ For X = MBG To MED
                                  End If
                              Case "<"
                                 msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                                 
                              Case "≤"
                                 msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case ">"
                                 msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "≥"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "-"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                             End Select
                             
                        Case "0"
                             Select Case SType
                              Case ""
                                msg = msg + KTT & " table " & i & " row, no specifications and tolerance data was input,  please corrct it!" & CHR(10) & _
-                               KTT & "表格第" & i & "行，参数和允差值数据未录入，请更正!" & CHR(10)
+                               KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 25968, 25454, 26410, 24405, 20837) & "，" & UText(35831, 26356, 27491) & "!" & CHR(10)
                              Case "0"
                                 If VAct(j, k) > VSpe(k) + VTolP Or VAct(j, k) < VSpe(k) Then
                                         For Y = BG(j, k) + j To ED(j, k) + j
@@ -15555,26 +15595,26 @@ For X = MBG To MED
                                  End If
                              Case "<"
                                 msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                                 
                              Case "≤"
                                 msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case ">"
                                 msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "≥"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "-"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                             End Select
                         Case "-%"
                              Select Case SType
                              Case ""
                                msg = msg + KTT & " table " & i & " row, no specifications data was input,  please corrct it!" & CHR(10) & _
-                               KTT & "表格第" & i & "行，参数数据未录入，请更正!" & CHR(10)
+                               KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 25968, 25454, 26410, 24405, 20837) & "，" & UText(35831, 26356, 27491) & "!" & CHR(10)
                              Case "0"
                                 If VAct(j, k) > VSpe(k) Or VAct(j, k) < VSpe(k) - VTolM * VSpe(k) Then
                                         For Y = BG(j, k) + j To ED(j, k) + j
@@ -15589,26 +15629,26 @@ For X = MBG To MED
                                 End If
                              Case "<"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "≤"
                                 msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case ">"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "≥"
                                   msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "-"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              End Select
                             
                         Case "-"
                              Select Case SType
                              Case ""
                                msg = msg + KTT & " table " & i & " row, no specifications data was input,  please corrct it!" & CHR(10) & _
-                               KTT & "表格第" & i & "行，参数数据未录入，请更正!" & CHR(10)
+                               KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 25968, 25454, 26410, 24405, 20837) & "，" & UText(35831, 26356, 27491) & "!" & CHR(10)
                              Case "0"
                                 If VAct(j, k) > VSpe(k) Or VAct(j, k) < VSpe(k) - VTolM Then
                                         For Y = BG(j, k) + j To ED(j, k) + j
@@ -15623,25 +15663,25 @@ For X = MBG To MED
                                 End If
                              Case "<"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "≤"
                                 msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case ">"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "≥"
                                   msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "-"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              End Select
                          Case "+%"
                              Select Case SType
                              Case ""
                                msg = msg + KTT & " table " & i & " row, no specifications data was input,  please corrct it!" & CHR(10) & _
-                               KTT & "表格第" & i & "行，参数数据未录入，请更正!" & CHR(10)
+                               KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 25968, 25454, 26410, 24405, 20837) & "，" & UText(35831, 26356, 27491) & "!" & CHR(10)
                              Case "0"
                                 If VAct(j, k) < VSpe(k) Or VAct(j, k) > VSpe(k) + VTolP * VSpe(k) Then
                                         For Y = BG(j, k) + j To ED(j, k) + j
@@ -15650,25 +15690,25 @@ For X = MBG To MED
                                 End If
                              Case "<"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "≤"
                                 msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case ">"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "≥"
                                   msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "-"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                             End Select
                          Case "+"
                              Select Case SType
                              Case ""
                                msg = msg + KTT & " table " & i & " row, no specifications data was input,  please corrct it!" & CHR(10) & _
-                               KTT & "表格第" & i & "行，参数数据未录入，请更正!" & CHR(10)
+                               KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 25968, 25454, 26410, 24405, 20837) & "，" & UText(35831, 26356, 27491) & "!" & CHR(10)
                              Case "0"
                                 If VAct(j, k) < VSpe(k) Or VAct(j, k) > VSpe(k) + VTolP Then
                                         For Y = BG(j, k) + j To ED(j, k) + j
@@ -15677,25 +15717,25 @@ For X = MBG To MED
                                 End If
                              Case "<"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "≤"
                                 msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case ">"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "≥"
                                   msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "-"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                             End Select
                          Case "±%"
                              Select Case SType
                              Case ""
                                msg = msg + KTT & " table " & i & " row, no specifications data was input,  please corrct it!" & CHR(10) & _
-                               KTT & "表格第" & i & "行，参数数据未录入，请更正!" & CHR(10)
+                               KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 25968, 25454, 26410, 24405, 20837) & "，" & UText(35831, 26356, 27491) & "!" & CHR(10)
                             
                              Case "0"
                                    If VAct(j, k) < VSpe(k) - VTolM * VSpe(k) Or VAct(j, k) > VSpe(k) + VTolP * VSpe(k) Then
@@ -15706,19 +15746,19 @@ For X = MBG To MED
                                 
                              Case "<"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "≤"
                                 msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case ">"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "≥"
                                   msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "-"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                             End Select
                             
                             
@@ -15726,7 +15766,7 @@ For X = MBG To MED
                              Select Case SType
                              Case ""
                                msg = msg + KTT & " table " & i & " row, no specifications data was input,  please corrct it!" & CHR(10) & _
-                               KTT & "表格第" & i & "行，参数数据未录入，请更正!" & CHR(10)
+                               KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 25968, 25454, 26410, 24405, 20837) & "，" & UText(35831, 26356, 27491) & "!" & CHR(10)
                             
                              Case "0"
                                    If VAct(j, k) < VSpe(k) - VTolM Or VAct(j, k) > VSpe(k) + VTolP Then
@@ -15737,26 +15777,26 @@ For X = MBG To MED
                                 
                              Case "<"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "≤"
                                 msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case ">"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "≥"
                                   msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "-"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                             End Select
                         
                         Case "+/-%"
                              Select Case SType
                              Case ""
                                msg = msg + KTT & " table " & i & " row, no specifications data was input,  please corrct it!" & CHR(10) & _
-                               KTT & "表格第" & i & "行，参数数据未录入，请更正!" & CHR(10)
+                               KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 25968, 25454, 26410, 24405, 20837) & "，" & UText(35831, 26356, 27491) & "!" & CHR(10)
                              Case "0"
                                 If VAct(j, k) < VSpe(k) - VTolM * VSpe(k) Or VAct(j, k) > VSpe(k) + VTolP * VSpe(k) Then
                                         For Y = BG(j, k) + j To ED(j, k) + j
@@ -15765,26 +15805,26 @@ For X = MBG To MED
                                 End If
                              Case "<"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "≤"
                                 msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case ">"
                                  msg = msg + KTT & "table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "≥"
                                   msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "-"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                             
                             End Select
                         Case "+/-"
                              Select Case SType
                              Case ""
                                msg = msg + KTT & " table " & i & " row, no specifications data was input,  please corrct it!" & CHR(10) & _
-                               KTT & "表格第" & i & "行，参数数据未录入，请更正!" & CHR(10)
+                               KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 25968, 25454, 26410, 24405, 20837) & "，" & UText(35831, 26356, 27491) & "!" & CHR(10)
                              Case "0"
                                 If VAct(j, k) < VSpe(k) - VTolM Or VAct(j, k) > VSpe(k) + VTolP Then
                                         For Y = BG(j, k) + j To ED(j, k) + j
@@ -15793,19 +15833,19 @@ For X = MBG To MED
                                 End If
                              Case "<"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "≤"
                                 msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case ">"
                                  msg = msg + KTT & "table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "≥"
                                   msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "-"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                             
                             End Select
                          
@@ -15813,7 +15853,7 @@ For X = MBG To MED
                             Select Case SType
                              Case ""
                                msg = msg + KTT & " table " & i & " row, no specifications data was input,  please corrct it!" & CHR(10) & _
-                               KTT & "表格第" & i & "行，参数数据未录入，请更正!" & CHR(10)
+                               KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 25968, 25454, 26410, 24405, 20837) & "，" & UText(35831, 26356, 27491) & "!" & CHR(10)
                              Case "0"
                                 If VAct(j, k) < VSpe(k) - VTolM * VSpe(k) Or VAct(j, k) > VSpe(k) + VTolP * VSpe(k) Then
                                         For Y = BG(j, k) + j To ED(j, k) + j
@@ -15822,19 +15862,19 @@ For X = MBG To MED
                                 End If
                              Case "<"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "≤"
                                 msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case ">"
                                  msg = msg + KTT & "table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "≥"
                                   msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "-"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                             
                             End Select
                         
@@ -15842,7 +15882,7 @@ For X = MBG To MED
                             Select Case SType
                              Case ""
                                msg = msg + KTT & " table " & i & " row, no specifications data was input,  please corrct it!" & CHR(10) & _
-                               KTT & "表格第" & i & "行，参数数据未录入，请更正!" & CHR(10)
+                               KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 25968, 25454, 26410, 24405, 20837) & "，" & UText(35831, 26356, 27491) & "!" & CHR(10)
                              Case "0"
                                 If VAct(j, k) < VSpe(k) - VTolM Or VAct(j, k) > VSpe(k) + VTolP Then
                                         For Y = BG(j, k) + j To ED(j, k) + j
@@ -15851,19 +15891,19 @@ For X = MBG To MED
                                 End If
                              Case "<"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "≤"
                                 msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case ">"
                                  msg = msg + KTT & "table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "≥"
                                   msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "-"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                             
                             End Select
                         
@@ -15871,7 +15911,7 @@ For X = MBG To MED
                             Select Case SType
                              Case ""
                                msg = msg + KTT & " table " & i & " row, no specifications data was input,  please corrct it!" & CHR(10) & _
-                               KTT & "表格第" & i & "行，参数数据未录入，请更正!" & CHR(10)
+                               KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 25968, 25454, 26410, 24405, 20837) & "，" & UText(35831, 26356, 27491) & "!" & CHR(10)
                              Case "0"
                                 If VAct(j, k) < VSpe(k) - VTolM * VSpe(k) Or VAct(j, k) > VSpe(k) + VTolP * VSpe(k) Then
                                         For Y = BG(j, k) + j To ED(j, k) + j
@@ -15880,26 +15920,26 @@ For X = MBG To MED
                                 End If
                              Case "<"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "≤"
                                 msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case ">"
                                  msg = msg + KTT & "table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "≥"
                                   msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "-"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                             End Select
                        
                         Case "X/-X"
                             Select Case SType
                              Case ""
                                msg = msg + KTT & " table " & i & " row, no specifications data was input,  please corrct it!" & CHR(10) & _
-                               KTT & "表格第" & i & "行，参数数据未录入，请更正!" & CHR(10)
+                               KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 25968, 25454, 26410, 24405, 20837) & "，" & UText(35831, 26356, 27491) & "!" & CHR(10)
                              Case "0"
                                 If VAct(j, k) < VSpe(k) - VTolM Or VAct(j, k) > VSpe(k) + VTolP Then
                                         For Y = BG(j, k) + j To ED(j, k) + j
@@ -15908,19 +15948,19 @@ For X = MBG To MED
                                 End If
                              Case "<"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "≤"
                                 msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case ">"
                                  msg = msg + KTT & "table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "≥"
                                   msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "-"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，参数和允差值的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(21442, 25968, 21644, 20801, 24046, 20540, 30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                             End Select
                        
                                 
@@ -15951,7 +15991,7 @@ For X = MBG To MED
                     End If
                     If KSpe = "" Or KSpe = "-" Then
                        msg = msg + KTT & " table " & i & " row, without specification data,  please corrct it!" & CHR(10) & _
-                         KTT & "表格第" & i & "行，没有指标要求数据！，请更正!" & CHR(10)
+                         KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(27809, 26377, 25351, 26631, 35201, 27714, 25968, 25454) & "！，" & UText(35831, 26356, 27491) & "!" & CHR(10)
                          GoTo 100
                     End If
                     KAct = Mid(Trim(.Cell(i, CActIdx).Range.Text), 1, Len(Trim(.Cell(i, CActIdx).Range.Text)) - 2)
@@ -15963,7 +16003,7 @@ For X = MBG To MED
                      .Cell(i, CActIdx).Range.Text = Replace(KAct, ",", ", ")
                     If Len(Trim(KAct)) = 0 Then
                          msg = msg + KTT & " table " & i & " row, without result data or the inputing result,  please corrct it!" & CHR(10) & _
-                         KTT & "表格第" & i & "行，未输入结果数据！，请更正!" & CHR(10)
+                         KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(26410, 36755, 20837, 32467, 26524, 25968, 25454) & "！，" & UText(35831, 26356, 27491) & "!" & CHR(10)
                          GoTo 100
                     End If
                     KAct = Replace(KAct, " ", "")
@@ -16028,7 +16068,7 @@ For X = MBG To MED
                     End If
                     If KSpe = "" Or KSpe = "-" Then
                        msg = msg + KTT & " table " & i & " row, without specification data,  please corrct it!" & CHR(10) & _
-                         KTT & "表格第" & i & "行，没有指标要求数据！，请更正!" & CHR(10)
+                         KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(27809, 26377, 25351, 26631, 35201, 27714, 25968, 25454) & "！，" & UText(35831, 26356, 27491) & "!" & CHR(10)
                          GoTo 100
                     End If
                     KAct = Mid(Trim(.Cell(i, CActIdx).Range.Text), 1, Len(Trim(.Cell(i, CActIdx).Range.Text)) - 2)
@@ -16040,7 +16080,7 @@ For X = MBG To MED
                      .Cell(i, CActIdx).Range.Text = Replace(KAct, ",", ", ")
                     If Len(Trim(KAct)) = 0 Then
                          msg = msg + KTT & " table " & i & " row, without result data or the inputing result,  please corrct it!" & CHR(10) & _
-                         KTT & "表格第" & i & "行，未输入结果数据！，请更正!" & CHR(10)
+                         KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(26410, 36755, 20837, 32467, 26524, 25968, 25454) & "！，" & UText(35831, 26356, 27491) & "!" & CHR(10)
                          GoTo 100
                     End If
                     KAct = Replace(KAct, " ", "")
@@ -16107,7 +16147,7 @@ For X = MBG To MED
             Next k
             If NI > 0 Then
                  msg = msg + KTT & " table " & i & " row" & NI & "　cells, without inputing specification or measurement data,  please corrct it!" & CHR(10) & _
-                KTT & "表格第" & i & "行，有" & NI & "个单元格没有尺寸要求或实际测量数据！，请更正!" & CHR(10)
+                KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(26377) & NI & UText(20010, 21333, 20803, 26684, 27809, 26377, 23610, 23544, 35201, 27714, 25110, 23454, 38469, 27979, 37327, 25968, 25454) & "！，" & UText(35831, 26356, 27491) & "!" & CHR(10)
                 GoTo 150
             End If
          
@@ -16117,7 +16157,7 @@ For X = MBG To MED
                
             If KTol = "" Then
                    msg = msg + KTT & " table " & i & " row, without Tol data,  please corrct it!" & CHR(10) & _
-                   KTT & "表格第" & i & "行，没有允差数据！，请更正!" & CHR(10)
+                   KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，" & UText(27809, 26377, 20801, 24046, 25968, 25454) & "！，" & UText(35831, 26356, 27491) & "!" & CHR(10)
                    GoTo 150
             ElseIf InStr(1, KTol, "+/-") > 0 Then
             
@@ -16411,10 +16451,10 @@ For X = 1 To tb
                        ED(j, k) = BG(j, k) + Ln - 1
                      Next k
                       
-                    If TAn <> sn Then    '检查数据维数
+                    If TAn <> sn Then    '" & UText(26816, 26597, 25968, 25454, 32500, 25968) & "
                        If KSpe <> "" And KSpe <> "-" Then
                          msg = msg + KTT & " table " & i & " row, the data format of result not match to specification's,  please corrct it!" & CHR(10) & _
-                         KTT & "表格第" & i & "行，Result数据的格式和specification的不匹配！，请更正!" & CHR(10)
+                         KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，Result" & UText(25968, 25454, 30340, 26684, 24335, 21644) & "specification" & UText(30340, 19981, 21305, 37197) & "！，" & UText(35831, 26356, 27491) & "!" & CHR(10)
                          GoTo 50
                       End If
                     End If
@@ -16429,10 +16469,10 @@ For X = 1 To tb
                              Select Case SType
                              Case ""
                                msg = msg + KTT & " table " & i & " row, no specifications and tolerance data was input,  please corrct it!" & CHR(10) & _
-                               KTT & "表格第" & i & "行，specification和tolerance数据未录入，请更正!" & CHR(10)
+                               KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，specification" & UText(21644) & "tolerance" & UText(25968, 25454, 26410, 24405, 20837) & "，" & UText(35831, 26356, 27491) & "!" & CHR(10)
                              Case "0"
                                msg = msg + KTT & " table " & i & " row, no tolerance data was input,  please check!" & CHR(10) & _
-                               KTT & "表格第" & i & "行，tolerance数据未录入，请检查!" & CHR(10)
+                               KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，tolerance" & UText(25968, 25454, 26410, 24405, 20837) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "<"
                                 If VAct(j, k) >= VSpe(k) Then
                                    For Y = BG(j, k) To ED(j, k)
@@ -16469,7 +16509,7 @@ For X = 1 To tb
                             Select Case SType
                              Case ""
                                msg = msg + KTT & " table " & i & " row, no specifications and tolerance data was input,  please corrct it!" & CHR(10) & _
-                               KTT & "表格第" & i & "行，specification和tolerance数据未录入，请更正!" & CHR(10)
+                               KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，specification" & UText(21644) & "tolerance" & UText(25968, 25454, 26410, 24405, 20837) & "，" & UText(35831, 26356, 27491) & "!" & CHR(10)
                              Case "0"
                                 If VAct(j, k) > VSpe(k) + VSpe(k) * VTolP Or VAct(j, k) < VSpe(k) Then
                                    For Y = BG(j, k) To ED(j, k)
@@ -16478,27 +16518,27 @@ For X = 1 To tb
                                  End If
                              Case "<"
                                 msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                KTT & "表格第" & i & "行，specification and tolerance的要求冲突，请检查!" & CHR(10)
+                                KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，specification and tolerance" & UText(30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                                 
                              Case "≤"
                                 msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                KTT & "表格第" & i & "行，specification and tolerance的要求冲突，请检查!" & CHR(10)
+                                KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，specification and tolerance" & UText(30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case ">"
                                 msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                KTT & "表格第" & i & "行，specification and tolerance的要求冲突，请检查!" & CHR(10)
+                                KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，specification and tolerance" & UText(30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "≥"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，specification and tolerance的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，specification and tolerance" & UText(30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "-"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，specification and tolerance的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，specification and tolerance" & UText(30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                             End Select
                             
                         Case "-"
                              Select Case SType
                              Case ""
                                msg = msg + KTT & " table " & i & " row, no specifications data was input,  please corrct it!" & CHR(10) & _
-                               KTT & "表格第" & i & "行，specification数据未录入，请更正!" & CHR(10)
+                               KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，specification" & UText(25968, 25454, 26410, 24405, 20837) & "，" & UText(35831, 26356, 27491) & "!" & CHR(10)
                              Case "0"
                                 If VAct(j, k) > VSpe(k) Or VAct(j, k) < VSpe(k) - VSpe(k) * VTolM Then
                                    For Y = BG(j, k) To ED(j, k)
@@ -16507,26 +16547,26 @@ For X = 1 To tb
                                 End If
                              Case "<"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，specification and tolerance的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，specification and tolerance" & UText(30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "≤"
                                 msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，specification and tolerance的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，specification and tolerance" & UText(30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case ">"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，specification and tolerance的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，specification and tolerance" & UText(30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "≥"
                                   msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，specification and tolerance的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，specification and tolerance" & UText(30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "-"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，specification and tolerance的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，specification and tolerance" & UText(30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              End Select
                              
                          Case "+"
                              Select Case SType
                              Case ""
                                msg = msg + KTT & " table " & i & " row, no specifications data was input,  please corrct it!" & CHR(10) & _
-                               KTT & "表格第" & i & "行，specification数据未录入，请更正!" & CHR(10)
+                               KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，specification" & UText(25968, 25454, 26410, 24405, 20837) & "，" & UText(35831, 26356, 27491) & "!" & CHR(10)
                              Case "0"
                                 If VAct(j, k) < VSpe(k) Or VAct(j, k) > VSpe(k) + VSpe(k) * VTolP Then
                                    For Y = BG(j, k) To ED(j, k)
@@ -16535,26 +16575,26 @@ For X = 1 To tb
                                 End If
                              Case "<"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，specification and tolerance的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，specification and tolerance" & UText(30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "≤"
                                 msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，specification and tolerance的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，specification and tolerance" & UText(30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case ">"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，specification and tolerance的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，specification and tolerance" & UText(30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "≥"
                                   msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，specification and tolerance的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，specification and tolerance" & UText(30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "-"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，specification and tolerance的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，specification and tolerance" & UText(30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                             End Select
                             
                           Case "±"
                              Select Case SType
                              Case ""
                                msg = msg + KTT & " table " & i & " row, no specifications data was input,  please corrct it!" & CHR(10) & _
-                               KTT & "表格第" & i & "行，specification数据未录入，请更正!" & CHR(10)
+                               KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，specification" & UText(25968, 25454, 26410, 24405, 20837) & "，" & UText(35831, 26356, 27491) & "!" & CHR(10)
                              Case "0"
                                 If VAct(j, k) < VSpe(k) - VSpe(k) * VTolM Or VAct(j, k) > VSpe(k) + VSpe(k) * VTolP Then
                                    For Y = BG(j, k) To ED(j, k)
@@ -16563,26 +16603,26 @@ For X = 1 To tb
                                 End If
                              Case "<"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，specification and tolerance的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，specification and tolerance" & UText(30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "≤"
                                 msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，specification and tolerance的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，specification and tolerance" & UText(30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case ">"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，specification and tolerance的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，specification and tolerance" & UText(30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "≥"
                                   msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，specification and tolerance的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，specification and tolerance" & UText(30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "-"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，specification and tolerance的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，specification and tolerance" & UText(30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                             End Select
                             
                           Case "+/-"
                              Select Case SType
                              Case ""
                                msg = msg + KTT & " table " & i & " row, no specifications data was input,  please corrct it!" & CHR(10) & _
-                               KTT & "表格第" & i & "行，specification数据未录入，请更正!" & CHR(10)
+                               KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，specification" & UText(25968, 25454, 26410, 24405, 20837) & "，" & UText(35831, 26356, 27491) & "!" & CHR(10)
                              Case "0"
                                 If VAct(j, k) < VSpe(k) - VSpe(k) * VTolM Or VAct(j, k) > VSpe(k) + VSpe(k) * VTolP Then
                                    For Y = BG(j, k) To ED(j, k)
@@ -16591,19 +16631,19 @@ For X = 1 To tb
                                 End If
                              Case "<"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，specification and tolerance的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，specification and tolerance" & UText(30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "≤"
                                 msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，specification and tolerance的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，specification and tolerance" & UText(30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case ">"
                                  msg = msg + KTT & "table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，specification and tolerance的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，specification and tolerance" & UText(30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "≥"
                                   msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，specification and tolerance的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，specification and tolerance" & UText(30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                              Case "-"
                                  msg = msg + KTT & " table " & i & " row, the requirement of specification and tolerance was conflicted. please check!" & CHR(10) & _
-                                 KTT & "表格第" & i & "行，specification and tolerance的要求冲突，请检查!" & CHR(10)
+                                 KTT & UText(34920, 26684, 31532) & i & UText(34892) & "，specification and tolerance" & UText(30340, 35201, 27714, 20914, 31361) & "，" & UText(35831, 26816, 26597) & "!" & CHR(10)
                             End Select
                        
                        End Select
@@ -16650,8 +16690,8 @@ Set WD = ThisDocument
         WD.Tables.add Range:=Selection.Range, NumRows:=2, NumColumns:=2, _
         DefaultTableBehavior:=wdWord9TableBehavior, AutoFitBehavior:=wdAutoFitFixed
             With Selection.Tables(1)
-                If .Style <> "网格型" Then
-                 .Style = "网格型"
+                If .Style <> UText(32593, 26684, 22411) Then
+                 .Style = UText(32593, 26684, 22411)
                End If
             End With
             Call Setborders025
@@ -16701,7 +16741,7 @@ Sub getHUBdata(Url, postJson, jsonResponse)
      End If
  
      If Not ReqStatus = 200 Then
-        MsgBox Url & "No response form HUB or an error occurred" & CHR(10) & "HUB未响应或有错误发生!", vbCritical
+        MsgBox Url & "No response form HUB or an error occurred" & CHR(10) & "HUB" & UText(26410, 21709, 24212, 25110, 26377, 38169, 35823, 21457, 29983) & "!", vbCritical
         Set req = Nothing
         Exit Sub
     End If
@@ -16733,20 +16773,20 @@ Sub sendDataToHUB(Url, json_String, jsonResponse)
   
     If ReqStatus <> 200 Then
         MsgBox "No response form HUB or an error occurred, please check the internet or try again later" & CHR(10) & _
-         "HUB未响应或有错误发生，请检查网络或稍后再试一次!"
+         "HUB" & UText(26410, 21709, 24212, 25110, 26377, 38169, 35823, 21457, 29983) & "，" & UText(35831, 26816, 26597, 32593, 32476, 25110, 31245, 21518, 20877, 35797, 19968, 27425) & "!"
           Exit Sub
      Else
          Dim Code As String
          Code = jsonResponse("code")
         If Code = "200" Then
-           MsgBox "The data of the inspection report has been successfully uploaded to the HUB" & CHR(10) & "检验报告的数据已成功上传递到HUB!"
+           MsgBox "The data of the inspection report has been successfully uploaded to the HUB" & CHR(10) & UText(26816, 39564, 25253, 21578, 30340, 25968, 25454, 24050, 25104, 21151, 19978, 20256, 36882, 21040) & "HUB!"
         ElseIf Code = "201" Then
           MsgBox "An error of " & "'" & jsonResponse("jsonMsg") & "'" & " Occured,Please contact the IT team for support" & CHR(10) & _
-           "发生" & "'" & jsonResponse("jsonMsg") & "'" & "错误导致报告数据未成功上传到HUB!，请联系IT组以获得支持!"
+           UText(21457, 29983) & "'" & jsonResponse("jsonMsg") & "'" & UText(38169, 35823, 23548, 33268, 25253, 21578, 25968, 25454, 26410, 25104, 21151, 19978, 20256, 21040) & "HUB!，" & UText(35831, 32852, 31995) & "IT" & UText(32452, 20197, 33719, 24471, 25903, 25345) & "!"
            
         ElseIf Code = "202" Then
            MsgBox "Due to an system error, the data of the inspection report was not successfully uploaded to the HUB. Please contact the IT team for support" & CHR(10) & _
-           "由于发生错误导致报告数据未成功上传到HUB!，请联系IT组以获得支持!"
+           UText(30001, 20110, 21457, 29983, 38169, 35823, 23548, 33268, 25253, 21578, 25968, 25454, 26410, 25104, 21151, 19978, 20256, 21040) & "HUB!，" & UText(35831, 32852, 31995) & "IT" & UText(32452, 20197, 33719, 24471, 25903, 25345) & "!"
           
         End If
     End If
@@ -16802,10 +16842,10 @@ Sub Load_Product_Lev1()
         ReDim Cat_Large_Names(1 To Cat_Large_Number)
         ReDim Cat_Large_NamesE(1 To Cat_Large_Number)
         For i = 1 To Cat_Large_Number
-          Cat_Large_IDs(i) = Data(i)("产品大类id")
-          Cat_Large_Codes(i) = Data(i)("产品大类编码")
-          Cat_Large_Names(i) = Data(i)("产品大类中文")
-          Cat_Large_NamesE(i) = Data(i)("产品大类英文")
+          Cat_Large_IDs(i) = Data(i)(UText(20135, 21697, 22823, 31867) & "id")
+          Cat_Large_Codes(i) = Data(i)(UText(20135, 21697, 22823, 31867, 32534, 30721))
+          Cat_Large_Names(i) = Data(i)(UText(20135, 21697, 22823, 31867, 20013, 25991))
+          Cat_Large_NamesE(i) = Data(i)(UText(20135, 21697, 22823, 31867, 33521, 25991))
         Next i
 
  
@@ -16822,7 +16862,7 @@ Sub Load_Product_Lev1()
     TopPos = 0.09 * ScreenHeight * 0.9
     
     Cn = 0
-    LeftPos = 20 ' 设置复选框的初始Left位置
+    LeftPos = 20 ' " & UText(35774, 32622, 22797, 36873, 26694, 30340, 21021, 22987) & "Left" & UText(20301, 32622) & "
 
     For i = 1 To Cat_Large_Number
         Set Chk = UF.Controls.add("Forms.CheckBox.1", Cat_Large_Names(i), True)
@@ -16838,7 +16878,7 @@ Sub Load_Product_Lev1()
             End If
              .Left = LeftPos + (Cn) * Defwidth
          
-            .Width = Defwidth  ' 设置复选框的宽度
+            .Width = Defwidth  ' " & UText(35774, 32622, 22797, 36873, 26694, 30340, 23485, 24230) & "
             .Height = Defheight
             .Visible = True
             For j = 1 To N_Cat_Large
@@ -16899,10 +16939,10 @@ Dim p As Integer
     ReDim Cat_Middle_Names(1 To Cat_Middle_Number)
     ReDim Cat_Middle_NamesE(1 To Cat_Middle_Number)
     For i = 1 To Cat_Middle_Number
-          Cat_Middle_IDs(i) = Data(i)("产品中类id")
-          Cat_Middle_Codes(i) = Data(i)("产品中类编码")
-          Cat_Middle_Names(i) = Data(i)("产品中类中文")
-          Cat_Middle_NamesE(i) = Data(i)("产品中类英文")
+          Cat_Middle_IDs(i) = Data(i)(UText(20135, 21697, 20013, 31867) & "id")
+          Cat_Middle_Codes(i) = Data(i)(UText(20135, 21697, 20013, 31867, 32534, 30721))
+          Cat_Middle_Names(i) = Data(i)(UText(20135, 21697, 20013, 31867, 20013, 25991))
+          Cat_Middle_NamesE(i) = Data(i)(UText(20135, 21697, 20013, 31867, 33521, 25991))
     Next i
     
     Dim ScreenWidth, ScreenHeight As Long
@@ -16914,7 +16954,7 @@ Dim p As Integer
     Defwidth = 0.17 * ScreenWidth * 0.8 * 2
     Defheight = 0.04 * ScreenHeight * 0.9
     TopPos = 0.09 * ScreenHeight * 0.9
-     LeftPos = 20 ' 设置复选框的初始Left位置
+     LeftPos = 20 ' " & UText(35774, 32622, 22797, 36873, 26694, 30340, 21021, 22987) & "Left" & UText(20301, 32622) & "
   
       For i = 1 To Cat_Middle_Number
         Set Chk = UF.Controls.add("Forms.CheckBox.1", Cat_Middle_Names(i), True)
@@ -17010,10 +17050,10 @@ Sub Load_Product_Lev3()
     ReDim Cat_Small_Names(1 To Cat_Small_Number)
     ReDim Cat_Small_NamesE(1 To Cat_Small_Number)
     For i = 1 To Cat_Small_Number
-          Cat_Small_IDs(i) = Data(i)("产品小类id")
-          Cat_Small_Codes(i) = Data(i)("产品小类编码")
-          Cat_Small_Names(i) = Data(i)("产品小类中文")
-          Cat_Small_NamesE(i) = Data(i)("产品小类英文")
+          Cat_Small_IDs(i) = Data(i)(UText(20135, 21697, 23567, 31867) & "id")
+          Cat_Small_Codes(i) = Data(i)(UText(20135, 21697, 23567, 31867, 32534, 30721))
+          Cat_Small_Names(i) = Data(i)(UText(20135, 21697, 23567, 31867, 20013, 25991))
+          Cat_Small_NamesE(i) = Data(i)(UText(20135, 21697, 23567, 31867, 33521, 25991))
     Next i
   
     Dim ScreenWidth, ScreenHeight As Long
@@ -17041,7 +17081,7 @@ Sub Load_Product_Lev3()
             End If
              .Left = LeftPos + (k - 1 + Cn) * Defwidth
            
-            .Width = Defwidth ' 设置复选框的宽度
+            .Width = Defwidth ' " & UText(35774, 32622, 22797, 36873, 26694, 30340, 23485, 24230) & "
             .Height = Defheight
             .Visible = True
            
@@ -17063,7 +17103,7 @@ Sub Load_Product_Lev3()
         .Top = 40
         .Left = LeftPos + (k - 1) * Defheight
        .Value = Cat_Middle(k) & "|" & Cat_MiddleE(k)
-       .Width = (Cn + 1) * Defwidth ' 设置复选框的宽度
+       .Width = (Cn + 1) * Defwidth ' " & UText(35774, 32622, 22797, 36873, 26694, 30340, 23485, 24230) & "
        .Height = Defheight
        .Visible = True
        
@@ -17109,7 +17149,7 @@ Sub Load_Product_Lev4()
  For i = 0 To N - 1
      If TypeName(UF.Controls(i)) = "CheckBox" Then
        If SearchDefect = True Then
-         If UF.Controls(i).Caption = "选择产品特征|Choose Product Features" Then
+         If UF.Controls(i).Caption = UText(36873, 25321, 20135, 21697, 29305, 24449) & "|Choose Product Features" Then
             UF.Controls(i).Visible = False
          End If
       End If
@@ -17133,10 +17173,10 @@ Sub Load_Product_Lev4()
     ReDim Product_Names(1 To Product_Number)
     ReDim Product_NamesE(1 To Product_Number)
     For i = 1 To Product_Number
-          Product_IDs(i) = Data(i)("产品名称id")
-          Product_Codes(i) = Data(i)("产品名称编码")
-          Product_Names(i) = Data(i)("产品名称中文")
-          Product_NamesE(i) = Data(i)("产品名称英文")
+          Product_IDs(i) = Data(i)(UText(20135, 21697, 21517, 31216) & "id")
+          Product_Codes(i) = Data(i)(UText(20135, 21697, 21517, 31216, 32534, 30721))
+          Product_Names(i) = Data(i)(UText(20135, 21697, 21517, 31216, 20013, 25991))
+          Product_NamesE(i) = Data(i)(UText(20135, 21697, 21517, 31216, 33521, 25991))
     Next i
     
     Dim ScreenWidth, ScreenHeight As Long
@@ -17241,10 +17281,10 @@ Sub Load_Product_Features()
      ReDim Product_Feature_Names(1 To Product_Feature_Number)
      ReDim Product_Feature_NamesE(1 To Product_Feature_Number)
      For i = 1 To Product_Feature_Number
-          Product_Feature_IDs(i) = Data(i)("产品特征id")
-          Product_Feature_Codes(i) = Data(i)("产品特征编码")
-          Product_Feature_Names(i) = Data(i)("产品特征中文")
-          Product_Feature_NamesE(i) = Data(i)("产品特征英文")
+          Product_Feature_IDs(i) = Data(i)(UText(20135, 21697, 29305, 24449) & "id")
+          Product_Feature_Codes(i) = Data(i)(UText(20135, 21697, 29305, 24449, 32534, 30721))
+          Product_Feature_Names(i) = Data(i)(UText(20135, 21697, 29305, 24449, 20013, 25991))
+          Product_Feature_NamesE(i) = Data(i)(UText(20135, 21697, 29305, 24449, 33521, 25991))
      Next i
   '======
     Dim ScreenWidth, ScreenHeight As Long
@@ -17275,7 +17315,7 @@ Sub Load_Product_Features()
             End If
              .Left = 20 + Cn * Defwidth ' 300
            
-            .Width = Defwidth '300 ' 设置复选框的宽度
+            .Width = Defwidth '300 ' " & UText(35774, 32622, 22797, 36873, 26694, 30340, 23485, 24230) & "
             .Height = Defheight ' 25
             .Visible = True
             .Font.Size = 10
@@ -17290,7 +17330,7 @@ Sub Load_Product_Features()
         .Top = Int(0.05 * ScreenHeight * 0.9) '40
         .Left = 20 + W(k - 1)
         .Value = Cat_Large(k) & "|" & Cat_LargeE(k)
-        .Width = W(k) ' 设置复选框的宽度
+        .Width = W(k) ' " & UText(35774, 32622, 22797, 36873, 26694, 30340, 23485, 24230) & "
         .Height = Defheight
        .Visible = True
      End With
@@ -17362,22 +17402,22 @@ Sub Get_CheckPoints()
        ReDim p(1 To gotChks)
    
        For i = 1 To gotChks
-         ky = Data(i)("测试项目编码")
+         ky = Data(i)(UText(27979, 35797, 39033, 30446, 32534, 30721))
          If Language = "Chinese" Then
-           dicList.Item(ky) = Data(i)("测试项目编码") & "|" & Data(i)("测试项目名称") & "|" & Data(i)("按形式归类") & "|" & _
-           Data(i)("要求") & "|" & Data(i)("抽样量") & "|" & Data(i)("参数") & "|" & Data(i)("允差值") & "|" & _
-           Data(i)("定量类型") & "|" & Data(i)("产品特征")
+           dicList.Item(ky) = Data(i)(UText(27979, 35797, 39033, 30446, 32534, 30721)) & "|" & Data(i)(UText(27979, 35797, 39033, 30446, 21517, 31216)) & "|" & Data(i)(UText(25353, 24418, 24335, 24402, 31867)) & "|" & _
+           Data(i)(UText(35201, 27714)) & "|" & Data(i)(UText(25277, 26679, 37327)) & "|" & Data(i)(UText(21442, 25968)) & "|" & Data(i)(UText(20801, 24046, 20540)) & "|" & _
+           Data(i)(UText(23450, 37327, 31867, 22411)) & "|" & Data(i)(UText(20135, 21697, 29305, 24449))
         Else
-           dicList.Item(ky) = Data(i)("测试项目编码") & "|" & Data(i)("测试项目名称(英)") & "|" & Data(i)("按形式归类") & "|" & _
-           Data(i)("要求(英)") & "|" & Data(i)("抽样量(英)") & "|" & Data(i)("参数(英)") & "|" & Data(i)("允差值(英)") & "|" & _
-           Data(i)("定量类型") & "|" & Data(i)("产品特征")
+           dicList.Item(ky) = Data(i)(UText(27979, 35797, 39033, 30446, 32534, 30721)) & "|" & Data(i)(UText(27979, 35797, 39033, 30446, 21517, 31216) & "(" & UText(33521) & ")") & "|" & Data(i)(UText(25353, 24418, 24335, 24402, 31867)) & "|" & _
+           Data(i)(UText(35201, 27714) & "(" & UText(33521) & ")") & "|" & Data(i)(UText(25277, 26679, 37327) & "(" & UText(33521) & ")") & "|" & Data(i)(UText(21442, 25968) & "(" & UText(33521) & ")") & "|" & Data(i)(UText(20801, 24046, 20540) & "(" & UText(33521) & ")") & "|" & _
+           Data(i)(UText(23450, 37327, 31867, 22411)) & "|" & Data(i)(UText(20135, 21697, 29305, 24449))
         
         End If
          
        Next i
        TPN = TPN + dicList.count
     
-    '（0）测试项目编码-（1）测试项目名称-（2)按形式归类-（3）要求-（4）抽样量-（5）参数-（6）允差值-（7）定量类型-（8）产品特征
+    '（0）" & UText(27979, 35797, 39033, 30446, 32534, 30721) & "-（1）" & UText(27979, 35797, 39033, 30446, 21517, 31216) & "-（2)" & UText(25353, 24418, 24335, 24402, 31867) & "-（3）" & UText(35201, 27714) & "-（4）" & UText(25277, 26679, 37327) & "-（5）" & UText(21442, 25968) & "-（6）" & UText(20801, 24046, 20540) & "-（7）" & UText(23450, 37327, 31867, 22411) & "-（8）" & UText(20135, 21697, 29305, 24449) & "
     
 
 10   Next k
@@ -17431,21 +17471,21 @@ Sub Load_Product_PrimaryTypeCheckPoints()
        gotChks = Data.count
  
        For i = 1 To gotChks
-         ky = Data(i)("测试项目编码")
+         ky = Data(i)(UText(27979, 35797, 39033, 30446, 32534, 30721))
          If Language = "Chinese" Then
-           dicList.Item(ky) = Data(i)("测试项目编码") & "|" & Data(i)("测试项目名称") & "|" & Data(i)("按形式归类") & "|" & _
-           Data(i)("要求") & "|" & Data(i)("抽样量") & "|" & Data(i)("参数") & "|" & Data(i)("允差值") & "|" & _
-           Data(i)("定量类型") & "|" & Data(i)("产品特征")
+           dicList.Item(ky) = Data(i)(UText(27979, 35797, 39033, 30446, 32534, 30721)) & "|" & Data(i)(UText(27979, 35797, 39033, 30446, 21517, 31216)) & "|" & Data(i)(UText(25353, 24418, 24335, 24402, 31867)) & "|" & _
+           Data(i)(UText(35201, 27714)) & "|" & Data(i)(UText(25277, 26679, 37327)) & "|" & Data(i)(UText(21442, 25968)) & "|" & Data(i)(UText(20801, 24046, 20540)) & "|" & _
+           Data(i)(UText(23450, 37327, 31867, 22411)) & "|" & Data(i)(UText(20135, 21697, 29305, 24449))
         Else
-           dicList.Item(ky) = Data(i)("测试项目编码") & "|" & Data(i)("测试项目名称(英)") & "|" & Data(i)("按形式归类") & "|" & _
-           Data(i)("要求(英)") & "|" & Data(i)("抽样量(英)") & "|" & Data(i)("参数(英)") & "|" & Data(i)("允差值(英)") & "|" & _
-           Data(i)("定量类型") & "|" & Data(i)("产品特征") & "|"
+           dicList.Item(ky) = Data(i)(UText(27979, 35797, 39033, 30446, 32534, 30721)) & "|" & Data(i)(UText(27979, 35797, 39033, 30446, 21517, 31216) & "(" & UText(33521) & ")") & "|" & Data(i)(UText(25353, 24418, 24335, 24402, 31867)) & "|" & _
+           Data(i)(UText(35201, 27714) & "(" & UText(33521) & ")") & "|" & Data(i)(UText(25277, 26679, 37327) & "(" & UText(33521) & ")") & "|" & Data(i)(UText(21442, 25968) & "(" & UText(33521) & ")") & "|" & Data(i)(UText(20801, 24046, 20540) & "(" & UText(33521) & ")") & "|" & _
+           Data(i)(UText(23450, 37327, 31867, 22411)) & "|" & Data(i)(UText(20135, 21697, 29305, 24449)) & "|"
         End If
-         dicListShow(ky) = Data(i)("测试项目编码") & "|" & Data(i)("测试项目名称") & "|" & Data(i)("测试项目名称(英)")
+         dicListShow(ky) = Data(i)(UText(27979, 35797, 39033, 30446, 32534, 30721)) & "|" & Data(i)(UText(27979, 35797, 39033, 30446, 21517, 31216)) & "|" & Data(i)(UText(27979, 35797, 39033, 30446, 21517, 31216) & "(" & UText(33521) & ")")
        Next i
        TPN = TPN + dicList.count
     
-    '（0）测试项目编码-（1）测试项目名称-（2)按形式归类-（3）要求-（4）抽样量-（5）参数-（6）允差值-（7）定量类型-（8）产品特征
+    '（0）" & UText(27979, 35797, 39033, 30446, 32534, 30721) & "-（1）" & UText(27979, 35797, 39033, 30446, 21517, 31216) & "-（2)" & UText(25353, 24418, 24335, 24402, 31867) & "-（3）" & UText(35201, 27714) & "-（4）" & UText(25277, 26679, 37327) & "-（5）" & UText(21442, 25968) & "-（6）" & UText(20801, 24046, 20540) & "-（7）" & UText(23450, 37327, 31867, 22411) & "-（8）" & UText(20135, 21697, 29305, 24449) & "
     
        ReDim pShow(1 To gotChks)
        ReDim ChkCode(1 To gotChks)
@@ -17637,7 +17677,7 @@ Sub Load_Product_DefectList()
        gotDefects = Data.count
        
         If gotDefects = 0 Then
-         MsgBox "HUB上未找到该产品的缺陷描述参数，缺陷数据无法导入，请联系质控部或IT部寻求解决方案" & CHR(10) & _
+         MsgBox "HUB" & UText(19978, 26410, 25214, 21040, 35813, 20135, 21697, 30340, 32570, 38519, 25551, 36848, 21442, 25968) & "，" & UText(32570, 38519, 25968, 25454, 26080, 27861, 23548, 20837) & "，" & UText(35831, 32852, 31995, 36136, 25511, 37096, 25110) & "IT" & UText(37096, 23547, 27714, 35299, 20915, 26041, 26696) & CHR(10) & _
          "The defect description for this product is not found at HUB, the defect is not imported, please contact the Quality Control Department or IT Deparment for the solutions", vbCritical
           Exit Sub
       
@@ -17648,9 +17688,9 @@ Sub Load_Product_DefectList()
        ReDim DefectCodes(1 To gotDefects)
    
        For i = 1 To gotDefects
-           Defects(i) = Data(i)("缺陷名称")
-           DefectsE(i) = Data(i)("缺陷名称(英)")
-           DefectCodes(i) = Data(i)("缺陷编码")
+           Defects(i) = Data(i)(UText(32570, 38519, 21517, 31216))
+           DefectsE(i) = Data(i)(UText(32570, 38519, 21517, 31216) & "(" & UText(33521) & ")")
+           DefectCodes(i) = Data(i)(UText(32570, 38519, 32534, 30721))
            dicList.Item(DefectCodes(i)) = DefectCodes(i) & "|" & Defects(i) & "|" & DefectsE(i)
        Next i
      '====
@@ -17691,7 +17731,7 @@ Sub Load_Product_DefectList()
         .Top = TopPos
         .Left = LeftPos
         .Value = "Selected Product=" & Defect_Product & "|" & Defect_ProductE
-        .Width = (Int(N / 20) + 1) * Defwidth ' 设置复选框的宽度
+        .Width = (Int(N / 20) + 1) * Defwidth ' " & UText(35774, 32622, 22797, 36873, 26694, 30340, 23485, 24230) & "
         .Height = Defheight
         .Visible = True
     End With
@@ -17750,7 +17790,7 @@ Sub Load_Product_DefectList()
          
             End If
             .Left = LeftPos + Cn * Defwidth   'Int(UFwidth / 6) '150
-            .Width = Defwidth  '150 ' 设置复选框的宽度
+            .Width = Defwidth  '150 ' " & UText(35774, 32622, 22797, 36873, 26694, 30340, 23485, 24230) & "
             .Height = Defheight '25
             .Visible = True
             .Font.Size = 10
@@ -17761,7 +17801,7 @@ Sub Load_Product_DefectList()
 '=====
     UF.Width = LeftPos + (Cn + 1) * Defwidth + 40
     UF.Height = ScreenHeight * 0.9
-    UF.StartUpPosition = 2  ' 居中显示
+    UF.StartUpPosition = 2  ' " & UText(23621, 20013, 26174, 31034) & "
    ' UF.Width = 20 + (cn + 1) * 150 + 40 '(k - 1) * 300 + 40
     'UF.Height = 620
 
@@ -17824,11 +17864,11 @@ Sub Get_Defects()
        ReDim p(1 To gotChks)
    
        For i = 1 To gotDefects
-         ky = Data(i)("缺陷编码")
+         ky = Data(i)(UText(32570, 38519, 32534, 30721))
          If Language = "Chinese" Then
-           dicList.Item(ky) = Data(i)("缺陷编码") & "|" & Data(i)("缺陷名称") & "|" & Data(i)("缺陷类别")
+           dicList.Item(ky) = Data(i)(UText(32570, 38519, 32534, 30721)) & "|" & Data(i)(UText(32570, 38519, 21517, 31216)) & "|" & Data(i)(UText(32570, 38519, 31867, 21035))
         Else
-           dicList.Item(ky) = Data(i)("缺陷编码") & "|" & Data(i)("缺陷名称(英)") & "|" & Data(i)("缺陷类别")
+           dicList.Item(ky) = Data(i)(UText(32570, 38519, 32534, 30721)) & "|" & Data(i)(UText(32570, 38519, 21517, 31216) & "(" & UText(33521) & ")") & "|" & Data(i)(UText(32570, 38519, 31867, 21035))
         End If
          
        Next i
@@ -17937,16 +17977,16 @@ Dim ch As VbMsgBoxResult
          If HTrn <> Trn Then ch = MsgBox("DocNo.of this report template is" & Trn & _
          "and is not same with the statement of the inspection notice form on HUB, which shall be " & HTrn & _
          ". If you are sure this report template be right, click YES to continue otherwise cilck No " & _
-         "to exit the program." & CHR(10) & "本报告模板是文件号DocNo.是" & Trn & _
-         "同HUB检验通知单上标注的" & HTrn & "不同，如果你确定本报告模板是正确的，按是继续，否则按否退出程序", vbYesNo)
+         "to exit the program." & CHR(10) & UText(26412, 25253, 21578, 27169, 26495, 26159, 25991, 20214, 21495) & "DocNo." & UText(26159) & Trn & _
+         UText(21516) & "HUB" & UText(26816, 39564, 36890, 30693, 21333, 19978, 26631, 27880, 30340) & HTrn & UText(19981, 21516) & "，" & UText(22914, 26524, 20320, 30830, 23450, 26412, 25253, 21578, 27169, 26495, 26159, 27491, 30830, 30340) & "，" & UText(25353, 26159, 32487, 32493) & "，" & UText(21542, 21017, 25353, 21542, 36864, 20986, 31243, 24207), vbYesNo)
           If ch = vbNo Then Q = "Quit"
          
           
          If HVsn <> Vsn Then ch = MsgBox("Version numner of this report template is" & Vsn & _
          "and is not same with the newest Version numner on HUB, which shall be " & HVsn & _
          ". If you are sure Version numner of this report template be right, click YES to continue otherwise cilck No " & _
-         "to exit the program." & CHR(10) & "本报告模板的版本号是" & Vsn & _
-         "同HUB上最新的版本号" & HVsn & "不同，如果你确定该版本号是正确的，按是继续，否则按否退出程序", vbYesNo)
+         "to exit the program." & CHR(10) & UText(26412, 25253, 21578, 27169, 26495, 30340, 29256, 26412, 21495, 26159) & Vsn & _
+         UText(21516) & "HUB" & UText(19978, 26368, 26032, 30340, 29256, 26412, 21495) & HVsn & UText(19981, 21516) & "，" & UText(22914, 26524, 20320, 30830, 23450, 35813, 29256, 26412, 21495, 26159, 27491, 30830, 30340) & "，" & UText(25353, 26159, 32487, 32493) & "，" & UText(21542, 21017, 25353, 21542, 36864, 20986, 31243, 24207), vbYesNo)
           If ch = vbNo Then Q = "Quit"
       End If
 End Sub
@@ -17994,8 +18034,8 @@ Sub FindAndHighlightText()
         MsgBox "Some " & searchText & " was found without filling content, we have highlighted them in red." & _
        "Please fill in content and change the color to balck. please don't delete the double parentheses (())" & _
        " especially when the report should translate to other language, other program will delete them automatically." & _
-         vbCrLf & "一些" & searchText & "被发现未填充内容，已用红色标出，请填写内容将颜色改回黑色,请不要删除双括号(())，" & _
-         "特别当报告需要翻译成其他语种时，其他程序会自动删除他们。", vbInformation
+         vbCrLf & UText(19968, 20123) & searchText & UText(34987, 21457, 29616, 26410, 22635, 20805, 20869, 23481) & "，" & UText(24050, 29992, 32418, 33394, 26631, 20986) & "，" & UText(35831, 22635, 20889, 20869, 23481, 23558, 39068, 33394, 25913, 22238, 40657, 33394) & "," & UText(35831, 19981, 35201, 21024, 38500, 21452, 25324, 21495) & "(())，" & _
+         UText(29305, 21035, 24403, 25253, 21578, 38656, 35201, 32763, 35793, 25104, 20854, 20182, 35821, 31181, 26102) & "，" & UText(20854, 20182, 31243, 24207, 20250, 33258, 21160, 21024, 38500, 20182, 20204) & "。", vbInformation
      End If
 End Sub
 
@@ -18006,11 +18046,11 @@ Sub SetTablePosition()
    
     Set WD = ThisDocument
 
-    ' 设置页面左边距
+    ' " & UText(35774, 32622, 39029, 38754, 24038, 36793, 36317) & "
     With WD.PageSetup
         .LeftMargin = 48
-       ' .LeftMargin = CentimetersToPoints(1.6) ' 3厘米的左边距
-       ' .RightMargin = CentimetersToPoints(1) ' 3厘米的右边距
+       ' .LeftMargin = CentimetersToPoints(1.6) ' 3" & UText(21400, 31859, 30340, 24038, 36793, 36317) & "
+       ' .RightMargin = CentimetersToPoints(1) ' 3" & UText(21400, 31859, 30340, 21491, 36793, 36317) & "
     End With
   End Sub
 
@@ -18045,7 +18085,7 @@ End Sub
 
 
 Sub Translate()
-   'bywynwyn, 20241122，用HUB字典
+   'bywynwyn, 20241122，" & UText(29992) & "HUB" & UText(23383, 20856) & "
 Dim Dict_Original_EnText() As String
 Dim SDict_Original_EnText() As String
 Dim Dict_Original_RuText() As String
@@ -18091,20 +18131,20 @@ Dim SLanguage, DLanguage As String
 Dim LangSuffix As String
 Dim SelectedLang As String
        
-      SLanguage = "英文文本"
+      SLanguage = UText(33521, 25991, 25991, 26412)
       
       Path = WD.Path
       DocName = WD.Name
    
-  ' 让用户选择目标语言
-  SelectedLang = InputBox("Please select target language / 请选择目标语言:" & CHR(10) & _
-    "1 - Russian / 俄文" & CHR(10) & _
-    "2 - Japanese / 日文" & CHR(10) & _
-    "3 - Vietnamese / 越南文" & CHR(10) & CHR(10) & _
-    "Enter 1, 2, or 3 / 请输入 1、2 或 3", _
-    "Language Selection / 语言选择", "1")
+  ' " & UText(35753, 29992, 25143, 36873, 25321, 30446, 26631, 35821, 35328) & "
+  SelectedLang = InputBox("Please select target language / " & UText(35831, 36873, 25321, 30446, 26631, 35821, 35328) & ":" & CHR(10) & _
+    "1 - Russian / " & UText(20420, 25991) & CHR(10) & _
+    "2 - Japanese / " & UText(26085, 25991) & CHR(10) & _
+    "3 - Vietnamese / " & UText(36234, 21335, 25991) & CHR(10) & CHR(10) & _
+    "Enter 1, 2, or 3 / " & UText(35831, 36755, 20837) & " 1、2 " & UText(25110) & " 3", _
+    "Language Selection / " & UText(35821, 35328, 36873, 25321), "1")
   
-  ' 处理用户取消或无效输入
+  ' " & UText(22788, 29702, 29992, 25143, 21462, 28040, 25110, 26080, 25928, 36755, 20837) & "
   If SelectedLang = "" Then
       Exit Sub
   End If
@@ -18112,23 +18152,23 @@ Dim SelectedLang As String
   SelectedLang = Trim(SelectedLang)
   
   If SelectedLang = "1" Then
-      DLanguage = "俄文文本"
+      DLanguage = UText(20420, 25991, 25991, 26412)
       LangSuffix = "-RU"
   ElseIf SelectedLang = "2" Then
-      DLanguage = "日文文本"
+      DLanguage = UText(26085, 25991, 25991, 26412)
       LangSuffix = "-JA"
   ElseIf SelectedLang = "3" Then
-      DLanguage = "越南语文本"
+      DLanguage = UText(36234, 21335, 35821, 25991, 26412)
       LangSuffix = "-VI"
   Else
-      MsgBox "Invalid selection. Translation cancelled." & CHR(10) & "无效选择。翻译已取消。", vbExclamation
+      MsgBox "Invalid selection. Translation cancelled." & CHR(10) & UText(26080, 25928, 36873, 25321) & "。" & UText(32763, 35793, 24050, 21462, 28040) & "。", vbExclamation
       Exit Sub
   End If
 
   ch = MsgBox("Is it necessary to translate the report into " & _
     IIf(SelectedLang = "1", "Russian", IIf(SelectedLang = "2", "Japanese", "Vietnamese")) & "?" & CHR(10) & _
-    "需要将此报告翻译成" & _
-    IIf(SelectedLang = "1", "俄文", IIf(SelectedLang = "2", "日文", "越南文")) & "吗?", vbYesNo)
+    UText(38656, 35201, 23558, 27492, 25253, 21578, 32763, 35793, 25104) & _
+    IIf(SelectedLang = "1", UText(20420, 25991), IIf(SelectedLang = "2", UText(26085, 25991), UText(36234, 21335, 25991))) & UText(21527) & "?", vbYesNo)
 
   If ch = 6 Then
 
@@ -18137,8 +18177,8 @@ Dim SelectedLang As String
     DocExt = Mid(DocName, InStrRev(DocName, ".") + 1)
     WD.Save
        
-     Application.StatusBar = "Translating, pease wait...., " & "  " & "翻译中，请稍候...."
-15   '----------------------------在下使用HUB字典做为正式运行的代码
+     Application.StatusBar = "Translating, pease wait...., " & "  " & UText(32763, 35793, 20013) & "，" & UText(35831, 31245, 20505) & "...."
+15   '----------------------------" & UText(22312, 19979, 20351, 29992) & "HUB" & UText(23383, 20856, 20570, 20026, 27491, 24335, 36816, 34892, 30340, 20195, 30721) & "
     
       Url = WebBaseUrl & "/api/sqlhub/exec?appid=md_763&configName=SelectReportTextTranslationDictionaryLedger"
       Call getHUBdata(Url, postJson, jsonResponse)
@@ -18152,7 +18192,7 @@ Dim SelectedLang As String
     ReDim Dict_Original_RuText(1 To Rn)
     For i = 1 To Rn
           Dict_Original_EnText(i) = Data(i)(SLanguage)
-          ' 尝试获取翻译文本，如果字段不存在或为空则使用英文文本，避免翻译后字段变成空白
+          ' " & UText(23581, 35797, 33719, 21462, 32763, 35793, 25991, 26412) & "，" & UText(22914, 26524, 23383, 27573, 19981, 23384, 22312, 25110, 20026, 31354, 21017, 20351, 29992, 33521, 25991, 25991, 26412) & "，" & UText(36991, 20813, 32763, 35793, 21518, 23383, 27573, 21464, 25104, 31354, 30333) & "
           Dim TransText As Variant
           Dim FieldExists As Boolean
           FieldExists = True
@@ -18165,18 +18205,18 @@ Dim SelectedLang As String
               Err.Clear
           End If
           On Error GoTo 0
-          ' 判断是否使用翻译文本：字段必须存在且值不为空
+          ' " & UText(21028, 26029, 26159, 21542, 20351, 29992, 32763, 35793, 25991, 26412) & "：" & UText(23383, 27573, 24517, 39035, 23384, 22312, 19988, 20540, 19981, 20026, 31354) & "
           If Not FieldExists Then
-              ' 字段不存在，使用英文文本
+              ' " & UText(23383, 27573, 19981, 23384, 22312) & "，" & UText(20351, 29992, 33521, 25991, 25991, 26412) & "
               Dict_Original_RuText(i) = Data(i)(SLanguage)
           ElseIf IsNull(TransText) Then
-              ' 字段值为Null，使用英文文本
+              ' " & UText(23383, 27573, 20540, 20026) & "Null，" & UText(20351, 29992, 33521, 25991, 25991, 26412) & "
               Dict_Original_RuText(i) = Data(i)(SLanguage)
           ElseIf Trim(CStr(TransText)) = "" Then
-              ' 字段值为空字符串，使用英文文本
+              ' " & UText(23383, 27573, 20540, 20026, 31354, 23383, 31526, 20018) & "，" & UText(20351, 29992, 33521, 25991, 25991, 26412) & "
               Dict_Original_RuText(i) = Data(i)(SLanguage)
           Else
-              ' 字段存在且有值，使用翻译文本
+              ' " & UText(23383, 27573, 23384, 22312, 19988, 26377, 20540) & "，" & UText(20351, 29992, 32763, 35793, 25991, 26412) & "
               Dict_Original_RuText(i) = CStr(TransText)
           End If
           Dict_Temp_Text = Dict_Original_EnText(i)
@@ -18187,7 +18227,7 @@ Dim SelectedLang As String
              CountR = UBound(Dict_Temp_Text_PosR)
               If CountL <> CountR Then
                 msg = msg + "Within Parameter of " & Dict_Temp_Text & ", the number of '((' does not match the number of '))'" & CHR(10) & _
-               "参数表中的" & Dict_Temp_Text & "'((’的数量和'))'数量不匹配。" & CHR(10)
+               UText(21442, 25968, 34920, 20013, 30340) & Dict_Temp_Text & "'((’" & UText(30340, 25968, 37327, 21644) & "'))'" & UText(25968, 37327, 19981, 21305, 37197) & "。" & CHR(10)
                 GoTo 10
               End If
               ReDim Dict_Inner_Text(1 To CountR)
@@ -18250,7 +18290,7 @@ Dim SelectedLang As String
                 CI = Cell.ColumnIndex
                 RI = Cel.rowIndex
                 msg = msg + "For Tables " & i & ", Title : " & TbTitle & ", cell of Rows Number " & RI & ", Columns number " & CI & ",the '((' number does not match '))'" & CHR(10) & _
-               "表格" & i & ",标题:" & TbTitle & "第" & RI & "行，" & CI & "列单元格中的'(('数量和‘))'数量不匹配。"
+               UText(34920, 26684) & i & "," & UText(26631, 39064) & ":" & TbTitle & UText(31532) & RI & UText(34892) & "，" & CI & UText(21015, 21333, 20803, 26684, 20013, 30340) & "'(('" & UText(25968, 37327, 21644) & "‘))'" & UText(25968, 37327, 19981, 21305, 37197) & "。"
                GoTo 20
              End If
              ReDim Wd_Inner_Text(1 To CountR)
@@ -18266,7 +18306,7 @@ Dim SelectedLang As String
              For i = 2 To Rn
                If SWd_Cell_Text = SDict_Original_EnText(i) Then
                    Trs_Temp_Text = Dict_Original_RuText(i)
-                   ' 如果翻译文本为空，则保留原文，避免单元格被清空
+                   ' " & UText(22914, 26524, 32763, 35793, 25991, 26412, 20026, 31354) & "，" & UText(21017, 20445, 30041, 21407, 25991) & "，" & UText(36991, 20813, 21333, 20803, 26684, 34987, 28165, 31354) & "
                    If Trim(Trs_Temp_Text) = "" Then
                        GoTo 20
                    End If
@@ -18276,7 +18316,7 @@ Dim SelectedLang As String
                    CountR = UBound(Trs_Temp_Text_PosR)
                    If CountL <> CountR Then
                       msg = msg + "Within Parameter of " & Trs_Temp_Text & ", the number of '((' does not match the number of '))'" & CHR(10) & _
-                      "参数表中的" & Trs_Temp_Text & "'(('的数量和'))'数量不匹配。" & CHR(10)
+                      UText(21442, 25968, 34920, 20013, 30340) & Trs_Temp_Text & "'(('" & UText(30340, 25968, 37327, 21644) & "'))'" & UText(25968, 37327, 19981, 21305, 37197) & "。" & CHR(10)
                       GoTo 20
                    End If
 
@@ -18304,7 +18344,7 @@ Dim SelectedLang As String
 
             For i = 2 To Rn
               If Wd_Cell_Text = SDict_Original_EnText(i) Then
-                  ' 如果翻译文本为空，则保留原文，避免单元格被清空
+                  ' " & UText(22914, 26524, 32763, 35793, 25991, 26412, 20026, 31354) & "，" & UText(21017, 20445, 30041, 21407, 25991) & "，" & UText(36991, 20813, 21333, 20803, 26684, 34987, 28165, 31354) & "
                   If Trim(Dict_Original_RuText(i)) <> "" Then
                       Cell.Range.Text = Dict_Original_RuText(i)
                       Cell.Range.Font.Name = "Times New Roman"
@@ -18327,7 +18367,7 @@ Dim SelectedLang As String
      Wd_Cell_Text = Mid(Cell.Range.Text, 1, Len(Cell.Range.Text) - 2)
      For i = 2 To Rn
         If Wd_Cell_Text = SDict_Original_EnText(i) Then
-            ' 如果翻译文本为空，则保留原文，避免单元格被清空
+            ' " & UText(22914, 26524, 32763, 35793, 25991, 26412, 20026, 31354) & "，" & UText(21017, 20445, 30041, 21407, 25991) & "，" & UText(36991, 20813, 21333, 20803, 26684, 34987, 28165, 31354) & "
             If Trim(Dict_Original_RuText(i)) <> "" Then
                 Cell.Range.Text = Dict_Original_RuText(i)
                 Cell.Range.Font.Name = "Times New Roman"
@@ -18342,7 +18382,7 @@ Dim SelectedLang As String
      RWd_Cell_Text = Mid(SWd_Cell_Text, Len(Wd_Cell_Text), Len(SWd_Cell_Text) - Len(Wd_Cell_Text))
      For i = 2 To Rn
         If Wd_Cell_Text = SDict_Original_EnText(i) Then
-            ' 如果翻译文本为空，则保留原文，避免单元格被清空
+            ' " & UText(22914, 26524, 32763, 35793, 25991, 26412, 20026, 31354) & "，" & UText(21017, 20445, 30041, 21407, 25991) & "，" & UText(36991, 20813, 21333, 20803, 26684, 34987, 28165, 31354) & "
             If Trim(Dict_Original_RuText(i)) <> "" Then
                 Cell.Range.Text = Dict_Original_RuText(i) & RWd_Cell_Text
                 Cell.Range.Font.Name = "Times New Roman"
@@ -18356,7 +18396,7 @@ Dim SelectedLang As String
    Wd_Cell_Text = Left(Wd_Cell_Text, Len(Wd_Cell_Text) - 1)
     For i = 2 To Rn
         If Wd_Cell_Text = SDict_Original_EnText(i) Then
-            ' 如果翻译文本为空，则保留原文，避免单元格被清空
+            ' " & UText(22914, 26524, 32763, 35793, 25991, 26412, 20026, 31354) & "，" & UText(21017, 20445, 30041, 21407, 25991) & "，" & UText(36991, 20813, 21333, 20803, 26684, 34987, 28165, 31354) & "
             If Trim(Dict_Original_RuText(i)) <> "" Then
                 Cell.Range.Text = Dict_Original_RuText(i) & ":"
                 Cell.Range.Font.Name = "Times New Roman"
@@ -18369,7 +18409,7 @@ Dim SelectedLang As String
     Wd_Cell_Text = Left(Wd_Cell_Text, Len(Wd_Cell_Text) - 1)
      For i = 2 To Rn
         If Wd_Cell_Text = SDict_Original_EnText(i) Then
-            ' 如果翻译文本为空，则保留原文，避免单元格被清空
+            ' " & UText(22914, 26524, 32763, 35793, 25991, 26412, 20026, 31354) & "，" & UText(21017, 20445, 30041, 21407, 25991) & "，" & UText(36991, 20813, 21333, 20803, 26684, 34987, 28165, 31354) & "
             If Trim(Dict_Original_RuText(i)) <> "" Then
                 Cell.Range.Text = Dict_Original_RuText(i) & ":"
                 Cell.Range.Font.Name = "Times New Roman"
@@ -18380,13 +18420,13 @@ Dim SelectedLang As String
 
     Set myrange = WD.Sections(1).Footers(wdHeaderFooterFirstPage).Range
     For Each Paragraph In myrange.Paragraphs
-      If Len(Paragraph) > 50 Then       '用长度判断，如果不改格式，可用所处段落判断
+      If Len(Paragraph) > 50 Then       '" & UText(29992, 38271, 24230, 21028, 26029) & "，" & UText(22914, 26524, 19981, 25913, 26684, 24335) & "，" & UText(21487, 29992, 25152, 22788, 27573, 33853, 21028, 26029) & "
        'Wd_Cell_Text = myrange.Paragraphs(7).Range.Text
        Wd_Cell_Text = Paragraph.Range.Text
        Wd_Cell_Text = Left(Wd_Cell_Text, Len(Wd_Cell_Text) - 1)
         For i = 2 To Rn
         If Wd_Cell_Text = SDict_Original_EnText(i) Then
-            ' 如果翻译文本为空，则保留原文，避免段落被清空
+            ' " & UText(22914, 26524, 32763, 35793, 25991, 26412, 20026, 31354) & "，" & UText(21017, 20445, 30041, 21407, 25991) & "，" & UText(36991, 20813, 27573, 33853, 34987, 28165, 31354) & "
             If Trim(Dict_Original_RuText(i)) <> "" Then
                 Paragraph.Range.Text = Dict_Original_RuText(i)
                 Paragraph.Range.Font.Name = "Times New Roman"
@@ -18407,7 +18447,7 @@ Dim SelectedLang As String
      RWd_Cell_Text = Mid(SWd_Cell_Text, Len(Wd_Cell_Text), Len(SWd_Cell_Text) - Len(Wd_Cell_Text))
      For i = 2 To Rn
         If Wd_Cell_Text = SDict_Original_EnText(i) Then
-            ' 如果翻译文本为空，则保留原文，避免单元格被清空
+            ' " & UText(22914, 26524, 32763, 35793, 25991, 26412, 20026, 31354) & "，" & UText(21017, 20445, 30041, 21407, 25991) & "，" & UText(36991, 20813, 21333, 20803, 26684, 34987, 28165, 31354) & "
             If Trim(Dict_Original_RuText(i)) <> "" Then
                 Cell.Range.Text = Dict_Original_RuText(i) & RWd_Cell_Text & CHR(13)
                 Cell.Range.Font.Name = "Times New Roman"
@@ -18419,7 +18459,7 @@ Dim SelectedLang As String
     
      For i = 2 To Rn
         If Wd_Cell_Text = SDict_Original_EnText(i) Then
-            ' 如果翻译文本为空，则保留原文，避免单元格被清空
+            ' " & UText(22914, 26524, 32763, 35793, 25991, 26412, 20026, 31354) & "，" & UText(21017, 20445, 30041, 21407, 25991) & "，" & UText(36991, 20813, 21333, 20803, 26684, 34987, 28165, 31354) & "
             If Trim(Dict_Original_RuText(i)) <> "" Then
                 Cell.Range.Text = Dict_Original_RuText(i) & RWd_Cell_Text
                 Cell.Range.Font.Name = "Times New Roman"
@@ -18447,7 +18487,7 @@ Dim SelectedLang As String
          RWd_Cell_Text = Mid(SWd_Cell_Text, Len(Wd_Cell_Text) + 1, Len(SWd_Cell_Text) - Len(Wd_Cell_Text))
          For i = 2 To Rn
             If Wd_Cell_Text = SDict_Original_EnText(i) Then
-                ' 如果翻译文本为空，则保留原文，避免段落被清空
+                ' " & UText(22914, 26524, 32763, 35793, 25991, 26412, 20026, 31354) & "，" & UText(21017, 20445, 30041, 21407, 25991) & "，" & UText(36991, 20813, 27573, 33853, 34987, 28165, 31354) & "
                 If Trim(Dict_Original_RuText(i)) <> "" Then
                     .Text = Dict_Original_RuText(i) & RWd_Cell_Text & CHR(13)
                     .Font.Name = "Times New Roman"
@@ -18464,7 +18504,7 @@ Dim SelectedLang As String
         Wd_Cell_Text = Mid(.Text, 1, Len(.Text) - 1)
         For i = 2 To Rn
            If Wd_Cell_Text = SDict_Original_EnText(i) Then
-                ' 如果翻译文本为空，则保留原文，避免段落被清空
+                ' " & UText(22914, 26524, 32763, 35793, 25991, 26412, 20026, 31354) & "，" & UText(21017, 20445, 30041, 21407, 25991) & "，" & UText(36991, 20813, 27573, 33853, 34987, 28165, 31354) & "
                 If Trim(Dict_Original_RuText(i)) <> "" Then
                     .Text = Replace(.Text, .Text, Dict_Original_RuText(i))
                     .Font.Name = "Times New Roman"
@@ -18477,7 +18517,7 @@ Dim SelectedLang As String
                 Selection.Hyperlinks.add Anchor:=Selection.Range, Address:="", SubAddress:=HyperlinkText
                 With .Font
                  .Name = "Times New Roman"
-                 .Underline = wdUnderlineSingle ' 单下划线
+                 .Underline = wdUnderlineSingle ' " & UText(21333, 19979, 21010, 32447) & "
                 End With
                 Exit For
             End If
@@ -18615,8 +18655,8 @@ End Function
 
 Sub AdjustMargin()
     
-    b = InputBox("请输入数字用于调整左边距。数字越小越靠左反之数字越大越靠右，目前模板设定数字48" & CHR(10) & _
-    "Please enter a number to adjust the left margin. The smaller the number, the closer it is to the left; conversely, the larger the number, the closer it is to the right. The current template setting is number 48.", "调整表格位置" & CHR(10) & "Enter a number to adjust the left margin", 48)
+    b = InputBox(UText(35831, 36755, 20837, 25968, 23383, 29992, 20110, 35843, 25972, 24038, 36793, 36317) & "。" & UText(25968, 23383, 36234, 23567, 36234, 38752, 24038, 21453, 20043, 25968, 23383, 36234, 22823, 36234, 38752, 21491) & "，" & UText(30446, 21069, 27169, 26495, 35774, 23450, 25968, 23383) & "48" & CHR(10) & _
+    "Please enter a number to adjust the left margin. The smaller the number, the closer it is to the left; conversely, the larger the number, the closer it is to the right. The current template setting is number 48.", UText(35843, 25972, 34920, 26684, 20301, 32622) & CHR(10) & "Enter a number to adjust the left margin", 48)
     Set WD = ThisDocument
 
   Dim sec As Section
@@ -18643,7 +18683,7 @@ Sub VerifyReportID()
      Dim Client, Supplier, Factory As String
      Dim Unit As String
      
-    '-----------------验证报告ID，报告号
+    '-----------------" & UText(39564, 35777, 25253, 21578) & "ID，" & UText(25253, 21578, 21495) & "
     Dim jsonResponse As Object
     Dim jsonPara As Object
     Dim Url As String
@@ -18692,7 +18732,7 @@ Sub VerifyReportID()
          Call getHUBdata(Url, postJson, jsonResponse)
   
          
-           ' 检查返回数据是否为空，并根据dataIsEmpty的值来处理结果
+           ' " & UText(26816, 26597, 36820, 22238, 25968, 25454, 26159, 21542, 20026, 31354) & "，" & UText(24182, 26681, 25454) & "dataIsEmpty" & UText(30340, 20540, 26469, 22788, 29702, 32467, 26524) & "
           Dim dataIsEmpty As Boolean
          If Not IsEmpty(jsonResponse("data")) Then
              dataIsEmpty = (TypeName(jsonResponse("data")) = "Collection") And (jsonResponse("data").count = 0)
@@ -18703,8 +18743,8 @@ Sub VerifyReportID()
               MsgBox "Ｎo data is obtained from the HUB, the program will exit, please check 1. whether the HUB can be accessed via the Internet," & _
               "2. Whether the order is in the correct process stage on the HUB, such as the inspection notice has been issued and the report number has been generated. " & _
               "Whether the report number you input is correct!" & CHR(10) & CHR(10) & _
-              "从HUB未获取到数据，程序将退出，请检查1.通过互联网是否可以访问HUB,2.这个订单在HUB上是否处于正确的流程阶段，比如验货通知单已发出，报告号已生成," & _
-              "3.你输入的报告号是否正确" & CHR(10) & CHR(10), vbCritical
+              UText(20174) & "HUB" & UText(26410, 33719, 21462, 21040, 25968, 25454) & "，" & UText(31243, 24207, 23558, 36864, 20986) & "，" & UText(35831, 26816, 26597) & "1." & UText(36890, 36807, 20114, 32852, 32593, 26159, 21542, 21487, 20197, 35775, 38382) & "HUB,2." & UText(36825, 20010, 35746, 21333, 22312) & "HUB" & UText(19978, 26159, 21542, 22788, 20110, 27491, 30830, 30340, 27969, 31243, 38454, 27573) & "，" & UText(27604, 22914, 39564, 36135, 36890, 30693, 21333, 24050, 21457, 20986) & "，" & UText(25253, 21578, 21495, 24050, 29983, 25104) & "," & _
+              "3." & UText(20320, 36755, 20837, 30340, 25253, 21578, 21495, 26159, 21542, 27491, 30830) & CHR(10) & CHR(10), vbCritical
               Exit Sub
           End If
     
@@ -18713,8 +18753,8 @@ Sub VerifyReportID()
            
            ReportID = jsonResponse("data")(1)("bghid")
            If ReportID <> Replace(GetPropertyValue("ReportID"), "ReportID" & "_", "") Then
-              MsgBox "你上传的报告ID和HUB上的报告ID不匹配，将终止上传报告数据。请确认报告的基本信息是否是通过运行FILLINFORMATION程序从HUB导入而不是从其他处拷贝入的," & _
-              "请通过导入基本信息更正报告ID后再运行本程序！" & CHR(10) & CHR(10) & _
+              MsgBox UText(20320, 19978, 20256, 30340, 25253, 21578) & "ID" & UText(21644) & "HUB" & UText(19978, 30340, 25253, 21578) & "ID" & UText(19981, 21305, 37197) & "，" & UText(23558, 32456, 27490, 19978, 20256, 25253, 21578, 25968, 25454) & "。" & UText(35831, 30830, 35748, 25253, 21578, 30340, 22522, 26412, 20449, 24687, 26159, 21542, 26159, 36890, 36807, 36816, 34892) & "FILLINFORMATION" & UText(31243, 24207, 20174) & "HUB" & UText(23548, 20837, 32780, 19981, 26159, 20174, 20854, 20182, 22788, 25335, 36125, 20837, 30340) & "," & _
+              UText(35831, 36890, 36807, 23548, 20837, 22522, 26412, 20449, 24687, 26356, 27491, 25253, 21578) & "ID" & UText(21518, 20877, 36816, 34892, 26412, 31243, 24207) & "！" & CHR(10) & CHR(10) & _
               "The report ID you uploaded does not match the report ID on the HUB. The upload of the report data will be terminated. " & _
               "Please verify that the basic information of the report was imported from the HUB by running the INFORMATION program, rather than copied from elsewhere. " & _
               "Correct the report ID by importing the basic information and then run this program again." & CHR(10) & CHR(10), vbCritical
@@ -18723,10 +18763,10 @@ Sub VerifyReportID()
               
            End If
            
-           ClientID = jsonResponse("data")(1)("客户id")
+           ClientID = jsonResponse("data")(1)(HubKeyClientId())
            If ClientID <> GetPropertyValue("ClientID") Then
-              MsgBox "你上传的客户id和HUB上的客户id不匹配，将终止上传报告数据。请确认报告的基本信息是否是通过运行FILLINFORMATION程序从HUB导入而不是从其他处拷贝入的，" & _
-              "请通过导入基本信息更正客户id再运行本程序！" & "如果HUB导入的客户信息是错误的，请联系CS更正HUB上的排单信息，重新导入基本信息后再运行本程序。" & CHR(10) & CHR(10) & _
+              MsgBox UText(20320, 19978, 20256, 30340, 23458, 25143) & "id" & UText(21644) & "HUB" & UText(19978, 30340, 23458, 25143) & "id" & UText(19981, 21305, 37197) & "，" & UText(23558, 32456, 27490, 19978, 20256, 25253, 21578, 25968, 25454) & "。" & UText(35831, 30830, 35748, 25253, 21578, 30340, 22522, 26412, 20449, 24687, 26159, 21542, 26159, 36890, 36807, 36816, 34892) & "FILLINFORMATION" & UText(31243, 24207, 20174) & "HUB" & UText(23548, 20837, 32780, 19981, 26159, 20174, 20854, 20182, 22788, 25335, 36125, 20837, 30340) & "，" & _
+              UText(35831, 36890, 36807, 23548, 20837, 22522, 26412, 20449, 24687, 26356, 27491, 23458, 25143) & "id" & UText(20877, 36816, 34892, 26412, 31243, 24207) & "！" & UText(22914, 26524) & "HUB" & UText(23548, 20837, 30340, 23458, 25143, 20449, 24687, 26159, 38169, 35823, 30340) & "，" & UText(35831, 32852, 31995) & "CS" & UText(26356, 27491) & "HUB" & UText(19978, 30340, 25490, 21333, 20449, 24687) & "，" & UText(37325, 26032, 23548, 20837, 22522, 26412, 20449, 24687, 21518, 20877, 36816, 34892, 26412, 31243, 24207) & "。" & CHR(10) & CHR(10) & _
               "The ClientID you uploaded does not match the ClientID on the HUB. The upload of the report data will be terminated. " & _
               "Please verify that the basic information of the report was imported from the HUB by running the INFORMATION program, rather than copied from elsewhere. " & _
               "Correct the ClientID by importing the basic information and then run this program again. if the Client information imported from HUB is not correct," & _
@@ -18736,10 +18776,10 @@ Sub VerifyReportID()
            
            End If
            
-           ClientName = jsonResponse("data")(1)("客户全称")
+           ClientName = jsonResponse("data")(1)(HubKeyClientFullName())
            If ClientName <> GetPropertyValue("Client") Then
-              MsgBox "你上传的客户全称和HUB上的客户全称不匹配，将终止上传报告数据。请确认报告的基本信息是否是通过运行FILLINFORMATION程序从HUB导入而不是从其他处拷贝入的，" & _
-              "请通过导入基本信息更正客户全称再运行本程序！" & "如果HUB导入的客户信息是错误的，请联系CS更正HUB上的排单信息，重新导入基本信息后再运行本程序。" & CHR(10) & CHR(10) & _
+              MsgBox UText(20320, 19978, 20256, 30340, 23458, 25143, 20840, 31216, 21644) & "HUB" & UText(19978, 30340, 23458, 25143, 20840, 31216, 19981, 21305, 37197) & "，" & UText(23558, 32456, 27490, 19978, 20256, 25253, 21578, 25968, 25454) & "。" & UText(35831, 30830, 35748, 25253, 21578, 30340, 22522, 26412, 20449, 24687, 26159, 21542, 26159, 36890, 36807, 36816, 34892) & "FILLINFORMATION" & UText(31243, 24207, 20174) & "HUB" & UText(23548, 20837, 32780, 19981, 26159, 20174, 20854, 20182, 22788, 25335, 36125, 20837, 30340) & "，" & _
+              UText(35831, 36890, 36807, 23548, 20837, 22522, 26412, 20449, 24687, 26356, 27491, 23458, 25143, 20840, 31216, 20877, 36816, 34892, 26412, 31243, 24207) & "！" & UText(22914, 26524) & "HUB" & UText(23548, 20837, 30340, 23458, 25143, 20449, 24687, 26159, 38169, 35823, 30340) & "，" & UText(35831, 32852, 31995) & "CS" & UText(26356, 27491) & "HUB" & UText(19978, 30340, 25490, 21333, 20449, 24687) & "，" & UText(37325, 26032, 23548, 20837, 22522, 26412, 20449, 24687, 21518, 20877, 36816, 34892, 26412, 31243, 24207) & "。" & CHR(10) & CHR(10) & _
               "The Client name you uploaded does not match the Client name the HUB. The upload of the report data will be terminated. " & _
               "Please verify that the basic information of the report was imported from the HUB by running the INFORMATION program, rather than copied from elsewhere. " & _
               "Correct the Client name by importing the basic information and then run this program again. if the Client information imported from HUB is not correct," & _
@@ -18749,10 +18789,10 @@ Sub VerifyReportID()
         
            End If
             
-            SupplierID = jsonResponse("data")(1)("供应商id")
+            SupplierID = jsonResponse("data")(1)(HubKeySupplierId())
            If SupplierID <> GetPropertyValue("SupplierID") Then
-              MsgBox "你上传的供应商ID和HUB上的供应商ID不匹配，将终止上传报告数据。请确认报告的基本信息是否是通过运行FILLINFORMATION程序从HUB导入而不是从其他处拷贝入的，" & _
-              "请通过导入基本信息更正供应商ID后再运行本程序！" & "如果HUB导入的供应商信息是错误的，请联系CS更正HUB上的排单信息，重新导入基本信息后再运行本程序。" & CHR(10) & CHR(10) & _
+              MsgBox UText(20320, 19978, 20256, 30340, 20379, 24212, 21830) & "ID" & UText(21644) & "HUB" & UText(19978, 30340, 20379, 24212, 21830) & "ID" & UText(19981, 21305, 37197) & "，" & UText(23558, 32456, 27490, 19978, 20256, 25253, 21578, 25968, 25454) & "。" & UText(35831, 30830, 35748, 25253, 21578, 30340, 22522, 26412, 20449, 24687, 26159, 21542, 26159, 36890, 36807, 36816, 34892) & "FILLINFORMATION" & UText(31243, 24207, 20174) & "HUB" & UText(23548, 20837, 32780, 19981, 26159, 20174, 20854, 20182, 22788, 25335, 36125, 20837, 30340) & "，" & _
+              UText(35831, 36890, 36807, 23548, 20837, 22522, 26412, 20449, 24687, 26356, 27491, 20379, 24212, 21830) & "ID" & UText(21518, 20877, 36816, 34892, 26412, 31243, 24207) & "！" & UText(22914, 26524) & "HUB" & UText(23548, 20837, 30340, 20379, 24212, 21830, 20449, 24687, 26159, 38169, 35823, 30340) & "，" & UText(35831, 32852, 31995) & "CS" & UText(26356, 27491) & "HUB" & UText(19978, 30340, 25490, 21333, 20449, 24687) & "，" & UText(37325, 26032, 23548, 20837, 22522, 26412, 20449, 24687, 21518, 20877, 36816, 34892, 26412, 31243, 24207) & "。" & CHR(10) & CHR(10) & _
               "The SupplierID you uploaded does not match the SupplierID on the HUB. The upload of the report data will be terminated. " & _
               "Please verify that the basic information of the report was imported from the HUB by running the INFORMATION program, rather than copied from elsewhere. " & _
               "Correct the SupplierID by importing the basic information and then run this program again. if the supplier information imported from HUB is not correct," & _
@@ -18762,10 +18802,10 @@ Sub VerifyReportID()
         
            End If
           
-            SupplierName = jsonResponse("data")(1)("供应商全称")
+            SupplierName = jsonResponse("data")(1)(HubKeySupplierFullName())
             If SupplierName <> GetPropertyValue("Supplier") Then
-              MsgBox "你上传的供应商全称和HUB上的供应商全称不匹配，将终止上传报告数据。请确认报告的基本信息是否是通过运行FILLINFORMATION程序从HUB导入而不是从其他处拷贝入的，" & _
-              "请通过导入基本信息更正供应商全称再运行本程序！" & "如果HUB导入的供应商信息是错误的，请联系CS更正HUB上的排单信息，重新导入基本信息后再运行本程序。" & CHR(10) & CHR(10) & _
+              MsgBox UText(20320, 19978, 20256, 30340, 20379, 24212, 21830, 20840, 31216, 21644) & "HUB" & UText(19978, 30340, 20379, 24212, 21830, 20840, 31216, 19981, 21305, 37197) & "，" & UText(23558, 32456, 27490, 19978, 20256, 25253, 21578, 25968, 25454) & "。" & UText(35831, 30830, 35748, 25253, 21578, 30340, 22522, 26412, 20449, 24687, 26159, 21542, 26159, 36890, 36807, 36816, 34892) & "FILLINFORMATION" & UText(31243, 24207, 20174) & "HUB" & UText(23548, 20837, 32780, 19981, 26159, 20174, 20854, 20182, 22788, 25335, 36125, 20837, 30340) & "，" & _
+              UText(35831, 36890, 36807, 23548, 20837, 22522, 26412, 20449, 24687, 26356, 27491, 20379, 24212, 21830, 20840, 31216, 20877, 36816, 34892, 26412, 31243, 24207) & "！" & UText(22914, 26524) & "HUB" & UText(23548, 20837, 30340, 20379, 24212, 21830, 20449, 24687, 26159, 38169, 35823, 30340) & "，" & UText(35831, 32852, 31995) & "CS" & UText(26356, 27491) & "HUB" & UText(19978, 30340, 25490, 21333, 20449, 24687) & "，" & UText(37325, 26032, 23548, 20837, 22522, 26412, 20449, 24687, 21518, 20877, 36816, 34892, 26412, 31243, 24207) & "。" & CHR(10) & CHR(10) & _
               "The Supplier name you uploaded does not match the Supplier name on the HUB. The upload of the report data will be terminated. " & _
               "Please verify that the basic information of the report was imported from the HUB by running the INFORMATION program, rather than copied from elsewhere. " & _
               "Correct the Supplier name by importing the basic information and then run this program again. if the supplier information imported from HUB is not correct," & _
@@ -18775,10 +18815,10 @@ Sub VerifyReportID()
           
            End If
         
-           FactoryID = jsonResponse("data")(1)("工厂id")
+           FactoryID = jsonResponse("data")(1)(HubKeyFactoryId())
            If FactoryID <> GetPropertyValue("FactoryID") Then
-              MsgBox "你上传的工厂id和HUB上的工厂id不匹配，将终止上传报告数据。请确认报告的基本信息是否是通过运行FILLINFORMATION程序从HUB导入而不是从其他处拷贝入的，" & _
-              "请通过导入基本信息更正供应商全称再运行本程序！" & "如果HUB导入的供应商信息是错误的，请联系CS更正HUB上的排单信息，重新导入基本信息后再运行本程序。" & CHR(10) & CHR(10) & _
+              MsgBox UText(20320, 19978, 20256, 30340, 24037, 21378) & "id" & UText(21644) & "HUB" & UText(19978, 30340, 24037, 21378) & "id" & UText(19981, 21305, 37197) & "，" & UText(23558, 32456, 27490, 19978, 20256, 25253, 21578, 25968, 25454) & "。" & UText(35831, 30830, 35748, 25253, 21578, 30340, 22522, 26412, 20449, 24687, 26159, 21542, 26159, 36890, 36807, 36816, 34892) & "FILLINFORMATION" & UText(31243, 24207, 20174) & "HUB" & UText(23548, 20837, 32780, 19981, 26159, 20174, 20854, 20182, 22788, 25335, 36125, 20837, 30340) & "，" & _
+              UText(35831, 36890, 36807, 23548, 20837, 22522, 26412, 20449, 24687, 26356, 27491, 20379, 24212, 21830, 20840, 31216, 20877, 36816, 34892, 26412, 31243, 24207) & "！" & UText(22914, 26524) & "HUB" & UText(23548, 20837, 30340, 20379, 24212, 21830, 20449, 24687, 26159, 38169, 35823, 30340) & "，" & UText(35831, 32852, 31995) & "CS" & UText(26356, 27491) & "HUB" & UText(19978, 30340, 25490, 21333, 20449, 24687) & "，" & UText(37325, 26032, 23548, 20837, 22522, 26412, 20449, 24687, 21518, 20877, 36816, 34892, 26412, 31243, 24207) & "。" & CHR(10) & CHR(10) & _
               "The FactoryID you uploaded does not match the FactoryID on the HUB. The upload of the report data will be terminated. " & _
               "Please verify that the basic information of the report was imported from the HUB by running the INFORMATION program, rather than copied from elsewhere. " & _
               "Correct the FactoryID by importing the basic information and then run this program again. if the Factory information imported from HUB is not correct," & _
@@ -18790,10 +18830,10 @@ Sub VerifyReportID()
            'StoretoProperty "FactoryID", FactoryID
            
            
-           FactoryName = jsonResponse("data")(1)("工厂全称")
+           FactoryName = jsonResponse("data")(1)(HubKeyFactoryFullName())
             If FactoryName <> GetPropertyValue("Factory") Then
-              MsgBox "你上传的工厂全称和HUB上的工厂全称不匹配，将终止上传报告数据。请确认报告的基本信息是否是通过运行FILLINFORMATION程序从HUB导入而不是从其他处拷贝入的，" & _
-              "请通过导入基本信息更正工厂全称再运行本程序！" & "如果HUB导入的工厂全称信息是错误的，请联系CS更正HUB上的排单信息，重新导入基本信息后再运行本程序。" & CHR(10) & CHR(10) & _
+              MsgBox UText(20320, 19978, 20256, 30340, 24037, 21378, 20840, 31216, 21644) & "HUB" & UText(19978, 30340, 24037, 21378, 20840, 31216, 19981, 21305, 37197) & "，" & UText(23558, 32456, 27490, 19978, 20256, 25253, 21578, 25968, 25454) & "。" & UText(35831, 30830, 35748, 25253, 21578, 30340, 22522, 26412, 20449, 24687, 26159, 21542, 26159, 36890, 36807, 36816, 34892) & "FILLINFORMATION" & UText(31243, 24207, 20174) & "HUB" & UText(23548, 20837, 32780, 19981, 26159, 20174, 20854, 20182, 22788, 25335, 36125, 20837, 30340) & "，" & _
+              UText(35831, 36890, 36807, 23548, 20837, 22522, 26412, 20449, 24687, 26356, 27491, 24037, 21378, 20840, 31216, 20877, 36816, 34892, 26412, 31243, 24207) & "！" & UText(22914, 26524) & "HUB" & UText(23548, 20837, 30340, 24037, 21378, 20840, 31216, 20449, 24687, 26159, 38169, 35823, 30340) & "，" & UText(35831, 32852, 31995) & "CS" & UText(26356, 27491) & "HUB" & UText(19978, 30340, 25490, 21333, 20449, 24687) & "，" & UText(37325, 26032, 23548, 20837, 22522, 26412, 20449, 24687, 21518, 20877, 36816, 34892, 26412, 31243, 24207) & "。" & CHR(10) & CHR(10) & _
               "The Factory name you uploaded does not match the Factory name on the HUB. The upload of the report data will be terminated. " & _
               "Please verify that the basic information of the report was imported from the HUB by running the INFORMATION program, rather than copied from elsewhere. " & _
               "Correct the Factory name by importing the basic information and then run this program again. if the supplier information imported from HUB is not correct," & _
@@ -18820,32 +18860,32 @@ End Sub
 
 Option Explicit
 
-'==================== 删除空文件夹主入口 ====================
+'==================== " & UText(21024, 38500, 31354, 25991, 20214, 22841, 20027, 20837, 21475) & " ====================
 Sub DeleteEmptyFolders()
     Dim targetPath As String
     Dim deletedCount As Long
     
-    '让用户选择文件夹
+    '" & UText(35753, 29992, 25143, 36873, 25321, 25991, 20214, 22841) & "
     With Application.FileDialog(msoFileDialogFolderPicker)
-        .Title = "选择要清理的文件夹"
+        .Title = UText(36873, 25321, 35201, 28165, 29702, 30340, 25991, 20214, 22841)
         .AllowMultiSelect = False
-        If .Show <> -1 Then Exit Sub          '用户取消
+        If .Show <> -1 Then Exit Sub          '" & UText(29992, 25143, 21462, 28040) & "
         targetPath = .SelectedItems(1)
     End With
     
     If Right(targetPath, 1) <> "\" Then targetPath = targetPath & "\"
     
-    If MsgBox("确定删除 """ & targetPath & """ 下所有层级的空文件夹？" & vbCrLf & _
-              "此操作不可撤销！" & vbCrLf & "Delete all empty fold？This action is irreversible.", vbYesNo + vbExclamation, "") = vbNo Then Exit Sub
+    If MsgBox(UText(30830, 23450, 21024, 38500) & " """ & targetPath & """ " & UText(19979, 25152, 26377, 23618, 32423, 30340, 31354, 25991, 20214, 22841) & "？" & vbCrLf & _
+              UText(27492, 25805, 20316, 19981, 21487, 25764, 38144) & "！" & vbCrLf & "Delete all empty fold？This action is irreversible.", vbYesNo + vbExclamation, "") = vbNo Then Exit Sub
     
     Application.ScreenUpdating = False
     deletedCount = DeleteEmptyFoldersRecursive_NoLog(targetPath)
     Application.ScreenUpdating = True
     
-    MsgBox "完成！共删除 " & deletedCount & " 个空文件夹。", vbInformation
+    MsgBox UText(23436, 25104) & "！" & UText(20849, 21024, 38500) & " " & deletedCount & " " & UText(20010, 31354, 25991, 20214, 22841) & "。", vbInformation
 End Sub
 
-'==================== 递归删除 ====================
+'==================== " & UText(36882, 24402, 21024, 38500) & " ====================
 Private Function DeleteEmptyFoldersRecursive_NoLog(ByVal folderPath As String) As Long
     Dim fso  As Object
     Dim fld  As Object
@@ -18859,15 +18899,15 @@ Private Function DeleteEmptyFoldersRecursive_NoLog(ByVal folderPath As String) A
     
     Set fld = fso.GetFolder(folderPath)
     
-    '先处理子文件夹
+    ' translated comment
     For Each subF In fld.SubFolders
         cnt = cnt + DeleteEmptyFoldersRecursive_NoLog(subF.Path)
     Next subF
     
-    '再判断当前文件夹是否已空
+    ' translated comment
     If fld.Files.count = 0 And fld.SubFolders.count = 0 Then
         On Error Resume Next
-        fso.DeleteFolder folderPath, True           'True=强制删除
+        fso.DeleteFolder folderPath, True           'True=
         If Err.Number = 0 Then cnt = cnt + 1
         On Error GoTo ErrH
     End If
@@ -18876,7 +18916,7 @@ Done:
     DeleteEmptyFoldersRecursive_NoLog = cnt
     Exit Function
 ErrH:
-    '遇到错误仅跳过
+    ' translated comment
     Resume Next
 End Function
 
