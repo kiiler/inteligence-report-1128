@@ -1,12 +1,12 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} Product_Features 
-   Caption         =   "请选择产品特征 Please Select Product Features"
+   Caption         =   "Please Select Product Features"
    ClientHeight    =   7504
    ClientLeft      =   91
    ClientTop       =   406
    ClientWidth     =   9821.001
    OleObjectBlob   =   "Product_Features.frx":0000
-   StartUpPosition =   1  '所有者中心
+   StartUpPosition =   1  'Owner center
 End
 Attribute VB_Name = "Product_Features"
 Attribute VB_GlobalNameSpace = False
