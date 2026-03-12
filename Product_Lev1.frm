@@ -1,12 +1,12 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} Product_Lev1 
-   Caption         =   "请选择产品大类 Please Select Primary Product Type"
+   Caption         =   "Please Select Primary Product Type"
    ClientHeight    =   8505.001
    ClientLeft      =   91
    ClientTop       =   406
    ClientWidth     =   9821.001
    OleObjectBlob   =   "Product_Lev1.frx":0000
-   StartUpPosition =   1  '所有者中心
+   StartUpPosition =   1  'Owner Center
 End
 Attribute VB_Name = "Product_Lev1"
 Attribute VB_GlobalNameSpace = False
@@ -34,13 +34,13 @@ Dim UF As UserForm
 
  If Cn = 0 Then
      MsgBox "You have not selected any product categories, the program will exit, please re-run the program if you need" & CHR(10) & _
-    "你未选择任何产品类型，程序将退出，如果需要请你重新运行程序。" & CHR(10), vbCritical
+    UText(20320, 26410, 36873, 25321, 20219, 20309, 20135, 21697, 31867, 22411) & "，" & UText(31243, 24207, 23558, 36864, 20986) & "，" & UText(22914, 26524, 38656, 35201, 35831, 20320, 37325, 26032, 36816, 34892, 31243, 24207) & "。" & CHR(10), vbCritical
      Unload Me
      Load_Product_Lev1
      Exit Sub
  ElseIf Cn > 1 Then
     MsgBox "You have selected " & Cn & " product categories, for getting all check points of primary type,only one product categories allowed to be selected,please re-select." & CHR(10) & _
-    "你选择了" & Cn & "产品类型，对于查询大类产品的所有测试项目，注意每次只允许1种产品大类，请重新选择！" & CHR(10), vbCritical
+    UText(20320, 36873, 25321, 20102) & Cn & UText(20135, 21697, 31867, 22411) & "，" & UText(23545, 20110, 26597, 35810, 22823, 31867, 20135, 21697, 30340, 25152, 26377, 27979, 35797, 39033, 30446) & "，" & UText(27880, 24847, 27599, 27425, 21482, 20801, 35768) & "1" & UText(31181, 20135, 21697, 22823, 31867) & "，" & UText(35831, 37325, 26032, 36873, 25321) & "！" & CHR(10), vbCritical
      Unload Me
     Exit Sub
  Else
@@ -82,13 +82,13 @@ Dim postJson As Object
 
  If Cn = 0 Then
      MsgBox "You have not selected any product categories, the program will exit, please re-run the program if you need" & CHR(10) & _
-    "你未选择任何产品类型，程序将退出，如果需要请你重新运行程序。" & CHR(10), vbCritical
+    UText(20320, 26410, 36873, 25321, 20219, 20309, 20135, 21697, 31867, 22411) & "，" & UText(31243, 24207, 23558, 36864, 20986) & "，" & UText(22914, 26524, 38656, 35201, 35831, 20320, 37325, 26032, 36816, 34892, 31243, 24207) & "。" & CHR(10), vbCritical
      Unload Me
      Load_Product_Lev1
      Exit Sub
  ElseIf Cn > 3 Then
     MsgBox "You have selected " & Cn & " product categories, No more than 3 product categories allowed to be selected each time,please re-select." & CHR(10) & _
-    "你选择了" & Cn & "产品类型，注意每次只允许选择不多于3种产品类型，请重新选择！" & CHR(10), vbCritical
+    UText(20320, 36873, 25321, 20102) & Cn & UText(20135, 21697, 31867, 22411) & "，" & UText(27880, 24847, 27599, 27425, 21482, 20801, 35768, 36873, 25321, 19981, 22810, 20110) & "3" & UText(31181, 20135, 21697, 31867, 22411) & "，" & UText(35831, 37325, 26032, 36873, 25321) & "！" & CHR(10), vbCritical
      Unload Me
     Exit Sub
  Else
@@ -120,12 +120,12 @@ Dim postJson As Object
  Next i
  If Cn = 0 Then
      MsgBox "You have not selected any product categories, the program will exit, please re-run the program if you need" & CHR(10) & _
-    "你未选择任何产品类型，程序将退出，如果需要请你重新运行程序。" & CHR(10), vbCritical
+    UText(20320, 26410, 36873, 25321, 20219, 20309, 20135, 21697, 31867, 22411) & "，" & UText(31243, 24207, 23558, 36864, 20986) & "，" & UText(22914, 26524, 38656, 35201, 35831, 20320, 37325, 26032, 36816, 34892, 31243, 24207) & "。" & CHR(10), vbCritical
      Unload Me
      Exit Sub
  ElseIf Cn > 1 Then
     MsgBox "You have selected " & Cn & " product categories, only one product categories allowed to be selected each time,please re-select." & CHR(10) & _
-    "你选择了" & Cn & "产品类型，注意每次只允许选择一种产品类型，请重新选择！" & CHR(10), vbCritical
+    UText(20320, 36873, 25321, 20102) & Cn & UText(20135, 21697, 31867, 22411) & "，" & UText(27880, 24847, 27599, 27425, 21482, 20801, 35768, 36873, 25321, 19968, 31181, 20135, 21697, 31867, 22411) & "，" & UText(35831, 37325, 26032, 36873, 25321) & "！" & CHR(10), vbCritical
      Unload Me
     Exit Sub
  Else
@@ -136,7 +136,7 @@ Dim postJson As Object
     Url = WebBaseUrl & "/api/sqlhub/exec?appid=md_19&configName=getProductSecondaryType"
     Call getHUBdata(Url, postJson, jsonResponse)
     
- Debug.Print jsonResponse("data")(1)("产品中类中文")
+ Debug.Print jsonResponse("data")(1)(HubKeyProductMiddleCategoryNameZh())
     Dim Data As Object
     Dim Cat_Middle_IDs() As String
     Dim Cat_Middle_Codes() As String
@@ -151,10 +151,10 @@ Dim postJson As Object
     ReDim Cat_Middle_Names(1 To Cat_Middle_Number)
     ReDim Cat_Middle_NamesE(1 To Cat_Middle_Number)
     For i = 1 To Cat_Middle_Number
-          Cat_Middle_IDs(i) = Data(i)("产品中类id")
-          Cat_Middle_Codes(i) = Data(i)("产品中类编码")
-          Cat_Middle_Names(i) = Data(i)("产品中类中文")
-          Cat_Middle_NamesE(i) = Data(i)("产品中类英文")
+          Cat_Middle_IDs(i) = Data(i)(HubKeyProductMiddleCategoryId())
+          Cat_Middle_Codes(i) = Data(i)(HubKeyProductMiddleCategoryCode())
+          Cat_Middle_Names(i) = Data(i)(HubKeyProductMiddleCategoryNameZh())
+          Cat_Middle_NamesE(i) = Data(i)(HubKeyProductMiddleCategoryNameEn())
     Next i
    
     Set UF = New Product_Lev2
@@ -162,7 +162,7 @@ Dim postJson As Object
     Dim TopPos As Integer
     Dim Chk As Object
     
-    LeftPos = 20 ' 设置复选框的初始Left位置
+    LeftPos = 20 'Left
     TopPos = 10
     For i = 1 To Cat_Middle_Number
         Set Chk = UF.Controls.add("Forms.CheckBox.1", Cat_Middle_Names(i), True)
@@ -171,7 +171,7 @@ Dim postJson As Object
             .Tag = Cat_Middle_IDs(i)
             .Left = LeftPos
             .Top = 18 * i + TopPos
-            .Width = 300 ' 设置复选框的宽度
+            .Width = 300 ' translated comment
             .Height = 18
             .Visible = True
            

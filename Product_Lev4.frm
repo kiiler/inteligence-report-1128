@@ -1,12 +1,12 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} Product_Lev4 
-   Caption         =   "请选择产品名称 Please Select Product Name"
+   Caption         =   "Please Select Product Name"
    ClientHeight    =   8505.001
    ClientLeft      =   91
    ClientTop       =   406
    ClientWidth     =   9821.001
    OleObjectBlob   =   "Product_Lev4.frx":0000
-   StartUpPosition =   1  '所有者中心
+   StartUpPosition =   1  'Owner Center
 End
 Attribute VB_Name = "Product_Lev4"
 Attribute VB_GlobalNameSpace = False
@@ -54,12 +54,12 @@ Set UF = Me
   If SearchDefect = True Then
        If Cn = 0 Then
           MsgBox "You have not selected any product, please select one product which you like to search its defect descriptions." & CHR(10) & _
-         "你未选择任何产品，请选择一个产品来查询其缺陷描述。" & CHR(10), vbCritical
+         UText(20320, 26410, 36873, 25321, 20219, 20309, 20135, 21697) & "，" & UText(35831, 36873, 25321, 19968, 20010, 20135, 21697, 26469, 26597, 35810, 20854, 32570, 38519, 25551, 36848) & "。" & CHR(10), vbCritical
          Unload Me
          Load_Product_Lev4
        ElseIf Cn > 1 Then
           MsgBox "You have not more than one product, please select only one product which you like to search its defect descriptions." & CHR(10) & _
-         "你选择了多个产品，请仅选择一个产品来查询其缺陷描述。" & CHR(10), vbCritical
+         UText(20320, 36873, 25321, 20102, 22810, 20010, 20135, 21697) & "，" & UText(35831, 20165, 36873, 25321, 19968, 20010, 20135, 21697, 26469, 26597, 35810, 20854, 32570, 38519, 25551, 36848) & "。" & CHR(10), vbCritical
          Unload Me
          Load_Product_Lev4
        Else
@@ -72,12 +72,12 @@ Set UF = Me
  Else
       If Cn = 0 Then
            MsgBox "You have not selected any product, will search check items according to the tertiary product categories you selected." & CHR(10) & _
-           "你未选择任何产品名称，将按照所选的产品小类查询检查项目。" & CHR(10), vbCritical
+           UText(20320, 26410, 36873, 25321, 20219, 20309, 20135, 21697, 21517, 31216) & "，" & UText(23558, 25353, 29031, 25152, 36873, 30340, 20135, 21697, 23567, 31867, 26597, 35810, 26816, 26597, 39033, 30446) & "。" & CHR(10), vbCritical
            Unload Me
            Load_Product_Lev4
        ElseIf Cn > 10 Then
             MsgBox "You have selected " & Cn & " products, no more than 10 products allowed to be selected，Please select again." & CHR(10) & _
-           "你选择了" & Cn & "个产品，注意每次只允许选择最多10种产品，请重新选择！" & CHR(10), vbCritical
+           UText(20320, 36873, 25321, 20102) & Cn & UText(20010, 20135, 21697) & "，" & UText(27880, 24847, 27599, 27425, 21482, 20801, 35768, 36873, 25321, 26368, 22810) & "10" & UText(31181, 20135, 21697) & "，" & UText(35831, 37325, 26032, 36873, 25321) & "！" & CHR(10), vbCritical
             Unload Me
             Load_Product_Lev4
        Else

@@ -1,12 +1,12 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} Product_DefectList 
-   Caption         =   "请选择缺陷（可多选） please select defect(multiple choise are alloewed)"
+   Caption         =   "please select defect(multiple choise are alloewed)"
    ClientHeight    =   7504
    ClientLeft      =   91
    ClientTop       =   406
    ClientWidth     =   9821.001
    OleObjectBlob   =   "Product_DefectList.frx":0000
-   StartUpPosition =   1  '所有者中心
+   StartUpPosition =   1  'Owner Center
 End
 Attribute VB_Name = "Product_DefectList"
 Attribute VB_GlobalNameSpace = False
@@ -74,7 +74,7 @@ Set UF = Me
 
  If Cn = 0 Then
      MsgBox "You have not selected any defect, please select at least one defect." & CHR(10) & _
-    "你未选择任何缺陷，请至少选择一个缺陷。" & CHR(10), vbCritical
+    UText(20320, 26410, 36873, 25321, 20219, 20309, 32570, 38519) & "，" & UText(35831, 33267, 23569, 36873, 25321, 19968, 20010, 32570, 38519) & "。" & CHR(10), vbCritical
         Unload Me
         Call Load_Product_DefectList
  Else
@@ -140,7 +140,7 @@ Set UF = Me
 
  If Cn = 0 Then
      MsgBox "You have not selected any defect, please select at least one defect." & CHR(10) & _
-    "你未选择任何缺陷，请至少选择一个缺陷。" & CHR(10), vbCritical
+    UText(20320, 26410, 36873, 25321, 20219, 20309, 32570, 38519) & "，" & UText(35831, 33267, 23569, 36873, 25321, 19968, 20010, 32570, 38519) & "。" & CHR(10), vbCritical
         Unload Me
         Call Load_Product_DefectList
  Else
@@ -202,12 +202,12 @@ Set UF = Me
 
  If Cn = 0 Then
      MsgBox "You have not selected any defect, please select at least one defect." & CHR(10) & _
-    "你未选择任何缺陷，请至少选择一个缺陷。" & CHR(10), vbCritical
+    UText(20320, 26410, 36873, 25321, 20219, 20309, 32570, 38519) & "，" & UText(35831, 33267, 23569, 36873, 25321, 19968, 20010, 32570, 38519) & "。" & CHR(10), vbCritical
         Unload Me
         Call Load_Product_DefectList
  ElseIf Cn > 1 Then
      MsgBox "You have selected more than one defects, please select only one defect." & CHR(10) & _
-    "你选择了不止一个缺陷，请只选择一个缺陷。" & CHR(10), vbCritical
+    UText(20320, 36873, 25321, 20102, 19981, 27490, 19968, 20010, 32570, 38519) & "，" & UText(35831, 21482, 36873, 25321, 19968, 20010, 32570, 38519) & "。" & CHR(10), vbCritical
      Load Me
  Else
    
@@ -294,7 +294,7 @@ Private Sub cmb_Change()
         If Cn > 0 Then
             cc = cc + 1
             cmb.List = SearchResult
-            cmb.Text = KeyWords ' 保持当前文本
+            cmb.Text = KeyWords ' translated comment
             On Error Resume Next
               cmb.DropDown
             On Error GoTo 0
@@ -303,7 +303,7 @@ Private Sub cmb_Change()
   
 10    End If
     
-    InChange = False ' 重置标志
+    InChange = False ' translated comment
     LastText = KeyWords
    
 End Sub
@@ -314,7 +314,7 @@ Private Sub cmb_click()
        Dim Str As String
        Dim i, j As Integer
        If cmb.ListIndex >= 0 Then
-        ' 将选中的值设置为ComboBox的文本
+        'ComboBox
           cmb.Text = cmb.List(cmb.ListIndex)
           For i = 1 To cmbN
             If cmb.Text = CmbItems(i) Then
@@ -335,7 +335,7 @@ Private Sub cmb_click()
              Call InputDropDown_Defects(DefName, DefNameE, DefCode)
 
          
-        ' 退出程序
+        ' translated comment
           Unload Me
          Exit Sub
      
@@ -344,7 +344,7 @@ End Sub
 
 
 Private Function GetSearchResult(KeyWords As String) As String()
-    ' 这里应该是筛选逻辑，以下为示例代码
+    '，
     Dim SearchResult() As String
     For Each Ctrl In Me.Controls
          If TypeName(Ctrl) = "CheckBox" Then

@@ -1,12 +1,12 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} Product_Lev3 
-   Caption         =   "请选择产品小类 Please Select Tertiary Product Type"
+   Caption         =   "Please Select Tertiary Product Type"
    ClientHeight    =   8505.001
    ClientLeft      =   91
    ClientTop       =   406
    ClientWidth     =   9821.001
    OleObjectBlob   =   "Product_Lev3.frx":0000
-   StartUpPosition =   1  '所有者中心
+   StartUpPosition =   1  'Owner Center
 End
 Attribute VB_Name = "Product_Lev3"
 Attribute VB_GlobalNameSpace = False
@@ -39,16 +39,16 @@ Set UF = Me
       End If
  Next i
  N_Cat_Small = Cn
- SLTN = Cn   '选择小类数，小类必选
+ SLTN = Cn   '，
  If Cn = 0 Then
      MsgBox "You have not selected any product categories, the program will exit, please re-run the program if you need" & CHR(10) & _
-    "你未选择任何产品类型，程序将退出，如果需要请你重新运行程序。" & CHR(10), vbCritical
+    UText(20320, 26410, 36873, 25321, 20219, 20309, 20135, 21697, 31867, 22411) & "，" & UText(31243, 24207, 23558, 36864, 20986) & "，" & UText(22914, 26524, 38656, 35201, 35831, 20320, 37325, 26032, 36816, 34892, 31243, 24207) & "。" & CHR(10), vbCritical
      Unload Me
      Load_Product_Lev3
      Exit Sub
  ElseIf Cn > 10 Then
     MsgBox "You have selected " & Cn & " product categories, no more than 10 product categories allowed to be selected each time,please re-select." & CHR(10) & _
-    "你选择了" & Cn & "产品类型，注意每次只允许选择不多于10种产品类型，请重新选择！" & CHR(10), vbCritical
+    UText(20320, 36873, 25321, 20102) & Cn & UText(20135, 21697, 31867, 22411) & "，" & UText(27880, 24847, 27599, 27425, 21482, 20801, 35768, 36873, 25321, 19981, 22810, 20110) & "10" & UText(31181, 20135, 21697, 31867, 22411) & "，" & UText(35831, 37325, 26032, 36873, 25321) & "！" & CHR(10), vbCritical
      Unload Me
      Load_Product_Lev3
     Exit Sub

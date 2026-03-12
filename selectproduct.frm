@@ -52,12 +52,12 @@ N = Level1.Controls.count
  
  If Cn = 0 Then
      MsgBox "You have not selected any product categories, the program will exit, please re-run the program if you need" & CHR(10) & _
-    "你未选择任何产品类型，程序将退出，如果需要请你重新运行程序。" & CHR(10), vbCritical
+    UText(20320, 26410, 36873, 25321, 20219, 20309, 20135, 21697, 31867, 22411) & "，" & UText(31243, 24207, 23558, 36864, 20986) & "，" & UText(22914, 26524, 38656, 35201, 35831, 20320, 37325, 26032, 36816, 34892, 31243, 24207) & "。" & CHR(10), vbCritical
      Exit Sub
      
  ElseIf Cn > 1 Then
     MsgBox "You have selected " & Cn & " product categories, only one product categories allowed to be selected each time,please re-select." & CHR(10) & _
-    "你选择了" & Cn & "产品类型，注意每次只允许选择一种产品类型，请重新选择！" & CHR(10), vbCritical
+    UText(20320, 36873, 25321, 20102) & Cn & UText(20135, 21697, 31867, 22411) & "，" & UText(27880, 24847, 27599, 27425, 21482, 20801, 35768, 36873, 25321, 19968, 31181, 20135, 21697, 31867, 22411) & "，" & UText(35831, 37325, 26032, 36873, 25321) & "！" & CHR(10), vbCritical
     Exit Sub
  Else
    Unload Me
