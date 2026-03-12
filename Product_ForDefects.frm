@@ -1,12 +1,12 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} Product_ForDefects 
-   Caption         =   "请选择1个产品用于搜索其缺陷列表 Please select one product for searching its defect list"
+   Caption         =   "Please select one product for defect search"
    ClientHeight    =   7504
    ClientLeft      =   91
    ClientTop       =   406
    ClientWidth     =   9821.001
    OleObjectBlob   =   "Product_ForDefects.frx":0000
-   StartUpPosition =   1  '所有者中心
+   StartUpPosition =   1  'Owner center
 End
 Attribute VB_Name = "Product_ForDefects"
 Attribute VB_GlobalNameSpace = False
@@ -45,11 +45,11 @@ Set UF = Me
  Next i
  If Cn = 0 Then
      MsgBox "You have not selected any product, please select one product to search for its list of common defects." & CHR(10) & _
-    "你未选择任何产品名称，请选择1个产品来搜索其常见的缺陷列表。" & CHR(10), vbCritical
+    UText(20320, 26410, 36873, 25321, 20219, 20309, 20135, 21697, 21517, 31216, 65292, 35831, 36873, 25321, 49, 20010, 20135, 21697, 26469, 25628, 32034, 20854, 24120, 35265, 30340, 32570, 38519, 21015, 34920, 12290) & CHR(10), vbCritical
     Load_Product_ForDefects
  ElseIf Cn > 1 Then
      MsgBox "You have not selected more than on product, each time, only one product allowed to select for searching its common defects，please re-select ." & CHR(10) & _
-    "你选择了多个产品，每次只允许选择1个产品来查询其常见缺陷列表,请重新选择。" & CHR(10), vbCritical
+    UText(20320, 36873, 25321, 20102, 22810, 20010, 20135, 21697, 65292, 27599, 27425, 21482, 20801, 35768, 36873, 25321, 49, 20010, 20135, 21697, 26469, 26597, 35810, 20854, 24120, 35265, 32570, 38519, 21015, 34920, 44, 35831, 37325, 26032, 36873, 25321, 12290) & CHR(10), vbCritical
     Load_Product_ForDefects
  End If
  

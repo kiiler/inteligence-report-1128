@@ -6,7 +6,7 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} Product_PrimaryTypeCheckPoints
    ClientTop       =   406
    ClientWidth     =   9821.001
    OleObjectBlob   =   "Product_PrimaryTypeCheckPoints.frx":0000
-   StartUpPosition =   1  '所有者中心
+   StartUpPosition =   1  'Owner center
 End
 Attribute VB_Name = "Product_PrimaryTypeCheckPoints"
 Attribute VB_GlobalNameSpace = False
@@ -53,7 +53,7 @@ ReDim AddchkCode(1 To Cn)
 
  If Cn = 0 Then
      MsgBox "You have not selected any Checkpoint, please select at least one Checkpoint or click cancel to exit." & CHR(10) & _
-    "你未选择任何测试项目，请至少选择一个测试项目或者点Cancel退出。" & CHR(10), vbCritical
+    UText(20320, 26410, 36873, 25321, 20219, 20309, 27979, 35797, 39033, 30446, 65292, 35831, 33267, 23569, 36873, 25321, 19968, 20010, 27979, 35797, 39033, 30446, 25110, 32773, 28857, 67, 97, 110, 99, 101, 108, 36864, 20986, 12290) & CHR(10), vbCritical
         Unload Me
         Call Load_Product_PrimaryTypeCheckPoints
  Else

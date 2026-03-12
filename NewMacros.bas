@@ -32,7 +32,7 @@ Public Const AppId As String = "fuzhihao@hqts.cn"
 Public Const EncryptedUserId = "V7NR8ZWF534oOVQFKgDQ+HIg1R4JYHM5KKV4E2ERhBaaQuCZfPsZDV7v30TKwMdwQgDr+efdHUP2P9y596AoKiRSt/iXnY8N8X10qEMDRYfwIg8Hd75C+RDj638MNY93vM6bNT+QMZrUDBDqj6ZvsO3Z61ieCMxeGIHz1tGADvLO5BtO9wUtCrkwbiB1M4L01HoCHk62tMU7WvPfvq+eoAsZUcb8qf4GIuVTvXHsVb0qP+wT+S1LetZ3fg1RHXsWFijtLevPYDqIi69yU3Mec9hlPjEMeIMvqMoimESVO4s7aqV328kZGVAh4apc0vCPmzOfG/5MTaogmpWgT5DOTw=="
 
 
-Private Function UText(ParamArray codePoints() As Variant) As String
+Public Function UText(ParamArray codePoints() As Variant) As String
     Dim i As Long
     Dim result As String
 
@@ -43,32 +43,156 @@ Private Function UText(ParamArray codePoints() As Variant) As String
     UText = result
 End Function
 
-Private Function HubKeyClientId() As String
+Public Function HubKeyData() As String
+    HubKeyData = "data"
+End Function
+
+Public Function HubKeyClientId() As String
     HubKeyClientId = UText(23458, 25143) & "id"
 End Function
 
-Private Function HubKeyClientFullName() As String
+Public Function HubKeyClientFullName() As String
     HubKeyClientFullName = UText(23458, 25143, 20840, 31216)
 End Function
 
-Private Function HubKeySupplierId() As String
+Public Function HubKeySupplierId() As String
     HubKeySupplierId = UText(20379, 24212, 21830) & "id"
 End Function
 
-Private Function HubKeySupplierFullName() As String
+Public Function HubKeySupplierFullName() As String
     HubKeySupplierFullName = UText(20379, 24212, 21830, 20840, 31216)
 End Function
 
-Private Function HubKeyFactoryId() As String
+Public Function HubKeyFactoryId() As String
     HubKeyFactoryId = UText(24037, 21378) & "id"
 End Function
 
-Private Function HubKeyFactoryFullName() As String
+Public Function HubKeyFactoryFullName() As String
     HubKeyFactoryFullName = UText(24037, 21378, 20840, 31216)
 End Function
 
-Private Function HubKeyUnit() As String
+Public Function HubKeyUnit() As String
     HubKeyUnit = UText(21333, 20301)
+End Function
+
+' Product hierarchy keys
+Public Function HubKeyProductLevel1Id() As String
+    HubKeyProductLevel1Id = UText(20135, 21697, 22823, 31867) & "id"
+End Function
+
+Public Function HubKeyProductLevel1Code() As String
+    HubKeyProductLevel1Code = UText(20135, 21697, 22823, 31867, 32534, 30721)
+End Function
+
+Public Function HubKeyProductLevel1NameCn() As String
+    HubKeyProductLevel1NameCn = UText(20135, 21697, 22823, 31867, 20013, 25991)
+End Function
+
+Public Function HubKeyProductLevel1NameEn() As String
+    HubKeyProductLevel1NameEn = UText(20135, 21697, 22823, 31867, 33521, 25991)
+End Function
+
+Public Function HubKeyProductLevel2Id() As String
+    HubKeyProductLevel2Id = UText(20135, 21697, 20013, 31867) & "id"
+End Function
+
+Public Function HubKeyProductLevel2Code() As String
+    HubKeyProductLevel2Code = UText(20135, 21697, 20013, 31867, 32534, 30721)
+End Function
+
+Public Function HubKeyProductLevel2NameCn() As String
+    HubKeyProductLevel2NameCn = UText(20135, 21697, 20013, 31867, 20013, 25991)
+End Function
+
+Public Function HubKeyProductLevel2NameEn() As String
+    HubKeyProductLevel2NameEn = UText(20135, 21697, 20013, 31867, 33521, 25991)
+End Function
+
+Public Function HubKeyProductLevel3Id() As String
+    HubKeyProductLevel3Id = UText(20135, 21697, 23567, 31867) & "id"
+End Function
+
+Public Function HubKeyProductLevel3Code() As String
+    HubKeyProductLevel3Code = UText(20135, 21697, 23567, 31867, 32534, 30721)
+End Function
+
+Public Function HubKeyProductLevel3NameCn() As String
+    HubKeyProductLevel3NameCn = UText(20135, 21697, 23567, 31867, 20013, 25991)
+End Function
+
+Public Function HubKeyProductLevel3NameEn() As String
+    HubKeyProductLevel3NameEn = UText(20135, 21697, 23567, 31867, 33521, 25991)
+End Function
+
+Public Function HubKeyProductId() As String
+    HubKeyProductId = UText(20135, 21697, 21517, 31216) & "id"
+End Function
+
+Public Function HubKeyProductCode() As String
+    HubKeyProductCode = UText(20135, 21697, 21517, 31216, 32534, 30721)
+End Function
+
+Public Function HubKeyProductNameCn() As String
+    HubKeyProductNameCn = UText(20135, 21697, 21517, 31216, 20013, 25991)
+End Function
+
+Public Function HubKeyProductNameEn() As String
+    HubKeyProductNameEn = UText(20135, 21697, 21517, 31216, 33521, 25991)
+End Function
+
+' Service category keys
+Public Function HubKeyServiceLevel1Id() As String
+    HubKeyServiceLevel1Id = UText(26381, 21153, 22823, 31867) & "id"
+End Function
+
+Public Function HubKeyServiceLevel2Id() As String
+    HubKeyServiceLevel2Id = UText(26381, 21153, 20013, 31867) & "id"
+End Function
+
+Public Function HubKeyServiceLevel3Id() As String
+    HubKeyServiceLevel3Id = UText(26381, 21153, 23567, 31867) & "id"
+End Function
+
+' Sampling and checkpoint keys
+Public Function HubKeyInspectionLevel() As String
+    HubKeyInspectionLevel = UText(26816, 39564, 27700, 24179)
+End Function
+
+Public Function HubKeySamplingPlan() As String
+    HubKeySamplingPlan = UText(25277, 26679, 26041, 26696)
+End Function
+
+Public Function HubKeyCheckpointId() As String
+    HubKeyCheckpointId = UText(26816, 26597, 28857) & "id"
+End Function
+
+Public Function HubKeyCheckpointCode() As String
+    HubKeyCheckpointCode = UText(26816, 26597, 28857, 32534, 30721)
+End Function
+
+Public Function HubKeyCheckpointNameCn() As String
+    HubKeyCheckpointNameCn = UText(26816, 26597, 28857, 20013, 25991)
+End Function
+
+Public Function HubKeyCheckpointNameEn() As String
+    HubKeyCheckpointNameEn = UText(26816, 26597, 28857, 33521, 25991)
+End Function
+
+' Defect keys
+Public Function HubKeyDefectId() As String
+    HubKeyDefectId = UText(32570, 38519) & "id"
+End Function
+
+Public Function HubKeyDefectCode() As String
+    HubKeyDefectCode = UText(32570, 38519, 32534, 30721)
+End Function
+
+Public Function HubKeyDefectNameCn() As String
+    HubKeyDefectNameCn = UText(32570, 38519, 20013, 25991)
+End Function
+
+Public Function HubKeyDefectNameEn() As String
+    HubKeyDefectNameEn = UText(32570, 38519, 33521, 25991)
 End Function
 
 Sub Remark()
@@ -18919,5 +19043,4 @@ ErrH:
     ' translated comment
     Resume Next
 End Function
-
 
